@@ -1,21 +1,42 @@
 import React, { Component } from 'react';
-import './Login.css';
 import * as firebase from 'firebase';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+import Card from 'material-ui/Card';
+
+import './Login.css'
+
+
 
 class Login extends Component {
 
   constructor(props) {
     super(props);
-  
+
+    this.state = {
+    	user: null
+    }
+
+    this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   componentDidMount() {
-  	
+  	const rootRef = firebase.database().ref().child('react');
+    const speedRef = rootRef.child('speed');
+    speedRef.on('value', snap => {
+      this.setState({
+        speed: snap.val()
+      })
+    });
   }
 
+
   handleLogin() {
-  	const provider = new firebase.auth.GoogleAuthProvider();
+  	this.setState({
+  		user: 'dada'
+  	})
+		var provider = new firebase.auth.GoogleAuthProvider();
   	provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
   	provider.setCustomParameters({
 		  'login_hint': 'user@example.com'
@@ -24,7 +45,7 @@ class Login extends Component {
   	// This gives you a Google Access Token. You can use it to access the Google API.
 		  var token = result.credential.accessToken;
 		  // The signed-in user info.
-		  var user = result.user;
+		  console.log(this);
 		  // ...
 		}).catch(function(error) {
 		  // Handle Errors here.
@@ -36,23 +57,42 @@ class Login extends Component {
 		  var credential = error.credential;
 		  // ...
 		});
+  }
 
-    const rootRef = firebase.database().ref().child('react');
-    const speedRef = rootRef.child('speed');
-    speedRef.on('value', snap => {
-      this.setState({
-        speed: snap.val()
-      })
-    });
+  handleLogout() {
+  	firebase.auth().signOut().then(function(result){
+  		console.log('dasda');
+  		console.log(result);
+  	}).catch(function(e){
+  		console.log(e)
+
+  	});
   }
 
   render() {
     return (
-      <div>
-    		<RaisedButton label="Login with Google" onTouchTap={this.handleLogin.bind(this)}/>
+      <div className="wrapper">
+      	<Card containerStyle={{
+      		display: 'flex',
+      		flexDirection: 'column',
+      		justifyContent: 'center',
+      		alignItems: 'center',
+      		padding: '10px'
+      	}}> 
+		    	{!this.props.user ? (
+		    		<RaisedButton label="Log in with Google" onTouchTap={this.handleLogin} primary={true} fullWidth={true} className='btn'/>
+		    	) : (
+		    		<RaisedButton label="Log out" onTouchTap={this.handleLogout} fullWidth={true} className='btn'/>
+		    	)}
+			  </Card>
       </div>
     );
   }
 }
 
 export default Login;
+ 	// <TextField
+		// 		      hintText="Hint Text"
+		// 		      floatingLabelText="Floating Label Text"
+		// 		      fullWidth={true}
+		// 		    />

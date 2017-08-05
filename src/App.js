@@ -35,7 +35,9 @@ class App extends Component {
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user });
-      } 
+      } else {
+        this.setState({ user: null });
+      }
     });
 
     speedRef.on('value', snap => {
@@ -48,11 +50,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <p className="App-intro">
-          {this.state.speed}
-        </p>
+        {this.state.speed}
         <MuiThemeProvider>
-          <Login></Login>
+          <Login user={this.state.user}></Login>
         </MuiThemeProvider>
 
       </div>
