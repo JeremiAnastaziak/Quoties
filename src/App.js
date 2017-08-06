@@ -32,27 +32,18 @@ class App extends Component {
     super(props);
   
     this.state = {
-      speed: 10
+      user: null
     };
   }
 
   componentDidMount() {
-    const rootRef = firebase.database().ref().child('react');
-    const speedRef = rootRef.child('speed');
     const auth = new firebase.auth();
-
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user });
       } else {
         this.setState({ user: null });
       }
-    });
-
-    speedRef.on('value', snap => {
-      this.setState({
-        speed: snap.val()
-      })
     });
   }
 
@@ -68,13 +59,9 @@ class App extends Component {
           <BrowserRouter>
             <div>
               <Route exact path="/" component={Home} />
-              <Route exact path="/new-post" component={NewPost} />
+              <Route exact path="/new-post" component={() => (<NewPost user={this.state.user} />)}/>
             </div>
           </BrowserRouter>
-
-          {this.state.speed}
-          
-
       </div>
     );
   }
