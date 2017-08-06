@@ -72,25 +72,27 @@ class Login extends Component {
   render() {
     return (
       <div className="wrapper">
-      	<Card containerStyle={{
-      		display: 'flex',
-      		flexDirection: 'column',
-      		justifyContent: 'center',
-      		alignItems: 'center',
-      		padding: '10px'
-      	}}> 
+      	
 		    	{!this.props.user ? (
 		    		<RaisedButton label="Log in with Google" onTouchTap={this.handleLogin} primary={true} fullWidth={true} className='btn'/>
 		    	) : (
 		    		<RaisedButton label="Log out" onTouchTap={this.handleLogout} fullWidth={true} className='btn'/>
 		    	)}
-			  </Card>
       </div>
     );
   }
 }
 
 export default Login;
+// <Card containerStyle={{
+//       		display: 'flex',
+//       		flexDirection: 'column',
+//       		justifyContent: 'center',
+//       		alignItems: 'center',
+//       		padding: '10px'
+//       	}}> 
+//			  </Card>
+
  	// <TextField
 		// 		      hintText="Hint Text"
 		// 		      floatingLabelText="Floating Label Text"

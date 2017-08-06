@@ -1,0 +1,11 @@
+.wrapper {
+	max-width: 500px;
+	margin: 0 auto;		
+}
+.btn {
+	margin-top: 10px;
+}
+
+.textarea label {
+	left: 0;
+}

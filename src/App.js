@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import Login from './login/Login.js'
-import logo from './logo.svg';
+import NewPost from './new-post/New-post.js'
+import Home from './home/Home.js'
+
 import './App.css';
 import firebase, { auth, provider } from 'firebase';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import AppBar from 'material-ui/AppBar';
+
+import {
+  BrowserRouter,
+  Route,
+  Link,
+  Switch
+} from 'react-router-dom';
+
 
 var config = {
   apiKey: "AIzaSyBuqmEmntHihsdIaWkXEqsJVJ6U8XbowX8",
@@ -15,7 +25,6 @@ var config = {
 };
 
 firebase.initializeApp(config);
-
 
 class App extends Component {
 
@@ -50,10 +59,21 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {this.state.speed}
-        <MuiThemeProvider>
-          <Login user={this.state.user}></Login>
-        </MuiThemeProvider>
+          <AppBar
+            title="Title"
+            iconClassNameRight="muidocs-icon-navigation-expand-more"
+            iconElementRight={<Login user={this.state.user}></Login>}
+          />
+
+          <BrowserRouter>
+            <div>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/new-post" component={NewPost} />
+            </div>
+          </BrowserRouter>
+
+          {this.state.speed}
+          
 
       </div>
     );
