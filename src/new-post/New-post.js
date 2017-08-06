@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
-
 import firebase from 'firebase';
 import './New-post.css'
 
 
 class NewPost extends Component {
-
   constructor(props) {
 		super(props);
+
 		this.state = {
 			submitted: false,
 			error: false
@@ -66,12 +65,11 @@ class NewPost extends Component {
 					fullWidth
 				/>
 				<RaisedButton 
-					label="Primary" 
+					label="Save" 
 					primary 
 					fullWidth
 					onTouchTap={this.submitQuote}
 				/>
-
 				<Snackbar
           open={this.state.submitted}
           message="Quote have been submitted"

@@ -32,7 +32,8 @@ class App extends Component {
     super(props);
   
     this.state = {
-      user: null
+      user: null,
+      quotes: null
     };
   }
 
@@ -40,7 +41,14 @@ class App extends Component {
     const auth = new firebase.auth();
     auth.onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ user });
+        var quotesRef = firebase.database().ref('users/' + user.uid);
+        let quotesData;
+        quotesRef.on('value', function(snapshot) {
+          quotesData = snapshot.val();
+        });
+        this.setState({ 
+          user
+         });
       } else {
         this.setState({ user: null });
       }
@@ -50,15 +58,14 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-          <AppBar
-            title="Title"
-            iconClassNameRight="muidocs-icon-navigation-expand-more"
-            iconElementRight={<Login user={this.state.user}></Login>}
-          />
-
           <BrowserRouter>
             <div>
-              <Route exact path="/" component={Home} />
+              <AppBar
+                title={<Link to='/'>Title</Link>}
+                iconClassNameRight="muidocs-icon-navigation-expand-more"
+                iconElementRight={<Login user={this.state.user} />}
+              />
+              <Route exact path="/" component={() => (<Home/>)} />
               <Route exact path="/new-post" component={() => (<NewPost user={this.state.user} />)}/>
             </div>
           </BrowserRouter>
