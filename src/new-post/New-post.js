@@ -27,7 +27,7 @@ class NewPost extends Component {
 		const title = document.querySelector('#quote_title');
 		const author = document.querySelector('#quote_author');
 
-		firebase.database().ref(`/users/${this.props.user.uid}`).set({
+		firebase.database().ref(`/users/${this.props.user.uid}/quotes`).push({
 			quoteText: text.value,
 			quoteAuthor: author.value,
 			quoteTitle: title.value

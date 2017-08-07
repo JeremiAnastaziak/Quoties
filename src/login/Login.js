@@ -74,9 +74,9 @@ class Login extends Component {
       <div className="wrapper">
       	
 		    	{!this.props.user ? (
-		    		<RaisedButton label="Log in with Google" onTouchTap={this.handleLogin} primary={true} fullWidth={true} className='btn'/>
+		    		<RaisedButton label="Log in with Google" onTouchTap={this.handleLogin} primary={true} fullWidth={true} style={{marginTop: '8px'}}/>
 		    	) : (
-		    		<RaisedButton label="Log out" onTouchTap={this.handleLogout} fullWidth={true} className='btn'/>
+		    		<RaisedButton label="Log out" onTouchTap={this.handleLogout} fullWidth={true} style={{marginTop: '8px'}}/>
 		    	)}
       </div>
     );

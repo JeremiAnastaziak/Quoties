@@ -2,6 +2,7 @@
   "name": "quoties",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "jeremianastaziak.bitbucket.io",
   "dependencies": {
     "firebase": "^4.2.0",
     "material-ui": "^0.18.7",

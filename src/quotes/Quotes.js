@@ -17,9 +17,10 @@ class Quotes extends Component {
 
   componentDidMount() {
 		if (firebase.auth().currentUser) {
-			var quotesRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid);
+			var quotesRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/quotes');
       let quotesData;
       quotesRef.on('value', (snapshot) => {
+				console.log(snapshot.val())
 				quotesData = snapshot.val();
 				this.setState({
 					quotes: quotesData
@@ -41,16 +42,27 @@ class Quotes extends Component {
 		}
 
 		const quotesData = this.state.quotes;
-    let quotes = null;
-    if (quotesData) {
-      quotes = <ListItem primaryText={quotesData.quoteText} secondaryText={quotesData.quoteAuthor}/>
+		let quotes = null;
+		if (quotesData) {
+			quotes = (
+				<div>
+					{Object.keys(quotesData).map( dataProp => {
+						<ListItem key={dataProp} primaryText={quotesData[dataProp].quoteText} secondaryText={quotesData[dataProp].quoteAuthor}/>
+					})} 
+				</div>
+			);
+		 	console.log(quotes);
     } else {
-      quotes = '';
+			quotes = '';
     }
     return (
       <div className="wrapper">
 					<div>
-						{quotes}
+						{
+							quotesData ? (Object.keys(quotesData).map( dataProp => {
+								return <ListItem key={dataProp} primaryText={quotesData[dataProp].quoteText} secondaryText={quotesData[dataProp].quoteAuthor}/>
+							})) : ''
+						}
 					</div>
 					
       </div>

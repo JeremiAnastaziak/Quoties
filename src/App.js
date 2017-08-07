@@ -61,7 +61,7 @@ class App extends Component {
           <BrowserRouter>
             <div>
               <AppBar
-                title={<Link to='/'>Title</Link>}
+                title={<Link to='/' style={{color:'#fff', textDecoration: 'none'}}>Quoties</Link>}
                 iconClassNameRight="muidocs-icon-navigation-expand-more"
                 iconElementRight={<Login user={this.state.user} />}
               />
