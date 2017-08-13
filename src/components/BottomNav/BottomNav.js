@@ -24,11 +24,13 @@ class BottomNav extends React.Component {
         return (
           <Paper zDepth={1} className="navigation">
             <BottomNavigation selectedIndex={this.state.selectedIndex}>
+            <Link to='/'>
               <BottomNavigationItem
                 label="Recent"
                 icon={<Home />}
                 onTouchTap={() => this.select(0)}
               />
+            </Link>
               <BottomNavigationItem
                 label="Authors"
                 icon={<AuthorsIcon />}
