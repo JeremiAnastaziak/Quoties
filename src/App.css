@@ -1,7 +1,11 @@
 .floating-btn {
-  position: absolute;
+  position: fixed;
   bottom: 65px;
   right: 15px;
+}
+
+.container {
+  margin-bottom: 55px;
 }
 
 .navigation-bottom {

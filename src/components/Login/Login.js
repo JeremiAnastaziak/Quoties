@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import * as firebase from 'firebase';
+
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import { Link } from 'react-router-dom';
+
 import './Login.css'
 
 class Login extends Component {
@@ -47,83 +49,54 @@ class Login extends Component {
 		});
   }
 
-  handleLogout = () => {
-  	firebase.auth().signOut().then(function(result){
-  	}).catch(function(error){
-			console.error(error)
-  	});
-  }
-
   render() {
     return (
-      <div className="flex-box">
-				<div>
-					<TextField
-						hintText="E-mail field"
-						floatingLabelText="E-mail"
-						floatingLabelFixed={true}
-						type="e-mail"
-						fullWidth
-						autoComplete={"off"}
-						ref={(email) => { this.email = email }}
-					/>
-					<TextField
-						hintText="Password Field"
-						floatingLabelText="Password"
-						floatingLabelFixed={true}
-						type="password"
-						fullWidth
-						ref={(password) => { this.password = password }}
-						
-					/>
-					<RaisedButton 
-						label="Log in" 
-						onTouchTap={this.handleEmailLogin} 
-						primary={true} 
-						fullWidth={true} 
-						style={{marginTop: '8px'}}
-					/>
-					<RaisedButton 
-						label="Log in with Google" 
-						onTouchTap={this.handleGoogleLogin} 
-						default={true} 
-						fullWidth={true} 
-						style={{marginTop: '8px'}}
-					/>
-					<Link to='/register'>
-						<FlatButton 
-							label="Create new account" 
-							fullWidth={true}
-							default={true}
-							style={{marginTop: '12px'}}
-						/>
-					</Link>
-
-					<RaisedButton 
-					label="Log out" 
-					onTouchTap={this.handleLogout} 
-					default={true} 
+      	<div className="flex-box">
+			<div>
+				<TextField
+					hintText="E-mail field"
+					floatingLabelText="E-mail"
+					floatingLabelFixed={true}
+					type="e-mail"
+					fullWidth
+					autoComplete={"off"}
+					ref={(email) => { this.email = email }}
+				/>
+				<TextField
+					hintText="Password Field"
+					floatingLabelText="Password"
+					floatingLabelFixed={true}
+					type="password"
+					fullWidth
+					ref={(password) => { this.password = password }}
+					
+				/>
+				<RaisedButton 
+					label="Log in" 
+					onTouchTap={this.handleEmailLogin} 
+					primary={true} 
 					fullWidth={true} 
 					style={{marginTop: '8px'}}
 				/>
-      	</div>
+				<RaisedButton 
+					label="Log in with Google" 
+					onTouchTap={this.handleGoogleLogin} 
+					default={true} 
+					fullWidth={true} 
+					style={{marginTop: '8px'}}
+				/> 
+				<Link to='/register'>
+					<FlatButton 
+						label="Create new account" 
+						fullWidth={true}
+						default={true}
+						style={{marginTop: '12px'}}
+					/>
+				</Link>
 			</div>
+		</div>
     );
   }
 }
 
 export default Login;
-// <Card containerStyle={{
-//       		display: 'flex',
-//       		flexDirection: 'column',
-//       		justifyContent: 'center',
-//       		alignItems: 'center',
-//       		padding: '10px'
-//       	}}> 
-//			  </Card>
-
- 	// <TextField
-		// 		      hintText="Hint Text"
-		// 		      floatingLabelText="Floating Label Text"
-		// 		      fullWidth={true}
-		// 		    />

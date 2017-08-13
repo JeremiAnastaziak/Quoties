@@ -1,13 +1,17 @@
 import React from 'react'
-import './BottomNav.css';
+import { Link } from 'react-router-dom';
+
 import FontIcon from 'material-ui/FontIcon';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
 import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
+import AddIcon from 'material-ui/svg-icons/editor/mode-edit';
+import SearchIcon from 'material-ui/svg-icons/action/search';
+import AuthorsIcon from 'material-ui/svg-icons/action/supervisor-account';
+import Home from 'material-ui/svg-icons/navigation/apps';
+import Favs from 'material-ui/svg-icons/toggle/star';
 
-const recentsIcon = <FontIcon className="material-icons">restore</FontIcon>;
-const favoritesIcon = <FontIcon className="material-icons">favorite</FontIcon>;
-const nearbyIcon = <IconLocationOn />;
+import './BottomNav.css';
 
 class BottomNav extends React.Component {
     state = {
@@ -21,20 +25,35 @@ class BottomNav extends React.Component {
           <Paper zDepth={1} className="navigation">
             <BottomNavigation selectedIndex={this.state.selectedIndex}>
               <BottomNavigationItem
-                label="Recents"
-                icon={recentsIcon}
+                label="Recent"
+                icon={<Home />}
                 onTouchTap={() => this.select(0)}
               />
               <BottomNavigationItem
-                label="Favorites"
-                icon={favoritesIcon}
+                label="Authors"
+                icon={<AuthorsIcon />}
                 onTouchTap={() => this.select(1)}
               />
               <BottomNavigationItem
-                label="Nearby"
-                icon={nearbyIcon}
+                label="Search"
+                icon={<SearchIcon />}
                 onTouchTap={() => this.select(2)}
               />
+
+              <BottomNavigationItem
+                label="Favourites"
+                icon={<Favs />}
+                onTouchTap={() => this.select(3)}
+              />
+              <Link to='/new-post'>
+                <BottomNavigationItem
+                  label="Add"
+                  icon={<AddIcon />}
+                  onTouchTap={() => {
+                    this.select(4)
+                  }}
+                />
+              </Link>
             </BottomNavigation>
           </Paper>
         );
