@@ -17,10 +17,10 @@ class Home extends Component {
 
   render() {
     return (
-      <div className="wrapper">
+      <div>
 					<Quotes></Quotes>
 					<Link to='/new-post'>
-						<FloatingActionButton className="floating-btn">
+						<FloatingActionButton className="floating-btn" mini={true}>
 							<ContentAdd />
 						</FloatingActionButton>
 					</Link>

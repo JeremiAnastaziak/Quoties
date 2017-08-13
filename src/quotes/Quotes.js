@@ -56,7 +56,7 @@ class Quotes extends Component {
 			quotes = '';
     }
     return (
-      <div className="wrapper">
+      <div>
 					<div>
 						{
 							quotesData ? (Object.keys(quotesData).map( dataProp => {
