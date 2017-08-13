@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import Login from './components/Login/Login'
 import NewPost from './new-post/New-post.js'
-import Home from './home/Home.js'
+import Quotes from './components/Quotes/Quotes.js';
 import Register from './components/Register/Register'
 import BottomNav from './components/BottomNav/BottomNav';
 import './App.css';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import firebase, { auth, provider } from 'firebase';
 import AppBar from 'material-ui/AppBar';
@@ -67,12 +69,29 @@ class App extends Component {
                 
               />
               <div className="container">
-              <Route exact path="/" component={() => (<Login user={this.state.user} />)} />
+              <Route exact path="/" component={
+                () => (
+                !this.state.user ?
+                <Login user={this.state.user} /> :
+                <Quotes user={this.state.user} />
+              )
+              } />
               <Route exact path="/new-post" component={() => (<NewPost user={this.state.user} />)}/>
+              <Route exact path="/quotes" component={() => (<Quotes user={this.state.user} />)}/>
               <Route exact path="/register" component={() => (<Register/>)}/>
               
               {this.state.user ?
-                <BottomNav/> : ''
+                (
+                  <div>
+                    <Link to='/new-post'>
+                      <FloatingActionButton className="floating-btn" mini={true}>
+                        <ContentAdd />
+                      </FloatingActionButton>
+                    </Link>
+                    <BottomNav/>
+                  </div>
+                )
+                 : ''
               }
               </div>
               

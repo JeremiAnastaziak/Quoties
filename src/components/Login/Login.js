@@ -98,6 +98,14 @@ class Login extends Component {
 							style={{marginTop: '12px'}}
 						/>
 					</Link>
+
+					<RaisedButton 
+					label="Log out" 
+					onTouchTap={this.handleLogout} 
+					default={true} 
+					fullWidth={true} 
+					style={{marginTop: '8px'}}
+				/>
       	</div>
 			</div>
     );
