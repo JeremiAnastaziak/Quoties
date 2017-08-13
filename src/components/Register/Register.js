@@ -25,11 +25,11 @@ class Register extends Component {
 		console.log(password)
 		firebase.auth().createUserWithEmailAndPassword(email, password)
 			.then( () => {
-				console.log('user logged in')
+				console.log('registered')
 			})
 			.catch( (error) => {
 				// Handle Errors here.
-				console.error("user logged in")
+				console.error("registered")
 				var errorCode = error.code;
 				var errorMessage = error.message;
 				// ...
