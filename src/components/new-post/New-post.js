@@ -4,7 +4,14 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import firebase from 'firebase';
 import './New-post.css'
+import AuthorIcon from 'material-ui/svg-icons/social/person';
+import TextIcon from 'material-ui/svg-icons/communication/chat-bubble-outline';
+import TitleIcon from 'material-ui/svg-icons/communication/import-contacts';
 
+const iconStyles = {
+	marginTop: '39px',
+	marginRight: '5px'
+}
 
 class NewPost extends Component {
   constructor(props) {
@@ -47,28 +54,40 @@ class NewPost extends Component {
 	render() {
     return (
       <div className="wrapper">
-				<TextField
-					floatingLabelText="Text"
-					id="quote_text"
-					className="textarea"
-					multiLine
-					fullWidth
-				/>
-				<TextField
-					floatingLabelText="Author"
-					id="quote_author"
-					fullWidth
-				/>
-      	<TextField
-					floatingLabelText="Title"
-					id="quote_title"
-					fullWidth
-				/>
+				<div className="row">
+					<TextIcon style={iconStyles}/>
+					<TextField
+						floatingLabelText="Text"
+						id="quote_text"
+						className="textarea"
+						multiLine
+						fullWidth
+						required
+					/>
+				</div>
+				<div className="row">
+					<AuthorIcon style={iconStyles}/>
+					<TextField
+						floatingLabelText="Author"
+						id="quote_author"
+						fullWidth
+						required
+					/>
+				</div>
+				<div className="row">
+					<TitleIcon style={iconStyles}/>
+					<TextField
+						floatingLabelText="Title"
+						id="quote_title"
+						fullWidth
+					/>
+				</div>
 				<RaisedButton 
 					label="Save" 
 					primary 
 					fullWidth
 					onTouchTap={this.submitQuote}
+					style={{marginTop: '20px'}}
 				/>
 				<Snackbar
           open={this.state.submitted}

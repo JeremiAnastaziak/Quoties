@@ -8,7 +8,7 @@ import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
 import AddIcon from 'material-ui/svg-icons/editor/mode-edit';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import AuthorsIcon from 'material-ui/svg-icons/action/supervisor-account';
-import Home from 'material-ui/svg-icons/navigation/apps';
+import Home from 'material-ui/svg-icons/action/home';
 import Favs from 'material-ui/svg-icons/toggle/star';
 
 import './BottomNav.css';
@@ -26,7 +26,7 @@ class BottomNav extends React.Component {
             <BottomNavigation selectedIndex={this.state.selectedIndex}>
             <Link to='/'>
               <BottomNavigationItem
-                label="Recent"
+                label="Home"
                 icon={<Home />}
                 onTouchTap={() => this.select(0)}
               />

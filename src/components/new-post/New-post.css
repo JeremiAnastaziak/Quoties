@@ -3,8 +3,11 @@
 	margin: 0 auto;		
 	padding: 0 15px;
 }
-.btn {
-	margin-top: 10px;
+
+.row {
+	display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .textarea label {

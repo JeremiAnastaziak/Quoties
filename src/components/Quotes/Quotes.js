@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import {List, ListItem} from 'material-ui/List';
+import QuoteOptions from './QuoteOptions';
 
 class Quotes extends Component {
 
@@ -10,18 +11,16 @@ class Quotes extends Component {
 		this.state = {
 			quotes: null
 		}
-
-		//this.renderQuotes = this.renderQuotes.bind(this);
-
   }
 
   componentDidMount() {
 		if (firebase.auth().currentUser) {
 			var quotesRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/quotes');
-      let quotesData;
-      quotesRef.on('value', (snapshot) => {
+			let quotesData;
+			quotesRef.on('value', (snapshot) => {
 				console.log(snapshot.val())
 				quotesData = snapshot.val();
+				
 				this.setState({
 					quotes: quotesData
 				})
@@ -29,45 +28,30 @@ class Quotes extends Component {
 		}
 	}
 
-	
-
-  render() {
-		const renderQuotes = () => {
-			return `
-				<List>
-					<ListItem 
-					/>
-				</List>
-			`
-		}
-
+	render() {
 		const quotesData = this.state.quotes;
-		let quotes = null;
-		if (quotesData) {
-			quotes = (
+		return (
+			<div>
 				<div>
-					{Object.keys(quotesData).map( dataProp => {
-						<ListItem key={dataProp} primaryText={quotesData[dataProp].quoteText} secondaryText={quotesData[dataProp].quoteAuthor}/>
-					})} 
+					{
+						quotesData ? (Object.keys(quotesData).map( dataProp => {
+							return <ListItem 
+												key={dataProp} 
+												primaryText={quotesData[dataProp].quoteText} 
+												secondaryText={quotesData[dataProp].quoteAuthor} 
+												rightIconButton={
+													<QuoteOptions 
+														key={dataProp} 
+														uid={this.props.user.uid} 
+														qid={dataProp}
+													/>}
+											/>
+						})) : ''
+					}
 				</div>
-			);
-		 	console.log(quotes);
-    } else {
-			quotes = '';
-    }
-    return (
-      <div>
-					<div>
-						{
-							quotesData ? (Object.keys(quotesData).map( dataProp => {
-								return <ListItem key={dataProp} primaryText={quotesData[dataProp].quoteText} secondaryText={quotesData[dataProp].quoteAuthor}/>
-							})) : ''
-						}
-					</div>
-					
-      </div>
-    );
-  }
+			</div>
+		);
+	}
 }
 
 export default Quotes;
