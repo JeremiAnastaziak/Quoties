@@ -14,16 +14,31 @@ const iconStyles = {
 }
 
 class NewPost extends Component {
-	constructor(props) {
-		super(props);
+
+	constructor() {
+		super();
+		this.state = {
+			quoteText: '',
+			quoteAuthor: '',
+			quoteTitle: ''
+		}
 	}
 
 	componentDidMount() {
 		this.qText.focus();
+		if (this.props.edition) {
+			this.setState({
+				...this.props.edition.quote
+			})
+		}
 	}
 
 	submitQuote = (e) => {
 		e.preventDefault();
+		if (this.props.edition) {
+			this.props.updateQuote(this.props.edition.id, this.state);
+			return
+		}
 		firebase.database().ref(`/users/${this.props.user.uid}/quotes`).push({
 			...this.state
 		}).then(() => {
@@ -33,6 +48,7 @@ class NewPost extends Component {
 	}
 
 	render() {
+		const quote = this.props.edition ? this.props.edition.quote : null;
 		return (
 			<div className="wrapper">
 				<form ref={(input) => this.quoteForm = input} onSubmit={(e) => this.submitQuote(e)}>
@@ -42,11 +58,11 @@ class NewPost extends Component {
 							ref={(input) => this.qText = input}
 							onChange={e => this.setState({ quoteText: e.target.value })}
 							floatingLabelText="Text"
-							id="quote_text"
 							className="textarea"
 							multiLine
 							fullWidth
 							required
+							value={this.state.quoteText}
 						/>
 					</div>
 					<div className="row">
@@ -54,9 +70,9 @@ class NewPost extends Component {
 						<TextField
 							onChange={e => this.setState({ quoteAuthor: e.target.value })}
 							floatingLabelText="Author"
-							id="quote_author"
 							fullWidth
 							required
+							value={this.state.quoteAuthor}
 						/>
 					</div>
 					<div className="row">
@@ -64,13 +80,13 @@ class NewPost extends Component {
 						<TextField
 							onChange={e => this.setState({ quoteTitle: e.target.value })}
 							floatingLabelText="Title"
-							id="quote_title"
 							fullWidth
+							value={this.state.quoteTitle}
 						/>
 					</div>
 					<RaisedButton
 						type="submit"
-						label="Save"
+						label={quote ? 'Update' : 'Save'}
 						primary
 						fullWidth
 						style={{ marginTop: '20px' }}

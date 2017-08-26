@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import firebase, { auth, provider } from 'firebase';
+import firebase from 'firebase';
 import Login from './components/Login/Login';
 import NewPost from './components/NewPost/NewPost';
 import Quotes from './components/Quotes/Quotes';
 import Register from './components/Register/Register';
 import BottomNav from './components/BottomNav/BottomNav';
 import Header from './components/Header/Header';
-
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-
 import './App.css';
 
 class App extends Component {
@@ -20,8 +16,7 @@ class App extends Component {
 
     this.state = {
       user: null,
-      quotes: null,
-      quoteEdition: {}
+      quotes: null
     };
   }
 
@@ -29,10 +24,11 @@ class App extends Component {
     const auth = new firebase.auth();
     auth.onAuthStateChanged((user) => {
       if (user) {
-        var quotesRef = firebase.database().ref('users/' + user.uid);
-        let quotesData;
-        quotesRef.on('value', function (snapshot) {
-          quotesData = snapshot.val();
+        const quotesRef = firebase.database().ref(`users/${user.uid}/quotes`);
+        quotesRef.on('value', (snapshot) => {
+          this.setState({
+            quotes: snapshot.val()
+          })
         });
         this.setState({
           user
@@ -43,7 +39,30 @@ class App extends Component {
     });
   }
 
+  editQuote = (quoteId) => {
+    console.log(quoteId)
+    const state = this.state
+    this.setState({
+      ...state,
+      edition: {id: quoteId, quote: {...this.state.quotes[quoteId]}}
+    })
+  }
+
+  updateQuote = (quoteId, quote) => {
+    console.log(quoteId, quote);
+    const quotesRef = firebase.database().ref(`users/${this.state.user.uid}/quotes/${quoteId}`);
+    quotesRef.update({...quote}).then(() => {
+      console.log('updated');
+      this.setState({
+        edition: null
+      })
+    }).catch((err) => {
+      console.error(err)
+    });
+  }
+
   render() {
+    const quotesComponent = <Quotes user={this.state.user} quotes={this.state.quotes} editQuote={this.editQuote}/>
     return (
       <div className="App">
         <BrowserRouter>
@@ -52,15 +71,15 @@ class App extends Component {
             <div className="container">
               <Route exact path="/" component={
                 () => (
-                  !this.state.user 
+                  !this.state.user
                     ?
-                    <Login user={this.state.user} /> 
+                    <Login user={this.state.user} />
                     :
-                    <Quotes user={this.state.user} />
+                    quotesComponent
                 )
               } />
-              <Route exact path="/quote" component={() => (<NewPost user={this.state.user} />)} />
-              <Route exact path="/quotes" component={() => (<Quotes user={this.state.user} />)} />
+              <Route exact path="/quote" component={() => (<NewPost updateQuote={this.updateQuote} user={this.state.user} edition={this.state.edition}/>)} />
+              <Route exact path="/quotes" component={() => quotesComponent} />
               <Route exact path="/register" component={() => (<Register />)} />
 
               {this.state.user && <BottomNav />}

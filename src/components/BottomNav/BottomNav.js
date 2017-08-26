@@ -1,10 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 
-import FontIcon from 'material-ui/FontIcon';
 import {BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
-import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
 import AddIcon from 'material-ui/svg-icons/editor/mode-edit';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import AuthorsIcon from 'material-ui/svg-icons/action/supervisor-account';

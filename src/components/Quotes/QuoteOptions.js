@@ -1,13 +1,10 @@
 import React from 'react';
-import * as firebase from 'firebase';
 import { Link } from 'react-router-dom';
-
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
-import { grey400, darkBlack, lightBlack } from 'material-ui/styles/colors';
+import { grey400 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import Snackbar from 'material-ui/Snackbar';
 
 import './Quotes.css';
 
@@ -25,11 +22,12 @@ function QuoteOptions(props) {
 				iconButtonElement={iconButtonElement}
 				style={{ position: 'absolute', top: '10px', right: '5px' }}>
 				<MenuItem
-					onTouchTap={() => props.deleteQuote(props.uid, props.qid)}>
+					onTouchTap={() => props.deleteQuote(props.qid)}>
 					Delete
         </MenuItem>
-				<Link to='quote'>
-					<MenuItem>
+				<Link to='/quote'>
+					<MenuItem
+						onTouchTap={() => props.editQuote(props.qid)}>
 						Edit
 					</MenuItem>
 				</Link>
