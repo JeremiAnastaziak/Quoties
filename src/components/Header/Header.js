@@ -15,43 +15,38 @@ import './Header.css';
 
 const Logged = (props) => {
 	return (
-    <IconMenu
-        iconButtonElement={
-        <IconButton><MoreVertIcon className="more-icon"/></IconButton>
-        }
-        targetOrigin={{horizontal: 'right', vertical: 'top'}}
-        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-    >
-				<MenuItem primaryText="Sign out" onClick={() => {
-					firebase.auth().signOut()
-					.then( () => {
+		<IconMenu
+			iconButtonElement={
+				<IconButton><MoreVertIcon className="more-icon" /></IconButton>
+			}
+			targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+			anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+		>
+			<MenuItem primaryText="Sign out" onClick={() => {
+				firebase.auth().signOut()
+					.then(() => {
 
 					})
-					.catch( (error) => {
+					.catch((error) => {
 						console.error(error);
 					});
-				}} />
-    </IconMenu>
+			}} />
+		</IconMenu>
 	)
 }
 
-class Header extends React.Component {
+function Header(props) {
 
-		handleLogout = () => {
-			console.log(this);
-			console.log("logged out");
-		}
-    
-    render() {
-        return (
-            <div>
-                <AppBar
-                    title={<Link to='/' style={{color:'#fff', textDecoration: 'none'}}>Quoties</Link>}
-                    iconElementRight={this.props.user ? <Logged /> : null}
-                />
-            </div>
-        )
-    }
+	return (
+		<div>
+			<AppBar
+				title={<Link to='/' style={{ color: '#fff', textDecoration: 'none' }}>Quoties</Link>}
+				iconElementRight={
+					props.user && <Logged />
+				}
+			/>
+		</div>
+	)
 }
 
 export default Header;

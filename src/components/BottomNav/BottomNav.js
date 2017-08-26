@@ -47,9 +47,9 @@ class BottomNav extends React.Component {
                 icon={<Favs />}
                 onTouchTap={() => this.select(3)}
               />
-              <Link to='/new-post'>
+              <Link to='/quote'>
                 <BottomNavigationItem
-                  label="Add"
+                  label="Quote"
                   icon={<AddIcon />}
                   onTouchTap={() => {
                     this.select(4)

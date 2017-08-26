@@ -51,7 +51,7 @@ class Login extends Component {
 
   render() {
     return (
-      	<div className="flex-box">
+      <div className="flex-box wrapper">
 			<div>
 				<TextField
 					hintText="E-mail field"
