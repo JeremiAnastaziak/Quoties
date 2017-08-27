@@ -7,6 +7,7 @@ import './NewPost.css'
 import AuthorIcon from 'material-ui/svg-icons/social/person';
 import TextIcon from 'material-ui/svg-icons/communication/chat-bubble-outline';
 import TitleIcon from 'material-ui/svg-icons/communication/import-contacts';
+import { Card } from 'material-ui/Card';
 
 const iconStyles = {
 	marginTop: '35px',
@@ -53,56 +54,58 @@ class NewPost extends Component {
 		const quote = this.props.edition ? this.props.edition.quote : null;
 		return (
 			<div className="wrapper">
-				<form ref={(input) => this.quoteForm = input} onSubmit={(e) => this.submitQuote(e)}>
-					<div className="row">
-						<TextIcon style={iconStyles} />
-						<TextField
-							ref={(input) => this.qText = input}
-							onChange={e => this.setState({ quoteText: e.target.value })}
-							floatingLabelText="Text"
-							className="textarea"
-							multiLine
+				<Card className="card">
+					<form ref={(input) => this.quoteForm = input} onSubmit={(e) => this.submitQuote(e)}>
+						<div className="row">
+							<TextIcon style={iconStyles} />
+							<TextField
+								ref={(input) => this.qText = input}
+								onChange={e => this.setState({ quoteText: e.target.value })}
+								floatingLabelText="Text"
+								className="textarea"
+								multiLine
+								fullWidth
+								required
+								value={this.state.quoteText}
+							/>
+						</div>
+						<div className="row">
+							<AuthorIcon style={iconStyles} />
+							<TextField
+								onChange={e => this.setState({ quoteAuthor: e.target.value })}
+								floatingLabelText="Author"
+								fullWidth
+								required
+								value={this.state.quoteAuthor}
+							/>
+						</div>
+						<div className="row">
+							<TitleIcon style={iconStyles} />
+							<TextField
+								onChange={e => this.setState({ quoteTitle: e.target.value })}
+								floatingLabelText="Title"
+								fullWidth
+								value={this.state.quoteTitle}
+							/>
+						</div>
+						<RaisedButton
+							type="submit"
+							label={quote ? 'Update' : 'Save'}
+							primary
 							fullWidth
-							required
-							value={this.state.quoteText}
+							style={{ marginTop: '20px' }}
 						/>
-					</div>
-					<div className="row">
-						<AuthorIcon style={iconStyles} />
-						<TextField
-							onChange={e => this.setState({ quoteAuthor: e.target.value })}
-							floatingLabelText="Author"
-							fullWidth
-							required
-							value={this.state.quoteAuthor}
+						<Snackbar
+							message="Quote have been submitted"
+							autoHideDuration={3000}
 						/>
-					</div>
-					<div className="row">
-						<TitleIcon style={iconStyles} />
-						<TextField
-							onChange={e => this.setState({ quoteTitle: e.target.value })}
-							floatingLabelText="Title"
-							fullWidth
-							value={this.state.quoteTitle}
-						/>
-					</div>
-					<RaisedButton
-						type="submit"
-						label={quote ? 'Update' : 'Save'}
-						primary
-						fullWidth
-						style={{ marginTop: '20px' }}
-					/>
-					<Snackbar
-						message="Quote have been submitted"
-						autoHideDuration={3000}
-					/>
 
-					<Snackbar
-						message="Shit! Smth went wrong. Try again."
-						autoHideDuration={3000}
-					/>
-				</form>
+						<Snackbar
+							message="Shit! Smth went wrong. Try again."
+							autoHideDuration={3000}
+						/>
+					</form>
+				</Card>
 			</div>
 		);
 	}

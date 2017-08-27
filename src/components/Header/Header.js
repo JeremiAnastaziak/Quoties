@@ -37,7 +37,7 @@ function Header(props) {
 	return (
 		<div>
 			<AppBar
-				title={<Link to='/' style={{ color: '#fff', textDecoration: 'none' }}>Quoties</Link>}
+				title={<Link to='/' style={{ color: '#fff', textDecoration: 'none', fontWeight: '300', textTransform: 'uppercase' }}>Quoties</Link>}
 				iconElementRight={
 					props.user && <Logged />
 				}

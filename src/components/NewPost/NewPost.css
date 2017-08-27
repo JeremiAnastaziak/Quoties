@@ -13,3 +13,8 @@
 .textarea label {
 	left: 0;
 }
+
+.card {
+	margin-top: 25px !important;
+	padding: 0 10px 10px !important;
+}

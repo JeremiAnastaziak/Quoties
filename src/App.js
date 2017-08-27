@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import Login from './components/Login/Login';
 import NewPost from './components/NewPost/NewPost';
 import Quotes from './components/Quotes/Quotes';
+import Search from './components/Search/Search';
 import Register from './components/Register/Register';
 import BottomNav from './components/BottomNav/BottomNav';
 import Header from './components/Header/Header';
@@ -84,6 +85,7 @@ class App extends Component {
               <Route exact path="/quote" component={() => (<NewPost updateQuote={this.updateQuote} user={this.state.user} edition={this.state.edition} />)} />
               <Route exact path="/quotes" component={() => quotesComponent} />
               <Route exact path="/authors" component={() => quotesComponent} />
+              <Route exact path="/search" component={() => <Search />} />
               <Route exact path="/starred" component={() => quotesComponent} />
               <Route exact path="/register" component={() => (<Register />)} />
 
