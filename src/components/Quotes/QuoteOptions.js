@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import { grey400 } from 'material-ui/styles/colors';
@@ -28,7 +27,11 @@ function QuoteOptions(props) {
 				<MenuItem
 					onTouchTap={() => props.editQuote(props.qid)}>
 					Edit
-					</MenuItem>
+				</MenuItem>
+				<MenuItem
+					onTouchTap={() => props.toggleStarred(props.qid)}>
+					{props.starred ? 'Remove from favourite' : 'Add to favourite'}
+				</MenuItem>
 			</IconMenu>
 		</div>
 	)

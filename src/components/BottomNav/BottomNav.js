@@ -41,12 +41,13 @@ class BottomNav extends React.Component {
             icon={<SearchIcon />}
             onTouchTap={() => this.select(2)}
           />
-
-          <BottomNavigationItem
-            label="Favourites"
-            icon={<Favs />}
-            onTouchTap={() => this.select(3)}
-          />
+          <Link to='/starred'>
+            <BottomNavigationItem
+              label="Starred"
+              icon={<Favs />}
+              onTouchTap={() => this.select(3)}
+            />
+          </Link>
           <Link to='/quote'>
             <BottomNavigationItem
               label="Quote"
