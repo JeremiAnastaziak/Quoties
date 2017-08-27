@@ -25,12 +25,10 @@ function QuoteOptions(props) {
 					onTouchTap={() => props.deleteQuote(props.qid)}>
 					Delete
         </MenuItem>
-				<Link to='/quote'>
-					<MenuItem
-						onTouchTap={() => props.editQuote(props.qid)}>
-						Edit
+				<MenuItem
+					onTouchTap={() => props.editQuote(props.qid)}>
+					Edit
 					</MenuItem>
-				</Link>
 			</IconMenu>
 		</div>
 	)

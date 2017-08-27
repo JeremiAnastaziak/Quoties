@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import firebase from 'firebase';
 import Login from './components/Login/Login';
 import NewPost from './components/NewPost/NewPost';
@@ -44,14 +44,13 @@ class App extends Component {
     const state = this.state
     this.setState({
       ...state,
-      edition: {id: quoteId, quote: {...this.state.quotes[quoteId]}}
+      edition: { id: quoteId, quote: { ...this.state.quotes[quoteId] } }
     })
   }
 
   updateQuote = (quoteId, quote) => {
-    console.log(quoteId, quote);
     const quotesRef = firebase.database().ref(`users/${this.state.user.uid}/quotes/${quoteId}`);
-    quotesRef.update({...quote}).then(() => {
+    quotesRef.update({ ...quote }).then(() => {
       console.log('updated');
       this.setState({
         edition: null
@@ -62,7 +61,9 @@ class App extends Component {
   }
 
   render() {
-    const quotesComponent = <Quotes user={this.state.user} quotes={this.state.quotes} editQuote={this.editQuote}/>
+    if (this.state.edition) {
+    }
+    const quotesComponent = <Quotes user={this.state.user} quotes={this.state.quotes} editQuote={this.editQuote} />
     return (
       <div className="App">
         <BrowserRouter>
@@ -71,15 +72,18 @@ class App extends Component {
             <div className="container">
               <Route exact path="/" component={
                 () => (
-                  !this.state.user
-                    ?
+                  !this.state.user ?
                     <Login user={this.state.user} />
                     :
-                    quotesComponent
+                    this.state.edition ?
+                      <Redirect push to="/quote" />
+                      :
+                      quotesComponent
                 )
               } />
-              <Route exact path="/quote" component={() => (<NewPost updateQuote={this.updateQuote} user={this.state.user} edition={this.state.edition}/>)} />
+              <Route exact path="/quote" component={() => (<NewPost updateQuote={this.updateQuote} user={this.state.user} edition={this.state.edition} />)} />
               <Route exact path="/quotes" component={() => quotesComponent} />
+              <Route exact path="/authors" component={() => quotesComponent} />
               <Route exact path="/register" component={() => (<Register />)} />
 
               {this.state.user && <BottomNav />}

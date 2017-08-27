@@ -26,6 +26,7 @@ class NewPost extends Component {
 
 	componentDidMount() {
 		this.qText.focus();
+		console.log('mounted')
 		if (this.props.edition) {
 			this.setState({
 				...this.props.edition.quote
@@ -42,6 +43,7 @@ class NewPost extends Component {
 		firebase.database().ref(`/users/${this.props.user.uid}/quotes`).push({
 			...this.state
 		}).then(() => {
+			console.log('added q')
 			this.quoteForm.reset();
 		}).catch(() => {
 		})
