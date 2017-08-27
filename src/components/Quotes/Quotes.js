@@ -41,7 +41,7 @@ class Quotes extends Component {
 			>
 				{author[0]}
 			</Avatar>
-		)
+		) 
 	}
 
 	renderQuote = (quote, index) => {
