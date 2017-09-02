@@ -1,9 +1,4 @@
 import React from 'react';
-import * as firebase from 'firebase';
-import { ListItem } from 'material-ui/List';
-import { cyan500, transparent } from 'material-ui/styles/colors';
-import Avatar from 'material-ui/Avatar';
-import Divider from 'material-ui/Divider';
 import Quote from '../Quote/Quote';
 import './Authors.css';
 
@@ -39,7 +34,9 @@ class Authors extends React.Component {
             .map(index => <Quote
               quote={quotes[index]}
               index={index}
-              divider={this.evaluateDivider(quotes[index].quoteAuthor[0])} />)
+              user={this.props.user}
+              divider={this.evaluateDivider(quotes[index].quoteAuthor[0])} 
+              editQuote={this.editQuote} />)
 
         }
       </div>

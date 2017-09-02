@@ -27,7 +27,7 @@ class Quote extends React.Component {
   toggleStarred = (quoteId) => {
 		const qRef = firebase.database().ref(`/users/${this.props.user.uid}/quotes/${quoteId}`)
 		qRef
-			.update({ starred: !this.props.quotes[quoteId].starred })
+			.update({ starred: !this.props.quote.starred })
   }
   
   renderLetter = (letter) => {
@@ -35,22 +35,22 @@ class Quote extends React.Component {
       <Avatar
         color={cyan500} backgroundColor={transparent}
         style={{ left: 8 }}
+        key={letter}
       >
         {letter}
       </Avatar>
     )
   }
-
   
   render() {
-    const emptyAvatar = (<Avatar backgroundColor={transparent} style={{ left: 8 }}> </Avatar>)
     const quote = this.props.quote;
     const divider = this.props.divider;
+    const index = this.props.index;
     return (
-      <div key={this.props.index}>
+      <div key={index}>
         {divider && <Divider inset={true} />}
         <ListItem
-          key={this.props.index}
+          key={index}
           primaryText={quote.quoteText}
           secondaryText={quote.quoteAuthor}
           leftAvatar={
@@ -58,8 +58,8 @@ class Quote extends React.Component {
           }
           rightIconButton={
             <QuoteOptions
-              key={this.props.index}
-              qid={this.props.index}
+              key={index}
+              qid={index}
               starred={quote.starred}
               editQuote={this.editQuote}
               deleteQuote={this.deleteQuote}

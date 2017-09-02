@@ -5,6 +5,7 @@ import Login from './components/Login/Login';
 import NewPost from './components/NewPost/NewPost';
 import Feed from './components/Feed/Feed';
 import Authors from './components/Authors/Authors';
+import Starred from './components/Starred/Starred';
 import Search from './components/Search/Search';
 import Register from './components/Register/Register';
 import BottomNav from './components/BottomNav/BottomNav';
@@ -48,23 +49,28 @@ class App extends Component {
       ...state,
       edition: { id: quoteId, quote: { ...this.state.quotes[quoteId] } }
     })
+    return (<Redirect push to="/quote" />)
   }
 
   updateQuote = (quoteId, quote) => {
-    const quotesRef = firebase.database().ref(`users/${this.state.user.uid}/quotes/${quoteId}`);
-    quotesRef.update({ ...quote }).then(() => {
-      console.log('updated');
+    if (quoteId) {
+      const quotesRef = firebase.database().ref(`users/${this.state.user.uid}/quotes/${quoteId}`);
+      quotesRef.update({ ...quote }).then(() => {
+        console.log('updated');
+        this.setState({
+          edition: null
+        })
+      }).catch((err) => {
+        console.error(err)
+      });
+    } else {
       this.setState({
         edition: null
       })
-    }).catch((err) => {
-      console.error(err)
-    });
+    }
   }
 
   render() {
-    if (this.state.edition) {
-    }
     const feedComponent = <Feed user={this.state.user} quotes={this.state.quotes} editQuote={this.editQuote} />
     return (
       <div className="App">
@@ -72,23 +78,54 @@ class App extends Component {
           <div>
             <Header user={this.state.user} />
             <div className="container">
-              <Route exact path="/" component={
-                () => (
+              <Route
+                exact
+                path="/"
+                component={() => (
                   !this.state.user ?
                     <Login user={this.state.user} />
-                    :
-                    this.state.edition ?
+                    : this.state.edition ?
                       <Redirect push to="/quote" />
-                      :
-                      feedComponent
+                      : feedComponent
                 )
-              } />
-              <Route exact path="/quote" component={() => (<NewPost updateQuote={this.updateQuote} user={this.state.user} edition={this.state.edition} />)} />
-              <Route exact path="/quotes" component={() => feedComponent} />
-              <Route exact path="/authors" component={() => <Authors quotes={this.state.quotes} editQuote={this.editQuote}/>} />
-              <Route exact path="/search" component={() => <Search />} />
-              <Route exact path="/starred" component={() => feedComponent} />
-              <Route exact path="/register" component={() => <Register />} />
+                } />
+              <Route
+                exact
+                path="/quote"
+                component={() =>
+                  <NewPost
+                    updateQuote={this.updateQuote}
+                    user={this.state.user}
+                    edition={this.state.edition} />} />
+              <Route
+                exact
+                path="/authors"
+                component={() => this.state.edition ?
+                  <Redirect push to="/quote" />
+                  : <Authors
+                    quotes={this.state.quotes}
+                    user={this.state.user}
+                    editQuote={this.editQuote} />} />
+              <Route
+                exact
+                path="/search"
+                component={() => <Search 
+                  quotes={this.state.quotes}
+                  user={this.state.user}
+                  editQuote={this.editQuote}/>} />
+              <Route
+                exact
+                path="/starred"
+                component={() => this.state.edition ?
+                  <Redirect push to="/quote" />
+                  : <Starred
+                    quotes={this.state.quotes}
+                    user={this.state.user}
+                    editQuote={this.editQuote} />} />
+              <Route
+                exact
+                path="/register"
+                component={() => <Register />} />
 
               {this.state.user && <BottomNav />}
             </div>
