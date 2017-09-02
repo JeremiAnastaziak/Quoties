@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import firebase from 'firebase';
 import Login from './components/Login/Login';
 import NewPost from './components/NewPost/NewPost';
-import Quotes from './components/Quotes/Quotes';
+import Feed from './components/Feed/Feed';
+import Authors from './components/Authors/Authors';
 import Search from './components/Search/Search';
 import Register from './components/Register/Register';
 import BottomNav from './components/BottomNav/BottomNav';
@@ -64,7 +65,7 @@ class App extends Component {
   render() {
     if (this.state.edition) {
     }
-    const quotesComponent = <Quotes user={this.state.user} quotes={this.state.quotes} editQuote={this.editQuote} />
+    const feedComponent = <Feed user={this.state.user} quotes={this.state.quotes} editQuote={this.editQuote} />
     return (
       <div className="App">
         <BrowserRouter>
@@ -79,15 +80,15 @@ class App extends Component {
                     this.state.edition ?
                       <Redirect push to="/quote" />
                       :
-                      quotesComponent
+                      feedComponent
                 )
               } />
               <Route exact path="/quote" component={() => (<NewPost updateQuote={this.updateQuote} user={this.state.user} edition={this.state.edition} />)} />
-              <Route exact path="/quotes" component={() => quotesComponent} />
-              <Route exact path="/authors" component={() => quotesComponent} />
+              <Route exact path="/quotes" component={() => feedComponent} />
+              <Route exact path="/authors" component={() => <Authors quotes={this.state.quotes} />} />
               <Route exact path="/search" component={() => <Search />} />
-              <Route exact path="/starred" component={() => quotesComponent} />
-              <Route exact path="/register" component={() => (<Register />)} />
+              <Route exact path="/starred" component={() => feedComponent} />
+              <Route exact path="/register" component={() => <Register />} />
 
               {this.state.user && <BottomNav />}
             </div>

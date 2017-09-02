@@ -4,7 +4,6 @@ import MenuItem from 'material-ui/MenuItem';
 import { grey400 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-
 import './Quotes.css';
 
 const iconButtonElement = (
