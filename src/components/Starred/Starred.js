@@ -5,9 +5,8 @@ import { cyan500, transparent } from 'material-ui/styles/colors';
 import Avatar from 'material-ui/Avatar';
 import Divider from 'material-ui/Divider';
 import Quote from '../Quote/Quote';
-import './Authors.css';
 
-class Authors extends React.Component {
+class Starred extends React.Component {
   constructor() {
     super();
     this.dividers = []
@@ -20,7 +19,6 @@ class Authors extends React.Component {
   evaluateDivider = (letter) => {
     let state = this.dividers;
     if (state.includes(letter)) {
-      console.log(letter);
       return null
     } else {
       this.dividers = [...state, letter]
@@ -40,11 +38,10 @@ class Authors extends React.Component {
               quote={quotes[index]}
               index={index}
               divider={this.evaluateDivider(quotes[index].quoteAuthor[0])} />)
-
         }
       </div>
     )
   }
 }
 
-export default Authors;
+export default Starred;

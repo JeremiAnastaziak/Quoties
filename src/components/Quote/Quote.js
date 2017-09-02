@@ -28,21 +28,33 @@ class Quote extends React.Component {
 		const qRef = firebase.database().ref(`/users/${this.props.user.uid}/quotes/${quoteId}`)
 		qRef
 			.update({ starred: !this.props.quotes[quoteId].starred })
-	}
+  }
+  
+  renderLetter = (letter) => {
+    return (
+      <Avatar
+        color={cyan500} backgroundColor={transparent}
+        style={{ left: 8 }}
+      >
+        {letter}
+      </Avatar>
+    )
+  }
+
   
   render() {
     const emptyAvatar = (<Avatar backgroundColor={transparent} style={{ left: 8 }}> </Avatar>)
     const quote = this.props.quote;
-    const dividers = this.props.dividers;
+    const divider = this.props.divider;
     return (
       <div key={this.props.index}>
-        {dividers && !dividers.includes(quote.quoteAuthor[0]) && <Divider inset={true} />}
+        {divider && <Divider inset={true} />}
         <ListItem
           key={this.props.index}
           primaryText={quote.quoteText}
           secondaryText={quote.quoteAuthor}
           leftAvatar={
-              dividers && !dividers.includes(quote.quoteAuthor[0]) ? this.props.renderDividerLetter(quote.quoteAuthor) : emptyAvatar
+              divider && this.renderLetter(divider)
           }
           rightIconButton={
             <QuoteOptions
