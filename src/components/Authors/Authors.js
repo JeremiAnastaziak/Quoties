@@ -9,25 +9,30 @@ import Quote from '../Quote/Quote';
 class Authors extends React.Component {
   constructor() {
     super();
-    this.dividers = []
-    
+    this.state = {
+      dividers: []
+    }
   }
 
-  componentDidMount() {
-
+  editQuote = (quoteId) => {
+		this.props.editQuote(quoteId);
   }
 
-  renderAvatar = author => {
-		let state = this.dividers;
-		this.dividers = [...state, author[0]];
-		return (
-			<Avatar
-				color={cyan500} backgroundColor={transparent}
-				style={{ left: 8 }}
-			>
-				{author[0]}
-			</Avatar>
-		)
+  renderDividerLetter = author => {
+    let state = this.state.dividers;
+    state = [...state, author[0]]
+    this.setState({
+      dividers: state
+    })
+
+    return (
+      <Avatar
+        color={cyan500} backgroundColor={transparent}
+        style={{ left: 8 }}
+      >
+        {author[0]}
+      </Avatar>
+    )
   }
 
   render() {
@@ -39,7 +44,11 @@ class Authors extends React.Component {
             .keys(quotes)
             .sort((lastOne, nextOne) => quotes[lastOne].quoteAuthor > quotes[nextOne].quoteAuthor)
             //.map(index => this.renderQuote(quotes[index], index))
-            .map(index => <Quote quote={quotes[index]} index={index} avatar={this.renderAvatar}/>) //this.renderQuote(quotes[index], index))
+            .map(index => <Quote
+              quote={quotes[index]}
+              index={index}
+              renderDividerLetter={this.renderDividerLetter}
+              dividers={this.state.dividers} />) //this.renderQuote(quotes[index], index))
 
         }
       </div>

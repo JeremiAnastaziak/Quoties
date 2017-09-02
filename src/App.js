@@ -85,7 +85,7 @@ class App extends Component {
               } />
               <Route exact path="/quote" component={() => (<NewPost updateQuote={this.updateQuote} user={this.state.user} edition={this.state.edition} />)} />
               <Route exact path="/quotes" component={() => feedComponent} />
-              <Route exact path="/authors" component={() => <Authors quotes={this.state.quotes} />} />
+              <Route exact path="/authors" component={() => <Authors quotes={this.state.quotes} editQuote={this.editQuote}/>} />
               <Route exact path="/search" component={() => <Search />} />
               <Route exact path="/starred" component={() => feedComponent} />
               <Route exact path="/register" component={() => <Register />} />

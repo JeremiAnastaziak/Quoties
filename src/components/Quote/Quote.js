@@ -42,9 +42,7 @@ class Quote extends React.Component {
           primaryText={quote.quoteText}
           secondaryText={quote.quoteAuthor}
           leftAvatar={
-            this.props.authors ?
-              !dividers.includes(quote.quoteAuthor[0]) ? this.props.renderAvatar(quote.quoteAuthor) : emptyAvatar
-              : null
+              dividers && !dividers.includes(quote.quoteAuthor[0]) ? this.props.renderDividerLetter(quote.quoteAuthor) : emptyAvatar
           }
           rightIconButton={
             <QuoteOptions
