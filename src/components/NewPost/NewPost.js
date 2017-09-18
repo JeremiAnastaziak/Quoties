@@ -54,15 +54,14 @@ class NewPost extends Component {
 		const quote = this.props.edition ? this.props.edition.quote : null;
 		return (
 			<div className="wrapper">
-				<Card className="card">
-					<form ref={(input) => this.quoteForm = input} onSubmit={(e) => this.submitQuote(e)}>
+				<form className="wrapper-flex" ref={(input) => this.quoteForm = input} onSubmit={(e) => this.submitQuote(e)}>
+					<div>
 						<div className="row">
-							<TextIcon style={iconStyles} />
 							<TextField
+								className="field"
 								ref={(input) => this.qText = input}
 								onChange={e => this.setState({ quoteText: e.target.value })}
 								floatingLabelText="Text"
-								className="textarea"
 								multiLine
 								fullWidth
 								required
@@ -70,8 +69,8 @@ class NewPost extends Component {
 							/>
 						</div>
 						<div className="row">
-							<AuthorIcon style={iconStyles} />
 							<TextField
+								className="field"
 								onChange={e => this.setState({ quoteAuthor: e.target.value })}
 								floatingLabelText="Author"
 								fullWidth
@@ -80,32 +79,36 @@ class NewPost extends Component {
 							/>
 						</div>
 						<div className="row">
-							<TitleIcon style={iconStyles} />
 							<TextField
+								className="field"
 								onChange={e => this.setState({ quoteTitle: e.target.value })}
-								floatingLabelText="Title"
+								floatingLabelText="Source"
 								fullWidth
 								value={this.state.quoteTitle}
 							/>
 						</div>
+					</div>
+					<div className="wrapper-button">
 						<RaisedButton
+							className="submit"
 							type="submit"
 							label={quote ? 'Update' : 'Save'}
 							primary
 							fullWidth
 							style={{ marginTop: '20px' }}
 						/>
-						<Snackbar
-							message="Quote have been submitted"
-							autoHideDuration={3000}
-						/>
+					</div>
 
-						<Snackbar
-							message="Shit! Smth went wrong. Try again."
-							autoHideDuration={3000}
-						/>
-					</form>
-				</Card>
+					<Snackbar
+						message="Quote have been submitted"
+						autoHideDuration={3000}
+					/>
+
+					<Snackbar
+						message="Shit! Smth went wrong. Try again."
+						autoHideDuration={3000}
+					/>
+				</form>
 			</div>
 		);
 	}

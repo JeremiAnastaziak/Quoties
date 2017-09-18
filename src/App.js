@@ -73,7 +73,7 @@ class App extends Component {
   render() {
     const feedComponent = <Feed user={this.state.user} quotes={this.state.quotes} editQuote={this.editQuote} />
     return (
-      <div className="App">
+      <div className="mobile-first">
         <BrowserRouter>
           <div>
             <Header user={this.state.user} />

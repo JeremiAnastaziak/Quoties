@@ -14,12 +14,6 @@ input:-webkit-autofill {
   align-items: center;
 }
 
-.wrapper {
-	max-width: 500px;
-	margin: 0 auto;		
-	padding: 0 15px;
-}
-
 a:-webkit-any-link {
   color: inherit;
   text-decoration: none;

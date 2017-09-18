@@ -38,6 +38,7 @@ function Header(props) {
 		<div>
 			<AppBar
 				title={<Link to='/' style={{ color: '#fff', textDecoration: 'none', fontWeight: '300' }}>Quoties</Link>}
+				iconElementLeft={null}
 				iconElementRight={
 					props.user && <Logged />
 				}

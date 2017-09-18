@@ -1,7 +1,18 @@
 .wrapper {
 	max-width: 500px;
 	margin: 0 auto;		
-	padding: 0 15px;
+	padding: 0;
+}
+
+.wrapper-flex {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: calc(100vh - 65px - 50px);
+}
+
+.wrapper-button {
+	margin: 10px;
 }
 
 .row {
@@ -10,8 +21,12 @@
     align-items: flex-start;
 }
 
-.textarea label {
-	left: 0;
+.field label {
+	left: 10px;
+}
+
+.field > div > * {
+	padding: 0 10px !important;
 }
 
 .card {

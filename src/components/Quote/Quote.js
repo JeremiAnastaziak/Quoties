@@ -47,7 +47,7 @@ class Quote extends React.Component {
     const divider = this.props.divider;
     const index = this.props.index;
     return (
-      <div key={index}>
+      <div key={index} className={quote.starred ? 'starred' : ''}>
         {divider && <Divider inset={true} />}
         <ListItem
           key={index}

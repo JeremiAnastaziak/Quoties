@@ -1,3 +1,7 @@
 .option {
     float: right;
 }
+
+.starred {
+    background-color: #E0F7FA;    
+}
