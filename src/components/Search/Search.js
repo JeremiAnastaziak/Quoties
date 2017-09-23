@@ -3,7 +3,7 @@ import TextField from 'material-ui/TextField';
 import Card from 'material-ui/Card';
 import './Search.css';
 import Quote from '../Quote/Quote'
-
+import { toggleBodyClass } from '../utils/helpers';
 
 class Search extends React.Component {
 
@@ -32,6 +32,8 @@ class Search extends React.Component {
           <TextField
             ref={(input) => this.input = input}
             onChange={e => this.setState({ searchText: e.target.value })}
+            onFocus={e => this.setState({ edition: true })}
+            onBlur={e => this.setState({ edition: false })}
             name="search"
             placeholder="What do you search for?"
             fullWidth
@@ -42,11 +44,14 @@ class Search extends React.Component {
           .keys(quotes)
           .filter(index => !searchText || Object.values(quotes[index]).join(' ').toUpperCase().includes(searchText.toUpperCase()))
           .map(index => <Quote
+            key={index}
             quote={quotes[index]}
             index={index}
             user={this.props.user}
             editQuote={this.editQuote} />)
         }
+
+        {this.state.edition ? toggleBodyClass('edition-mode') : ''}
         
       </div>
     )

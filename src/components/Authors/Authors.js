@@ -32,6 +32,7 @@ class Authors extends React.Component {
             .keys(quotes)
             .sort((lastOne, nextOne) => quotes[lastOne].quoteAuthor > quotes[nextOne].quoteAuthor)
             .map(index => <Quote
+              key={index}
               quote={quotes[index]}
               index={index}
               user={this.props.user}

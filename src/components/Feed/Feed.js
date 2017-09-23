@@ -15,7 +15,9 @@ class Feed extends Component {
 				{
 					quotes && Object
 						.keys(quotes)
+						.reverse()
 						.map(index => <Quote
+							key={index}
 							quote={quotes[index]}
 							index={index}
 							user={this.props.user}

@@ -8,6 +8,7 @@ import AuthorIcon from 'material-ui/svg-icons/social/person';
 import TextIcon from 'material-ui/svg-icons/communication/chat-bubble-outline';
 import TitleIcon from 'material-ui/svg-icons/communication/import-contacts';
 import { Card } from 'material-ui/Card';
+import { toggleBodyClass } from '../utils/helpers';
 
 const iconStyles = {
 	marginTop: '35px',
@@ -21,13 +22,14 @@ class NewPost extends Component {
 		this.state = {
 			quoteText: '',
 			quoteAuthor: '',
-			quoteTitle: ''
+			quoteTitle: '',
+			edition: false
 		}
+
 	}
 
 	componentDidMount() {
 		this.qText.focus();
-		console.log('mounted')
 		if (this.props.edition) {
 			this.setState({
 				...this.props.edition.quote
@@ -42,7 +44,10 @@ class NewPost extends Component {
 			return
 		}
 		firebase.database().ref(`/users/${this.props.user.uid}/quotes`).push({
-			...this.state
+			quoteText: this.state.quoteText,
+			quoteAuthor: this.state.quoteAuthor,
+			quoteTitle: this.state.quoteTitle
+
 		}).then(() => {
 			console.log('added q')
 			this.quoteForm.reset();
@@ -54,60 +59,48 @@ class NewPost extends Component {
 		const quote = this.props.edition ? this.props.edition.quote : null;
 		return (
 			<div className="wrapper">
-				<form className="wrapper-flex" ref={(input) => this.quoteForm = input} onSubmit={(e) => this.submitQuote(e)}>
-					<div>
-						<div className="row">
-							<TextField
-								className="field"
-								ref={(input) => this.qText = input}
-								onChange={e => this.setState({ quoteText: e.target.value })}
-								floatingLabelText="Text"
-								multiLine
-								fullWidth
-								required
-								value={this.state.quoteText}
-							/>
-						</div>
-						<div className="row">
-							<TextField
-								className="field"
-								onChange={e => this.setState({ quoteAuthor: e.target.value })}
-								floatingLabelText="Author"
-								fullWidth
-								required
-								value={this.state.quoteAuthor}
-							/>
-						</div>
-						<div className="row">
-							<TextField
-								className="field"
-								onChange={e => this.setState({ quoteTitle: e.target.value })}
-								floatingLabelText="Source"
-								fullWidth
-								value={this.state.quoteTitle}
-							/>
-						</div>
-					</div>
-					<div className="wrapper-button">
-						<RaisedButton
-							className="submit"
-							type="submit"
-							label={quote ? 'Update' : 'Save'}
-							primary
-							fullWidth
-							style={{ marginTop: '20px' }}
-						/>
-					</div>
-
-					<Snackbar
-						message="Quote have been submitted"
-						autoHideDuration={3000}
+				<form ref={(input) => this.quoteForm = input} onSubmit={(e) => this.submitQuote(e)}>
+					<TextField
+						className="field"
+						ref={(input) => this.qText = input}
+						onChange={e => this.setState({ quoteText: e.target.value })}
+						onFocus={e => this.setState({ edition: true })}
+						onBlur={e => this.setState({ edition: false })}
+						floatingLabelText="Text"
+						multiLine
+						rows={3}
+						fullWidth
+						required
+						value={this.state.quoteText}
+					/>
+					<TextField
+						className="field"
+						onChange={e => this.setState({ quoteAuthor: e.target.value })}
+						onFocus={e => this.setState({ edition: true })}
+						onBlur={e => this.setState({ edition: false })}
+						floatingLabelText="Author"
+						fullWidth
+						required
+						value={this.state.quoteAuthor}
+					/>
+					<TextField
+						className="field"
+						onChange={e => this.setState({ quoteTitle: e.target.value })}
+						onFocus={e => this.setState({ edition: true })}
+						onBlur={e => this.setState({ edition: false })}
+						floatingLabelText="Source"
+						fullWidth
+						value={this.state.quoteTitle}
+					/>
+					<RaisedButton
+						className="button-submit"
+						type="submit"
+						label={quote ? 'Update' : 'Save'}
+						primary
 					/>
 
-					<Snackbar
-						message="Shit! Smth went wrong. Try again."
-						autoHideDuration={3000}
-					/>
+					{this.state.edition ? toggleBodyClass('edition-mode') : ''}
+					
 				</form>
 			</div>
 		);

@@ -30,12 +30,12 @@ class Quote extends React.Component {
 			.update({ starred: !this.props.quote.starred })
   }
   
-  renderLetter = (letter) => {
+  renderLetter = (letter, index) => {
     return (
       <Avatar
         color={cyan500} backgroundColor={transparent}
         style={{ left: 8 }}
-        key={letter}
+        key={index}
       >
         {letter}
       </Avatar>
@@ -54,7 +54,7 @@ class Quote extends React.Component {
           primaryText={quote.quoteText}
           secondaryText={quote.quoteAuthor}
           leftAvatar={
-              divider && this.renderLetter(divider)
+              divider && this.renderLetter(divider, index)
           }
           rightIconButton={
             <QuoteOptions

@@ -4,32 +4,17 @@
 	padding: 0;
 }
 
-.wrapper-flex {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	height: calc(100vh - 65px - 50px);
-}
-
-.wrapper-button {
-	margin: 10px;
-}
-
-.row {
-	display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
 .field label {
 	left: 10px;
 }
 
-.field > div > * {
+.field textarea, .field input {
 	padding: 0 10px !important;
 }
 
-.card {
-	margin-top: 25px !important;
-	padding: 0 10px 10px !important;
+.button-submit {
+	width: calc(100% - 20px);
+	margin: 20px 10px;
+	box-sizing: border-box;
+	display: block;
 }

@@ -21,7 +21,7 @@ class BottomNav extends React.Component {
   render() {
     return (
       <Paper zDepth={1} className="navigation">
-        <BottomNavigation selectedIndex={this.state.selectedIndex} className="navigation-wrapper">
+        <BottomNavigation selectedIndex={this.state.selectedIndex}>
           <Link to='/'>
             <BottomNavigationItem
               label="Home"

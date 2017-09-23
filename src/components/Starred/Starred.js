@@ -16,6 +16,7 @@ class Starred extends React.Component {
             .keys(quotes)
             .filter(index => quotes[index].starred)
             .map(index => <Quote
+              key={index}
               quote={quotes[index]}
               index={index}
               editQuote={this.editQuote}
