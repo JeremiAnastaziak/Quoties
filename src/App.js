@@ -94,6 +94,7 @@ class App extends Component {
                 path="/quote"
                 component={() =>
                   <NewPost
+                    quotes={this.state.quotes}
                     updateQuote={this.updateQuote}
                     user={this.state.user}
                     edition={this.state.edition} />} />
@@ -109,10 +110,10 @@ class App extends Component {
               <Route
                 exact
                 path="/search"
-                component={() => <Search 
+                component={() => <Search
                   quotes={this.state.quotes}
                   user={this.state.user}
-                  editQuote={this.editQuote}/>} />
+                  editQuote={this.editQuote} />} />
               <Route
                 exact
                 path="/starred"

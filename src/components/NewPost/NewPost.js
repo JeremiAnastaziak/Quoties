@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
+import AutoComplete from 'material-ui/AutoComplete';
 import firebase from 'firebase';
 import './NewPost.css'
 import AuthorIcon from 'material-ui/svg-icons/social/person';
@@ -23,13 +24,24 @@ class NewPost extends Component {
 			quoteText: '',
 			quoteAuthor: '',
 			quoteTitle: '',
-			edition: false
+			edition: false,
+			authors: []
 		}
 
 	}
 
 	componentDidMount() {
-		this.qText.focus();
+		this.qAuthor.focus();
+		
+		let authors = []
+		const quotes = this.props.quotes;
+		quotes && Object
+			.keys(quotes)
+			.map(index => !authors.includes(quotes[index].quoteAuthor) && authors.push(quotes[index].quoteAuthor))
+
+		this.setState({
+			authors: authors
+		})
 		if (this.props.edition) {
 			this.setState({
 				...this.props.edition.quote
@@ -60,6 +72,19 @@ class NewPost extends Component {
 		return (
 			<div className="wrapper">
 				<form ref={(input) => this.quoteForm = input} onSubmit={(e) => this.submitQuote(e)}>
+					<AutoComplete
+						className="field"
+						ref={(input) => this.qAuthor = input}
+						onUpdateInput={value => this.setState({ quoteAuthor: value })}
+						onFocus={e => this.setState({ edition: true })}
+						onBlur={e => this.setState({ edition: false })}
+						floatingLabelText="Author"
+						fullWidth
+						required
+						value={this.state.quoteAuthor}
+						filter={AutoComplete.caseInsensitiveFilter}
+						dataSource={this.state.authors}
+					/>
 					<TextField
 						className="field"
 						ref={(input) => this.qText = input}
@@ -72,16 +97,6 @@ class NewPost extends Component {
 						fullWidth
 						required
 						value={this.state.quoteText}
-					/>
-					<TextField
-						className="field"
-						onChange={e => this.setState({ quoteAuthor: e.target.value })}
-						onFocus={e => this.setState({ edition: true })}
-						onBlur={e => this.setState({ edition: false })}
-						floatingLabelText="Author"
-						fullWidth
-						required
-						value={this.state.quoteAuthor}
 					/>
 					<TextField
 						className="field"
@@ -100,7 +115,7 @@ class NewPost extends Component {
 					/>
 
 					{this.state.edition ? toggleBodyClass('edition-mode') : ''}
-					
+
 				</form>
 			</div>
 		);
