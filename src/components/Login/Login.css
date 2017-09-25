@@ -1,0 +1,4 @@
+.button-google {
+    width: calc(100% - 40px);
+    margin-top: calc(50vh - 65px);
+}

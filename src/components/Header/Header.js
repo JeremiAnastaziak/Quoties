@@ -19,15 +19,16 @@ const Logged = (props) => {
 			targetOrigin={{ horizontal: 'right', vertical: 'top' }}
 			anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 		>
-			<MenuItem primaryText="Sign out" onClick={() => {
-				firebase.auth().signOut()
-					.then(() => {
-
-					})
-					.catch((error) => {
-						console.error(error);
-					});
-			}} />
+			<Link to='/'>
+				<MenuItem primaryText="Sign out" onClick={() => {
+					firebase.auth().signOut()
+						.then(() => {
+						})
+						.catch((error) => {
+							console.error(error);
+						});
+				}} />
+			</Link>
 		</IconMenu>
 	)
 }
@@ -38,7 +39,6 @@ function Header(props) {
 		<div>
 			<AppBar
 				title={<Link to='/' style={{ color: '#fff', textDecoration: 'none', fontWeight: '300' }}>Quoties</Link>}
-				iconElementLeft={null}
 				iconElementRight={
 					props.user && <Logged />
 				}

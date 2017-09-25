@@ -5,16 +5,7 @@ import Snackbar from 'material-ui/Snackbar';
 import AutoComplete from 'material-ui/AutoComplete';
 import firebase from 'firebase';
 import './NewPost.css'
-import AuthorIcon from 'material-ui/svg-icons/social/person';
-import TextIcon from 'material-ui/svg-icons/communication/chat-bubble-outline';
-import TitleIcon from 'material-ui/svg-icons/communication/import-contacts';
-import { Card } from 'material-ui/Card';
 import { toggleBodyClass } from '../utils/helpers';
-
-const iconStyles = {
-	marginTop: '35px',
-	marginRight: '5px'
-}
 
 class NewPost extends Component {
 
@@ -81,7 +72,7 @@ class NewPost extends Component {
 						floatingLabelText="Author"
 						fullWidth
 						required
-						value={this.state.quoteAuthor}
+						searchText={this.state.quoteAuthor}
 						filter={AutoComplete.caseInsensitiveFilter}
 						dataSource={this.state.authors}
 					/>

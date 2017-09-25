@@ -12,11 +12,21 @@ import Favs from 'material-ui/svg-icons/toggle/star';
 import './BottomNav.css';
 
 class BottomNav extends React.Component {
-  state = {
-    selectedIndex: 0,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedIndex: 0
+    }
+  }
+  
 
   select = (index) => this.setState({ selectedIndex: index });
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps)
+
+    console.log(this.state.selectedIndex)
+  }
 
   render() {
     return (

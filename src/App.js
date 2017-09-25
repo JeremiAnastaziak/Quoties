@@ -19,7 +19,8 @@ class App extends Component {
 
     this.state = {
       user: null,
-      quotes: null
+      quotes: null,
+      activePage: 0
     };
   }
 
@@ -47,6 +48,7 @@ class App extends Component {
     const state = this.state
     this.setState({
       ...state,
+      activePage: 4,
       edition: { id: quoteId, quote: { ...this.state.quotes[quoteId] } }
     })
     return (<Redirect push to="/quote" />)
@@ -70,8 +72,13 @@ class App extends Component {
     }
   }
 
+  // clearEdition = () => {
+  //   this.setState({
+  //     edition: null
+  //   })
+  // }
+
   render() {
-    const feedComponent = <Feed user={this.state.user} quotes={this.state.quotes} editQuote={this.editQuote} />
     return (
       <div className="mobile-first">
         <BrowserRouter>
@@ -84,9 +91,10 @@ class App extends Component {
                 component={() => (
                   !this.state.user ?
                     <Login user={this.state.user} />
-                    : this.state.edition ?
-                      <Redirect push to="/quote" />
-                      : feedComponent
+                    : <Feed 
+                          user={this.state.user} 
+                          quotes={this.state.quotes} 
+                          editQuote={this.editQuote} />
                 )
                 } />
               <Route
@@ -96,6 +104,7 @@ class App extends Component {
                   <NewPost
                     quotes={this.state.quotes}
                     updateQuote={this.updateQuote}
+                    clearEdition={this.clearEdition}
                     user={this.state.user}
                     edition={this.state.edition} />} />
               <Route
@@ -128,7 +137,7 @@ class App extends Component {
                 path="/register"
                 component={() => <Register />} />
 
-              {this.state.user && <BottomNav />}
+              {this.state.user && <BottomNav selected={this.state.activePage}/>}
             </div>
 
           </div>
