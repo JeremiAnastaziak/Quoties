@@ -22,12 +22,6 @@ class BottomNav extends React.Component {
 
   select = (index) => this.setState({ selectedIndex: index });
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
-
-    console.log(this.state.selectedIndex)
-  }
-
   render() {
     return (
       <Paper zDepth={1} className="navigation">

@@ -17,8 +17,7 @@ class NewPost extends Component {
 			quoteAuthor: '',
 			quoteTitle: '',
 			quoteTags: '',
-			edition: {},
-			submitted: false,
+			edition: false,
 			authors: []
 		}
 
@@ -26,9 +25,11 @@ class NewPost extends Component {
 
 	componentDidMount() {
 		this.qAuthor.focus();
-		console.log('mounted');
+
 		let authors = []
 		const quotes = this.props.quotes;
+		const editionId = this.props.edition.quoteId;
+
 		quotes && Object
 			.keys(quotes)
 			.map(index => !authors.includes(quotes[index].quoteAuthor) && authors.push(quotes[index].quoteAuthor))
@@ -36,9 +37,13 @@ class NewPost extends Component {
 		this.setState({
 			authors: authors
 		})
-		this.props.edition && this.setState({
-			...this.props.edition.quote
+
+		quotes && editionId && this.setState({
+			...quotes[editionId],
+			quoteTags: quotes[editionId].quoteTags && (quotes[editionId].quoteTags.join(' ') + ' ')
 		})
+		console.log('mounted');
+
 	}
 
 	submitQuote = (e) => {
@@ -48,7 +53,7 @@ class NewPost extends Component {
 			quoteAuthor: this.state.quoteAuthor,
 			quoteText: this.state.quoteText,
 			quoteTitle: this.state.quoteTitle,
-			quoteTags: this.state.quoteTags.split(' ')
+			quoteTags: this.state.quoteTags ? this.state.quoteTags.trim().split(' ') : []
 		})
 	}
 

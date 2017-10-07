@@ -39,6 +39,7 @@ class App extends Component {
       }
     });
   }
+  
 
   submitQuote = (isEdition, quoteId, quote) => {
     let quoteRef = firebase.database().ref(`users/${this.state.user.uid}/quotes/${isEdition ? quoteId : ''}`);

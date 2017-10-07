@@ -37,10 +37,7 @@ function QuoteOptions(props) {
 				<Link to={{
 					pathname: '/quote',
 					state: {
-						quoteId: props.qid,
-						quote: {
-							...props.quote
-						}
+						quoteId: props.qid
 					}
 				}} >
 					<MenuItem>
