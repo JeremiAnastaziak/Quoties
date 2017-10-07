@@ -10,6 +10,7 @@ import './index.css';
 injectTapEventPlugin();
 firebase.initializeApp(config);
 ReactDOM.render((
+    
     <MuiThemeProvider>
         <App />
     </MuiThemeProvider>

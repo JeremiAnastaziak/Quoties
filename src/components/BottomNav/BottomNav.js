@@ -37,7 +37,7 @@ class BottomNav extends React.Component {
               label="Home"
               icon={<Home />}
               onTouchTap={() => this.select(0)}
-              selected={this.state.selectedIndex === 0 ? true : false}
+              selected={this.state.selectedIndex === 0}
             />
           </Link>
           <Link to='/authors'>
@@ -45,7 +45,7 @@ class BottomNav extends React.Component {
               label="Authors"
               icon={<AuthorsIcon />}
               onTouchTap={() => this.select(1)}
-              selected={this.state.selectedIndex === 1 ? true : false}
+              selected={this.state.selectedIndex === 1}
             />
           </Link>
           <Link to='/search'>
@@ -53,7 +53,7 @@ class BottomNav extends React.Component {
               label="Search"
               icon={<SearchIcon />}
               onTouchTap={() => this.select(2)}
-              selected={this.state.selectedIndex === 2 ? true : false}
+              selected={this.state.selectedIndex === 2}
             />
           </Link>
           <Link to='/starred'>
@@ -61,7 +61,7 @@ class BottomNav extends React.Component {
               label="Starred"
               icon={<Favs />}
               onTouchTap={() => this.select(3)}
-              selected={this.state.selectedIndex === 3 ? true : false}
+              selected={this.state.selectedIndex === 3}
             />
           </Link>
           <Link to='/quote'>
@@ -69,7 +69,7 @@ class BottomNav extends React.Component {
               label="Quote"
               icon={<AddIcon />}
               onTouchTap={() => this.select(4)}
-              selected={this.state.selectedIndex === 4 ? true : false}
+              selected={this.state.selectedIndex === 4}
             />
           </Link>
         </BottomNavigation>

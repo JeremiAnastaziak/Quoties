@@ -3,9 +3,10 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import AutoComplete from 'material-ui/AutoComplete';
-import firebase from 'firebase';
 import './NewPost.css'
 import { toggleBodyClass } from '../utils/helpers';
+
+const FileInput = require('react-file-input');
 
 class NewPost extends Component {
 
@@ -15,7 +16,9 @@ class NewPost extends Component {
 			quoteText: '',
 			quoteAuthor: '',
 			quoteTitle: '',
-			edition: false,
+			quoteTags: '',
+			edition: {},
+			submitted: false,
 			authors: []
 		}
 
@@ -23,7 +26,7 @@ class NewPost extends Component {
 
 	componentDidMount() {
 		this.qAuthor.focus();
-		
+		console.log('mounted');
 		let authors = []
 		const quotes = this.props.quotes;
 		quotes && Object
@@ -33,33 +36,32 @@ class NewPost extends Component {
 		this.setState({
 			authors: authors
 		})
-		if (this.props.edition) {
-			this.setState({
-				...this.props.edition.quote
-			})
-		}
+		this.props.edition && this.setState({
+			...this.props.edition.quote
+		})
 	}
 
 	submitQuote = (e) => {
 		e.preventDefault();
-		if (this.props.edition) {
-			this.props.updateQuote(this.props.edition.id, this.state);
-			return
-		}
-		firebase.database().ref(`/users/${this.props.user.uid}/quotes`).push({
-			quoteText: this.state.quoteText,
+		const isEdition = this.props.edition;
+		this.props.submitQuote(isEdition, isEdition ? this.props.edition.quoteId : null, {
 			quoteAuthor: this.state.quoteAuthor,
-			quoteTitle: this.state.quoteTitle
-
-		}).then(() => {
-			console.log('added q')
-			this.quoteForm.reset();
-		}).catch(() => {
+			quoteText: this.state.quoteText,
+			quoteTitle: this.state.quoteTitle,
+			quoteTags: this.state.quoteTags.split(' ')
 		})
 	}
 
+	handleFileUpload = (e) => {
+		window.Tesseract.recognize(e.target.files[0])
+			.then((result) => {
+				console.log(result)
+			})
+			.progress(message => console.log(message))
+			.catch(err => console.error(err))
+	}
+
 	render() {
-		const quote = this.props.edition ? this.props.edition.quote : null;
 		return (
 			<div className="wrapper">
 				<form ref={(input) => this.quoteForm = input} onSubmit={(e) => this.submitQuote(e)}>
@@ -98,15 +100,22 @@ class NewPost extends Component {
 						fullWidth
 						value={this.state.quoteTitle}
 					/>
+					<TextField
+						className="field"
+						onChange={e => this.setState({ quoteTags: e.target.value })}
+						onFocus={e => this.setState({ edition: true })}
+						onBlur={e => this.setState({ edition: false })}
+						floatingLabelText="Tags"
+						fullWidth
+						value={this.state.quoteTags}
+					/>
 					<RaisedButton
 						className="button-submit"
 						type="submit"
-						label={quote ? 'Update' : 'Save'}
+						label={this.props.edition ? 'Update' : 'Save'}
 						primary
 					/>
-
 					{this.state.edition ? toggleBodyClass('edition-mode') : ''}
-
 				</form>
 			</div>
 		);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import firebase from 'firebase';
 import Login from './components/Login/Login';
 import NewPost from './components/NewPost/NewPost';
@@ -7,7 +7,6 @@ import Feed from './components/Feed/Feed';
 import Authors from './components/Authors/Authors';
 import Starred from './components/Starred/Starred';
 import Search from './components/Search/Search';
-import Register from './components/Register/Register';
 import BottomNav from './components/BottomNav/BottomNav';
 import Header from './components/Header/Header';
 import './App.css';
@@ -34,49 +33,34 @@ class App extends Component {
             quotes: snapshot.val()
           })
         });
-        this.setState({
-          user
-        });
+        this.setState({ user });
       } else {
         this.setState({ user: null });
       }
     });
   }
 
-  editQuote = (quoteId) => {
-    console.log(quoteId)
-    const state = this.state
-    this.setState({
-      ...state,
-      activePage: 4,
-      edition: { id: quoteId, quote: { ...this.state.quotes[quoteId] } }
-    })
-    return (<Redirect push to="/quote" />)
+  submitQuote = (isEdition, quoteId, quote) => {
+    let quoteRef = firebase.database().ref(`users/${this.state.user.uid}/quotes/${isEdition ? quoteId : ''}`);
+    isEdition ? this.updateQuote(quoteRef, quote) : this.pushQuote(quoteRef, quote);
   }
 
-  updateQuote = (quoteId, quote) => {
-    if (quoteId) {
-      const quotesRef = firebase.database().ref(`users/${this.state.user.uid}/quotes/${quoteId}`);
-      quotesRef.update({ ...quote }).then(() => {
-        console.log('updated');
-        this.setState({
-          edition: null
-        })
-      }).catch((err) => {
-        console.error(err)
-      });
-    } else {
+  updateQuote = (quoteRef, quote) => quoteRef
+    .update({
+      ...quote
+    }).then(() => {
+      console.log('updated q')
       this.setState({
-        edition: null
+        edited: true
       })
-    }
-  }
+    }).catch((error) => console.log(error));
 
-  // clearEdition = () => {
-  //   this.setState({
-  //     edition: null
-  //   })
-  // }
+  pushQuote = (quoteRef, quote) => quoteRef
+    .push({
+      ...quote
+    }).then(() => {
+      console.log('added q')
+    }).catch((error) => console.log(error));
 
   render() {
     return (
@@ -91,53 +75,47 @@ class App extends Component {
                 component={() => (
                   !this.state.user ?
                     <Login user={this.state.user} />
-                    : <Feed 
-                          user={this.state.user} 
-                          quotes={this.state.quotes} 
-                          editQuote={this.editQuote} />
+                    : <Feed
+                      user={this.state.user}
+                      quotes={this.state.quotes}
+                    />
                 )
                 } />
               <Route
                 exact
                 path="/quote"
-                component={() =>
+                component={(routerParams) =>
                   <NewPost
                     quotes={this.state.quotes}
-                    updateQuote={this.updateQuote}
-                    clearEdition={this.clearEdition}
                     user={this.state.user}
-                    edition={this.state.edition} />} />
+                    edition={routerParams.location.state}
+                    submitQuote={this.submitQuote}
+                  />} />
               <Route
                 exact
                 path="/authors"
-                component={() => this.state.edition ?
-                  <Redirect push to="/quote" />
-                  : <Authors
+                component={() =>
+                  <Authors
                     quotes={this.state.quotes}
                     user={this.state.user}
-                    editQuote={this.editQuote} />} />
+                  />} />
               <Route
                 exact
                 path="/search"
-                component={() => <Search
-                  quotes={this.state.quotes}
-                  user={this.state.user}
-                  editQuote={this.editQuote} />} />
+                component={() =>
+                  <Search
+                    quotes={this.state.quotes}
+                    user={this.state.user} />} />
               <Route
                 exact
                 path="/starred"
-                component={() => this.state.edition ?
-                  <Redirect push to="/quote" />
-                  : <Starred
+                component={() =>
+                  <Starred
                     quotes={this.state.quotes}
                     user={this.state.user}
-                    editQuote={this.editQuote} />} />
-              <Route
-                exact
-                path="/register"
-                component={() => <Register />} />
+                  />} />
 
-              {this.state.user && <BottomNav selected={this.state.activePage}/>}
+              {this.state.user && <BottomNav />}
             </div>
 
           </div>

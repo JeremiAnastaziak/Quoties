@@ -12,7 +12,9 @@
   },
   "devDependencies": {
     "react-body-classname": "^1.2.0",
-    "react-scripts": "1.0.10"
+    "react-scripts": "1.0.10",
+    "react-share": "^1.16.0",
+    "tesseract.js": "^1.0.10"
   },
   "scripts": {
     "start": "react-scripts start",

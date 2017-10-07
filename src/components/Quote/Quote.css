@@ -5,3 +5,29 @@
 .starred {
     background-color: #E0F7FA;    
 }
+.secondary-wrapper {
+    height: auto !important;
+}
+.author, .tags {
+    margin: 0;
+}
+
+.tags {
+    margin-top: 5px !important;
+    display: flex;
+}
+
+.tag {
+    height: 24px !important;
+    margin-right: 5px !important;
+    font-size: 15px !important;
+    line-height: 20px !important;
+}
+
+.tag span{
+    color: #fff !important;
+    line-height: 24px !important;
+    font-size: 12px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
