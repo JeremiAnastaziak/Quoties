@@ -9,6 +9,7 @@ import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import './Header.css';
+import Capture from '../Capture/Capture';
 
 const Logged = (props) => {
 	return (
@@ -28,6 +29,9 @@ const Logged = (props) => {
 							console.error(error);
 						});
 				}} />
+				<MenuItem primaryText="Capture quote" onClick={() => 
+					<input type="file" name="pic" accept="image/*" />
+					} />
 			</Link>
 		</IconMenu>
 	)
