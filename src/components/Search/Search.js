@@ -14,9 +14,6 @@ class Search extends React.Component {
     }
   }
   
-  componentDidMount() {
-  }
-
   editQuote = (quoteId) => {
 		this.props.editQuote(quoteId);
   }

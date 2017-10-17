@@ -26,7 +26,8 @@ class NewPost extends Component {
 	componentDidMount() {
 		let authors = []
 		const quotes = this.props.quotes;
-		const editionId = this.props.edition.quoteId;
+		let editionId;
+		if(this.props.edition) editionId = this.props.edition.quoteId;
 
 		quotes && Object
 			.keys(quotes)
@@ -53,6 +54,7 @@ class NewPost extends Component {
 			quoteTitle: this.state.quoteTitle,
 			quoteTags: this.state.quoteTags ? this.state.quoteTags.trim().split(' ') : []
 		})
+		
 	}
 
 	handleFileUpload = (e) => {
