@@ -15,7 +15,6 @@ class Search extends React.Component {
   }
   
   componentDidMount() {
-    this.input.focus();
   }
 
   editQuote = (quoteId) => {

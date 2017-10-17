@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { HashRouter, Route } from 'react-router-dom';
 import firebase from 'firebase';
 import Login from './components/Login/Login';
 import NewPost from './components/NewPost/NewPost';
@@ -66,7 +66,7 @@ class App extends Component {
   render() {
     return (
       <div className="mobile-first">
-        <BrowserRouter>
+        <HashRouter>
           <div>
             <Header user={this.state.user} />
             <div className="container">
@@ -120,7 +120,7 @@ class App extends Component {
             </div>
 
           </div>
-        </BrowserRouter>
+        </HashRouter>
       </div>
     );
   }

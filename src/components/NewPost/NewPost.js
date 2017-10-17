@@ -24,8 +24,6 @@ class NewPost extends Component {
 	}
 
 	componentDidMount() {
-		this.qAuthor.focus();
-
 		let authors = []
 		const quotes = this.props.quotes;
 		const editionId = this.props.edition.quoteId;
