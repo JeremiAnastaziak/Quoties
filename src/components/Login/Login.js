@@ -20,46 +20,16 @@ function Login() {
 	}
 
 	return (
-		<div className="flex-box wrapper">
-				{/* <TextField
-					hintText="Type your e-mail here"
-					floatingLabelText="E-mail"
-					floatingLabelFixed={true}
-					type="e-mail"
-					fullWidth
-					autoComplete={"off"}
-					ref={(input) => { email = input }}
-				/>
-				<TextField
-					hintText="Type your password here"
-					floatingLabelText="Password"
-					floatingLabelFixed={true}
-					type="password"
-					fullWidth
-					ref={(input) => { password = input }}
-
-				/>
-				<RaisedButton
-					label="Log in"
-					onTouchTap={handleEmailLogin}
-					primary={true}
-					fullWidth={true}
-					style={{ marginTop: '8px' }}
-				/> */}
-				<RaisedButton
-					label="Log in with Google"
-					onTouchTap={handleGoogleLogin}
-					primary
-					className="button-google"
-				/>
-				{/* <Link to='/register'>
-					<FlatButton
-						label="Create new account"
-						fullWidth={true}
-						default={true}
-						style={{ marginTop: '12px' }}
-					/>
-				</Link> */}
+		<div className="landing">
+			<h1 className="landing-header">Quoties</h1>
+			<h2 className="landing-subheader">Store your quotes</h2> 
+			<p className="landing-para">With organized way</p>
+			<RaisedButton
+				label="Log in with Google"
+				onTouchTap={handleGoogleLogin}
+				primary
+				className="button-google"
+			/>
 		</div>
 	);
 }

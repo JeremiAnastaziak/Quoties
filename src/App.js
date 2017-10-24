@@ -68,8 +68,8 @@ class App extends Component {
       <div className="mobile-first">
         <HashRouter>
           <div>
-            <Header user={this.state.user} />
-            <div className="container">
+            {this.state.user && <Header user={this.state.user} />}
+            <div className={this.state.user ? "container" : ''}>
               <Route
                 exact
                 path="/"

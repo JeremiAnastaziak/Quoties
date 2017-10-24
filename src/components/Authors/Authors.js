@@ -2,47 +2,42 @@ import React from 'react';
 import Quote from '../Quote/Quote';
 import './Authors.css';
 
-class Authors extends React.Component {
-  constructor() {
-    super();
-    this.dividers = []
-  }
+function Authors(props) {
+  let avatarsAsLetters = []
 
-  editQuote = (quoteId) => {
+  const editQuote = (quoteId) => {
     this.props.editQuote(quoteId);
   }
 
-  evaluateDivider = (letter) => {
-    let state = this.dividers;
-    if (state.includes(letter)) {
-      console.log(letter);
-      return null
-    } else {
-      this.dividers = [...state, letter]
-      return letter
-    }
+  const shouldRenderAvatar = (author) => {
+    const authorFirstLetter = author[0];
+    if (avatarsAsLetters.includes(authorFirstLetter)) return false
+    
+    avatarsAsLetters.push(authorFirstLetter);
+    return true
   }
 
-  render() {
-    const quotes = this.props.quotes;
-    return (
-      <div className="wrapper-authors">
-        {
-          quotes && Object
-            .keys(quotes)
-            .sort((lastOne, nextOne) => quotes[lastOne].quoteAuthor > quotes[nextOne].quoteAuthor)
-            .map(index => <Quote
-              key={index}
-              quote={quotes[index]}
-              index={index}
-              user={this.props.user}
-              divider={this.evaluateDivider(quotes[index].quoteAuthor[0])} 
-              editQuote={this.editQuote} />)
+  const {
+    quotes,
+    user } = props;
 
-        }
-      </div>
-    )
-  }
+  return (
+    <div className="authors">
+      {quotes && Object
+        .keys(quotes)
+        .sort((lastOne, nextOne) => quotes[lastOne].quoteAuthor > quotes[nextOne].quoteAuthor)
+        .map(index =>
+
+          <Quote
+            key={index}
+            quote={quotes[index]}
+            index={index}
+            user={user}
+            editQuote={editQuote}
+            renderAvatar={shouldRenderAvatar(quotes[index].quoteAuthor)} />
+        )}
+    </div>
+  )
 }
 
 export default Authors;
