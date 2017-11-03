@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
-import { HashRouter, Route } from 'react-router-dom';
 import firebase from 'firebase';
+import Router from '../Router/Router';
 import Login from '../Login/Login';
-import NewPost from '../NewPost/NewPost';
-import Feed from '../Feed/Feed';
-import Authors from '../Authors/Authors';
-import Starred from '../Starred/Starred';
-import Search from '../Search/Search';
-import BottomNav from '../BottomNav/BottomNav';
-import Header from '../Header/Header';
 import './App.css';
 
 class App extends Component {
@@ -64,63 +57,17 @@ class App extends Component {
     }).catch((error) => console.log(error));
 
   render() {
+    const ifLoggedIn = () => this.state.user;
     return (
-      <div className="mobile-first">
-        <HashRouter>
-          <div>
-            {this.state.user && <Header user={this.state.user} />}
-            <div className={this.state.user ? "container" : ''}>
-              <Route
-                exact
-                path="/"
-                component={() => (
-                  !this.state.user ?
-                    <Login user={this.state.user} />
-                    : <Feed
-                      user={this.state.user}
-                      quotes={this.state.quotes}
-                    />
-                )
-                } />
-              <Route
-                exact
-                path="/quote"
-                component={(routerParams) =>
-                  <NewPost
-                    quotes={this.state.quotes}
-                    user={this.state.user}
-                    edition={routerParams.location.state}
-                    submitQuote={this.submitQuote}
-                  />} />
-              <Route
-                exact
-                path="/authors"
-                component={() =>
-                  <Authors
-                    quotes={this.state.quotes}
-                    user={this.state.user}
-                  />} />
-              <Route
-                exact
-                path="/search"
-                component={() =>
-                  <Search
-                    quotes={this.state.quotes}
-                    user={this.state.user} />} />
-              <Route
-                exact
-                path="/starred"
-                component={() =>
-                  <Starred
-                    quotes={this.state.quotes}
-                    user={this.state.user}
-                  />} />
-
-              {this.state.user && <BottomNav />}
-            </div>
-
-          </div>
-        </HashRouter>
+      <div>
+        {
+          !ifLoggedIn() ?
+          <Login /> :
+          <Router
+            {...this.state}
+            submitQuote={this.submitQuote}
+          />
+        }
       </div>
     );
   }
