@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import Snackbar from 'material-ui/Snackbar';
 import AutoComplete from 'material-ui/AutoComplete';
 import './NewPost.css'
 import { toggleBodyClass } from '../utils/helpers';
-
-const FileInput = require('react-file-input');
 
 class NewPost extends Component {
 
@@ -54,16 +51,7 @@ class NewPost extends Component {
 			quoteTitle: this.state.quoteTitle,
 			quoteTags: this.state.quoteTags ? this.state.quoteTags.trim().split(' ') : []
 		})
-		
-	}
 
-	handleFileUpload = (e) => {
-		window.Tesseract.recognize(e.target.files[0])
-			.then((result) => {
-				console.log(result)
-			})
-			.progress(message => console.log(message))
-			.catch(err => console.error(err))
 	}
 
 	render() {

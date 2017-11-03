@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { HashRouter, Route } from 'react-router-dom';
-import Login from '../Login/Login';
 import NewPost from '../NewPost/NewPost';
 import Feed from '../Feed/Feed';
 import Authors from '../Authors/Authors';

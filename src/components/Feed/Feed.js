@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Quote from '../Quote/Quote';
 
 const Feed = ({ quotes, toggleStarred, editQuote, deleteQuote }) => {

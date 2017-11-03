@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import Router from '../Router/Router';
 import Login from '../Login/Login';
+import uuid from 'uuid/v4';
 import './App.css';
 
 class App extends Component {
@@ -14,6 +15,10 @@ class App extends Component {
       quotes: null,
       activePage: 0
     };
+  }
+
+  componentDidUpdate() {
+    window.localStorage.setItem('quoties', JSON.stringify(this.state))
   }
 
   componentDidMount() {
@@ -35,26 +40,17 @@ class App extends Component {
 
 
   submitQuote = (isEdition, quoteId, quote) => {
-    let quoteRef = firebase.database().ref(`users/${this.state.user.uid}/quotes/${isEdition ? quoteId : ''}`);
-    isEdition ? this.updateQuote(quoteRef, quote) : this.pushQuote(quoteRef, quote);
+    let quoteRef = firebase.database().ref(`users/${this.state.user.uid}/quotes/${isEdition ? quoteId : uuid()}`);
+    quoteRef
+      .set({
+        ...quote
+      }).then(() => {
+        console.log('q updated')
+        isEdition && this.setState({
+          edited: true
+        })
+      }).catch((error) => console.log(error));
   }
-
-  updateQuote = (quoteRef, quote) => quoteRef
-    .update({
-      ...quote
-    }).then(() => {
-      console.log('updated q')
-      this.setState({
-        edited: true
-      })
-    }).catch((error) => console.log(error));
-
-  pushQuote = (quoteRef, quote) => quoteRef
-    .push({
-      ...quote
-    }).then(() => {
-      console.log('added q')
-    }).catch((error) => console.log(error));
 
     toggleStarred = (quoteId) => {
       const qRef = firebase.database().ref(`/users/${this.state.user.uid}/quotes/${quoteId}`)
