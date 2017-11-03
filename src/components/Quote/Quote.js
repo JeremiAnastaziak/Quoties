@@ -16,16 +16,10 @@ class Quote extends React.Component {
     }
   }
 
+
+
   deleteQuote = (quoteId) => {
-    const qRef = firebase.database().ref(`/users/${this.props.user.uid}/quotes/${quoteId}`)
-    qRef
-      .remove()
-      .then(() => {
-        console.log('Q deleted')
-      })
-      .catch((error) => {
-        console.error(error);
-      })
+    this.props.deleteQuote(quoteId);
   }
 
   editQuote = (quoteId) => {
@@ -34,9 +28,7 @@ class Quote extends React.Component {
   }
 
   toggleStarred = (quoteId) => {
-    const qRef = firebase.database().ref(`/users/${this.props.user.uid}/quotes/${quoteId}`)
-    qRef
-      .update({ starred: !this.props.quote.starred })
+    this.props.toggleStarred(quoteId);
   }
 
   renderAvatar = (quote) => {

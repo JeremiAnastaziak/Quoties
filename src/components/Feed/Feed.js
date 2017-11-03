@@ -1,31 +1,24 @@
 import React, { Component } from 'react';
-import Quote from '../Quote/Quote'
+import Quote from '../Quote/Quote';
 
-class Feed extends Component {
-
-	editQuote = (quoteId) => {
-		this.props.editQuote(quoteId);
-	}
-
-	render() {
-		const quotes = this.props.quotes;
-
-		return (
-			<div>
-				{
-					quotes && Object
-						.keys(quotes)
-						.reverse()
-						.map(index => <Quote
-							key={index}
-							quote={quotes[index]}
-							index={index}
-							user={this.props.user}
-							editQuote={this.editQuote} />)
-				}
-			</div>
-		);
-	}
-}
+const Feed = ({ quotes, toggleStarred, editQuote, deleteQuote }) => {
+    return (
+        <div>
+            {quotes &&
+                Object.keys(quotes)
+                    .reverse()
+                    .map(index => (
+                        <Quote
+                            key={index}
+                            quote={quotes[index]}
+                            index={index}
+                            editQuote={editQuote}
+                            toggleStarred={toggleStarred}
+							deleteQuote={deleteQuote}
+                        />
+                    ))}
+        </div>
+    );
+};
 
 export default Feed;

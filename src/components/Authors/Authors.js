@@ -2,24 +2,16 @@ import React from 'react';
 import Quote from '../Quote/Quote';
 import './Authors.css';
 
-function Authors(props) {
+const  Authors = ({editQuote, toggleStarred, deleteQuote, quotes}) => {
   let avatarsAsLetters = []
-
-  const editQuote = (quoteId) => {
-    this.props.editQuote(quoteId);
-  }
 
   const shouldRenderAvatar = (author) => {
     const authorFirstLetter = author[0];
     if (avatarsAsLetters.includes(authorFirstLetter)) return false
-    
+
     avatarsAsLetters.push(authorFirstLetter);
     return true
   }
-
-  const {
-    quotes,
-    user } = props;
 
   return (
     <div className="authors">
@@ -32,8 +24,9 @@ function Authors(props) {
             key={index}
             quote={quotes[index]}
             index={index}
-            user={user}
             editQuote={editQuote}
+            deleteQuote={deleteQuote}
+            toggleStarred={toggleStarred}
             renderAvatar={shouldRenderAvatar(quotes[index].quoteAuthor)} />
         )}
     </div>

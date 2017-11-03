@@ -13,13 +13,15 @@ class Search extends React.Component {
       searchText: ''
     }
   }
-  
-  editQuote = (quoteId) => {
-		this.props.editQuote(quoteId);
-  }
-  
+
   render(){
-    const quotes = this.props.quotes;
+    const {
+      editQuote,
+      toggleStarred,
+      deleteQuote,
+      quotes
+    } = this.props;
+
     const searchText = this.state.searchText || null;
 
     return (
@@ -43,12 +45,14 @@ class Search extends React.Component {
             key={index}
             quote={quotes[index]}
             index={index}
-            user={this.props.user}
-            editQuote={this.editQuote} />)
+            editQuote={editQuote}
+            toggleStarred={toggleStarred}
+            deleteQuote={deleteQuote}
+            />)
         }
 
         {this.state.edition ? toggleBodyClass('edition-mode') : ''}
-        
+
       </div>
     )
   }

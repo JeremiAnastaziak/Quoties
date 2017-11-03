@@ -56,6 +56,24 @@ class App extends Component {
       console.log('added q')
     }).catch((error) => console.log(error));
 
+    toggleStarred = (quoteId) => {
+      const qRef = firebase.database().ref(`/users/${this.state.user.uid}/quotes/${quoteId}`)
+      qRef
+        .update({ starred: !this.state.quotes[quoteId].starred })
+    }
+
+    deleteQuote = (quoteId) => {
+      const qRef = firebase.database().ref(`/users/${this.state.user.uid}/quotes/${quoteId}`)
+      qRef
+        .remove()
+        .then(() => {
+          console.log('Q deleted')
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+    }
+
   render() {
     const ifLoggedIn = () => this.state.user;
     return (
@@ -64,8 +82,10 @@ class App extends Component {
           !ifLoggedIn() ?
           <Login /> :
           <Router
-            {...this.state}
+            quotes={this.state.quotes}
             submitQuote={this.submitQuote}
+            toggleStarred={this.toggleStarred}
+            deleteQuote={this.deleteQuote}
           />
         }
       </div>

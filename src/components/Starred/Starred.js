@@ -1,31 +1,24 @@
 import React from 'react';
 import Quote from '../Quote/Quote';
 
-class Starred extends React.Component {
-
-  editQuote = (quoteId) => {
-    this.props.editQuote(quoteId);
-  }
-
-  render() {
-    const quotes = this.props.quotes;
+const Starred = ({ quotes, editQuote, toggleStarred, deleteQuote }) => {
     return (
-      <div>
-        {
-          quotes && Object
-            .keys(quotes)
-            .filter(index => quotes[index].starred)
-            .map(index => <Quote
-              key={index}
-              quote={quotes[index]}
-              index={index}
-              editQuote={this.editQuote}
-              user={this.props.user}
-            />)
-        }
-      </div>
-    )
-  }
-}
+        <div>
+            {quotes &&
+                Object.keys(quotes)
+                    .filter(index => quotes[index].starred)
+                    .map(index => (
+                        <Quote
+                            key={index}
+                            quote={quotes[index]}
+                            index={index}
+                            editQuote={editQuote}
+                            toggleStarred={toggleStarred}
+                            deleteQuote={deleteQuote}
+                        />
+                    ))}
+        </div>
+    );
+};
 
 export default Starred;
