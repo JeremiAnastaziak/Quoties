@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { HashRouter, Route } from 'react-router-dom';
 import firebase from 'firebase';
-import Login from './components/Login/Login';
-import NewPost from './components/NewPost/NewPost';
-import Feed from './components/Feed/Feed';
-import Authors from './components/Authors/Authors';
-import Starred from './components/Starred/Starred';
-import Search from './components/Search/Search';
-import BottomNav from './components/BottomNav/BottomNav';
-import Header from './components/Header/Header';
+import Login from '../Login/Login';
+import NewPost from '../NewPost/NewPost';
+import Feed from '../Feed/Feed';
+import Authors from '../Authors/Authors';
+import Starred from '../Starred/Starred';
+import Search from '../Search/Search';
+import BottomNav from '../BottomNav/BottomNav';
+import Header from '../Header/Header';
 import './App.css';
 
 class App extends Component {
@@ -39,7 +39,7 @@ class App extends Component {
       }
     });
   }
-  
+
 
   submitQuote = (isEdition, quoteId, quote) => {
     let quoteRef = firebase.database().ref(`users/${this.state.user.uid}/quotes/${isEdition ? quoteId : ''}`);

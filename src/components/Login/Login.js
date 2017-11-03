@@ -1,32 +1,19 @@
 import React from 'react';
-import * as firebase from 'firebase';
-
 import RaisedButton from 'material-ui/RaisedButton';
-
+import { loginWithGoogle } from '../../lib/api';
 import './Login.css'
 
-function Login() {
-
-	const handleGoogleLogin = () => {
-		var provider = new firebase.auth.GoogleAuthProvider();
-		provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-		provider.setCustomParameters({
-			'login_hint': 'user@example.com'
-		});
-		firebase.auth().signInWithPopup(provider).then(function (result) {
-		}).catch(function (error) {
-			console.error(error);
-		});
-	}
-
+const Login = () => {
 	return (
-		<div className="landing">
-			<h1 className="landing-header">Quoties</h1>
-			<h2 className="landing-subheader">Store your quotes</h2> 
-			<p className="landing-para">With organized way</p>
+		<div className="landing flex-center">
+			<header className="landing-header header">
+				<h1 className="header-heading">Quoties</h1>
+				<h2 className="header-subheading">Store your quotes</h2>
+				<p className="header-para">With organized way</p>
+			</header>
 			<RaisedButton
 				label="Log in with Google"
-				onTouchTap={handleGoogleLogin}
+				onTouchTap={loginWithGoogle}
 				primary
 				className="button-google"
 			/>

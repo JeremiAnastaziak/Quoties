@@ -1,29 +1,27 @@
 .landing {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
     height: 100vh;
     color: #fff;
-    object-fit: contain;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: 45% bottom;
+    object-fit: cover;
+    background-position: 52% 95%;
     background-size: 1000px;
-    background-image: linear-gradient(rgba(127, 236, 236, 0.5), rgba(114, 225, 231, 0.14)), url('https://images.unsplash.com/photo-1491466424936-e304919aada7?dpr=1&auto=format&fit=crop&w=3298&q=60&cs=tinysrgb');
+    background-image: url('./landing0.jpeg');
 }
-
-.landing-header {
-    margin-bottom: 10px;
+.header {
+    text-align: center;
+    padding-bottom: 50px;
+}
+.header-heading {
     font-size: 50px;
+    margin: 0 0 30px;
 }
 
-.landing-subheader {
-    margin-bottom: 0;
+.header-subheading {
+    margin: 0 0 10px;
 }
 
-.landing-para {
-    margin: 10px 0 80px;
+.header-para {
+    margin: 0;
 }
 
 .button-google {
