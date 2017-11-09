@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import Router from '../Router/Router';
 import Login from '../Login/Login';
+import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import uuid from 'uuid/v1';
 import './App.css';
 
@@ -10,7 +11,6 @@ class App extends Component {
         super(props);
 
         this.state = {
-            user: null,
             quotes: null,
             activePage: 0
         };
@@ -82,9 +82,11 @@ class App extends Component {
 
     render() {
         const ifLoggedIn = () => this.state.user;
+        const ifUserStateChecked = () => this.state.hasOwnProperty('user');
         return (
             <div>
-                {!ifLoggedIn() ? (
+                {!ifUserStateChecked() && <LoadingScreen />}
+                {!ifLoggedIn() && ifUserStateChecked() ? (
                     <Login />
                 ) : (
                     <Router
