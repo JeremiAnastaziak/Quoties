@@ -23,10 +23,6 @@ class App extends Component {
     componentDidMount() {
         const auth = new firebase.auth();
         auth.onAuthStateChanged(user => {
-            this.setState({
-                ...this.state,
-                userAuthChecked: true
-            });
             if (user) {
                 const quotesRef = firebase
                     .database()
