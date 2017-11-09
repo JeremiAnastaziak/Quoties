@@ -3,7 +3,7 @@ import TextField from 'material-ui/TextField';
 import Card from 'material-ui/Card';
 import './Search.css';
 import Quote from '../Quote/Quote'
-import { toggleBodyClass } from '../utils/helpers';
+import { toggleBodyClass } from '../../lib/helpers';
 
 class Search extends React.Component {
 

@@ -3,7 +3,7 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import './NewPost.css'
-import { toggleBodyClass } from '../utils/helpers';
+import { toggleBodyClass } from '../../lib/helpers';
 
 class NewPost extends Component {
 

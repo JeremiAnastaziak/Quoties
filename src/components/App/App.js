@@ -2,91 +2,101 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import Router from '../Router/Router';
 import Login from '../Login/Login';
-import uuid from 'uuid/v4';
+import uuid from 'uuid/v1';
 import './App.css';
 
 class App extends Component {
+    constructor(props) {
+        super(props);
 
-  constructor(props) {
-    super(props);
+        this.state = {
+            user: null,
+            quotes: null,
+            activePage: 0
+        };
+    }
 
-    this.state = {
-      user: null,
-      quotes: null,
-      activePage: 0
-    };
-  }
+    componentDidUpdate() {
+        window.localStorage.setItem('quoties', JSON.stringify(this.state));
+    }
 
-  componentDidUpdate() {
-    window.localStorage.setItem('quoties', JSON.stringify(this.state))
-  }
-
-  componentDidMount() {
-    const auth = new firebase.auth();
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        const quotesRef = firebase.database().ref(`users/${user.uid}/quotes`);
-        quotesRef.on('value', (snapshot) => {
-          this.setState({
-            quotes: snapshot.val()
-          })
+    componentDidMount() {
+        const auth = new firebase.auth();
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                const quotesRef = firebase
+                    .database()
+                    .ref(`users/${user.uid}/quotes`);
+                quotesRef.on('value', snapshot => {
+                    this.setState({
+                        quotes: snapshot.val()
+                    });
+                });
+                this.setState({ user });
+            } else {
+                this.setState({ user: null });
+            }
         });
-        this.setState({ user });
-      } else {
-        this.setState({ user: null });
-      }
-    });
-  }
-
-
-  submitQuote = (isEdition, quoteId, quote) => {
-    let quoteRef = firebase.database().ref(`users/${this.state.user.uid}/quotes/${isEdition ? quoteId : uuid()}`);
-    quoteRef
-      .set({
-        ...quote
-      }).then(() => {
-        console.log('q updated')
-        isEdition && this.setState({
-          edited: true
-        })
-      }).catch((error) => console.log(error));
-  }
-
-    toggleStarred = (quoteId) => {
-      const qRef = firebase.database().ref(`/users/${this.state.user.uid}/quotes/${quoteId}`)
-      qRef
-        .update({ starred: !this.state.quotes[quoteId].starred })
     }
 
-    deleteQuote = (quoteId) => {
-      const qRef = firebase.database().ref(`/users/${this.state.user.uid}/quotes/${quoteId}`)
-      qRef
-        .remove()
-        .then(() => {
-          console.log('Q deleted')
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-    }
+    submitQuote = (isEdition, quoteId, quote) => {
+        let quoteRef = firebase
+            .database()
+            .ref(
+                `users/${this.state.user.uid}/quotes/${isEdition ? quoteId : uuid()}`
+            );
+        quoteRef
+            .set({
+                ...quote
+            })
+            .then(() => {
+                console.log('q updated');
+                isEdition &&
+                    this.setState({
+                        edited: true
+                    });
+            })
+            .catch(error => console.log(error));
+    };
 
-  render() {
-    const ifLoggedIn = () => this.state.user;
-    return (
-      <div>
-        {
-          !ifLoggedIn() ?
-          <Login /> :
-          <Router
-            quotes={this.state.quotes}
-            submitQuote={this.submitQuote}
-            toggleStarred={this.toggleStarred}
-            deleteQuote={this.deleteQuote}
-          />
-        }
-      </div>
-    );
-  }
+    toggleStarred = quoteId => {
+        const qRef = firebase
+            .database()
+            .ref(`/users/${this.state.user.uid}/quotes/${quoteId}`);
+        qRef.update({ starred: !this.state.quotes[quoteId].starred });
+    };
+
+    deleteQuote = quoteId => {
+        const qRef = firebase
+            .database()
+            .ref(`/users/${this.state.user.uid}/quotes/${quoteId}`);
+        qRef
+            .remove()
+            .then(() => {
+                console.log('Q deleted');
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    };
+
+    render() {
+        const ifLoggedIn = () => this.state.user;
+        return (
+            <div>
+                {!ifLoggedIn() ? (
+                    <Login />
+                ) : (
+                    <Router
+                        quotes={this.state.quotes}
+                        submitQuote={this.submitQuote}
+                        toggleStarred={this.toggleStarred}
+                        deleteQuote={this.deleteQuote}
+                    />
+                )}
+            </div>
+        );
+    }
 }
 
 export default App;
