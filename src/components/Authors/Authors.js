@@ -1,36 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Quote from '../Quote/Quote';
+import Paper from 'material-ui/Paper';
+import { List, ListItem } from 'material-ui/List';
 import './Authors.css';
 
-const  Authors = ({editQuote, toggleStarred, deleteQuote, quotes}) => {
-  let avatarsAsLetters = []
-
-  const shouldRenderAvatar = (author) => {
-    const authorFirstLetter = author[0];
-    if (avatarsAsLetters.includes(authorFirstLetter)) return false
-
-    avatarsAsLetters.push(authorFirstLetter);
-    return true
-  }
-
-  return (
-    <div className="authors">
-      {quotes && Object
-        .keys(quotes)
-        .sort((lastOne, nextOne) => quotes[lastOne].quoteAuthor > quotes[nextOne].quoteAuthor)
-        .map(index =>
-
-          <Quote
-            key={index}
-            quote={quotes[index]}
-            index={index}
-            editQuote={editQuote}
-            deleteQuote={deleteQuote}
-            toggleStarred={toggleStarred}
-            renderAvatar={shouldRenderAvatar(quotes[index].quoteAuthor)} />
-        )}
-    </div>
-  )
-}
+const Authors = ({ editQuote, toggleStarred, deleteQuote, quotes, authors }) => {
+    return (
+        <List>
+            {authors.map((author, index) => (
+                <Link to={`/authors/${author.toLowerCase().replace(' ','-')}`} key={index}>
+                    <Paper zDepth={1} className="author-wrapper">
+                        <ListItem primaryText={author} />
+                    </Paper>
+                </Link>
+            ))}
+        </List>
+    );
+};
 
 export default Authors;

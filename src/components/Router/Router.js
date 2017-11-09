@@ -7,6 +7,7 @@ import Starred from '../Starred/Starred';
 import Search from '../Search/Search';
 import BottomNav from '../BottomNav/BottomNav';
 import Header from '../Header/Header';
+import AuthorQuotes from '../AuthorQuotes/AuthorQuotes';
 
 const extractAuthors = (quotes) => {
     let authors = [];
@@ -20,6 +21,7 @@ const extractAuthors = (quotes) => {
 };
 
 const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
+    const authors = extractAuthors(quotes);
     return (
         <HashRouter>
             <div>
@@ -46,7 +48,7 @@ const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
                                 user={user}
                                 edition={routerParams.location.state}
                                 submitQuote={submitQuote}
-                                authors={extractAuthors(quotes)}
+                                authors={authors}
                             />
                         )}
                     />
@@ -59,6 +61,20 @@ const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
                                 user={user}
                                 toggleStarred={toggleStarred}
                                 deleteQuote={deleteQuote}
+                                authors={authors}
+                            />
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/authors/:author"
+                        component={(routerParams) => (
+                            <AuthorQuotes
+                                user={user}
+                                quotes={quotes}
+                                toggleStarred={toggleStarred}
+                                deleteQuote={deleteQuote}
+                                author={routerParams.match.params.author}
                             />
                         )}
                     />
