@@ -1,7 +1,7 @@
 import React from 'react';
 import Quote from '../Quote/Quote';
 
-const Feed = ({ quotes, toggleStarred, editQuote, deleteQuote }) => {
+const Quotes = ({ quotes, toggleStarred, editQuote, deleteQuote }) => {
     return (
         <div>
             {quotes &&
@@ -21,4 +21,4 @@ const Feed = ({ quotes, toggleStarred, editQuote, deleteQuote }) => {
     );
 };
 
-export default Feed;
+export default Quotes;

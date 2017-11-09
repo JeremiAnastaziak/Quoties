@@ -14,25 +14,15 @@ class NewPost extends Component {
 			quoteAuthor: '',
 			quoteTitle: '',
 			quoteTags: '',
-			edition: false,
-			authors: []
+			edition: false
 		}
 
 	}
 
 	componentDidMount() {
-		let authors = []
 		const quotes = this.props.quotes;
 		let editionId;
 		if(this.props.edition) editionId = this.props.edition.quoteId;
-
-		quotes && Object
-			.keys(quotes)
-			.map(index => !authors.includes(quotes[index].quoteAuthor) && authors.push(quotes[index].quoteAuthor))
-
-		this.setState({
-			authors: authors
-		})
 
 		quotes && editionId && this.setState({
 			...quotes[editionId],
@@ -69,7 +59,7 @@ class NewPost extends Component {
 						required
 						searchText={this.state.quoteAuthor}
 						filter={AutoComplete.caseInsensitiveFilter}
-						dataSource={this.state.authors}
+						dataSource={this.props.authors}
 					/>
 					<TextField
 						className="field"

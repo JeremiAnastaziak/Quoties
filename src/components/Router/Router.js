@@ -1,12 +1,23 @@
 import React from 'react';
 import { HashRouter, Route } from 'react-router-dom';
 import NewPost from '../NewPost/NewPost';
-import Feed from '../Feed/Feed';
+import Quotes from '../Quotes/Quotes';
 import Authors from '../Authors/Authors';
 import Starred from '../Starred/Starred';
 import Search from '../Search/Search';
 import BottomNav from '../BottomNav/BottomNav';
 import Header from '../Header/Header';
+
+const extractAuthors = (quotes) => {
+    let authors = [];
+    quotes &&
+        Object.keys(quotes).map(
+            index =>
+                !authors.includes(quotes[index].quoteAuthor) &&
+                authors.push(quotes[index].quoteAuthor)
+        );
+    return authors;
+};
 
 const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
     return (
@@ -18,7 +29,7 @@ const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
                         exact
                         path="/"
                         component={() => (
-                            <Feed
+                            <Quotes
                                 user={user}
                                 quotes={quotes}
                                 toggleStarred={toggleStarred}
@@ -35,6 +46,7 @@ const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
                                 user={user}
                                 edition={routerParams.location.state}
                                 submitQuote={submitQuote}
+                                authors={extractAuthors(quotes)}
                             />
                         )}
                     />

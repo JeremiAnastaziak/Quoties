@@ -1,24 +1,16 @@
 import React from 'react';
-import Quote from '../Quote/Quote';
+import Quotes from '../Quotes/Quotes';
 
-const Starred = ({ quotes, editQuote, toggleStarred, deleteQuote }) => {
-    return (
-        <div>
-            {quotes &&
-                Object.keys(quotes)
-                    .filter(index => quotes[index].starred)
-                    .map(index => (
-                        <Quote
-                            key={index}
-                            quote={quotes[index]}
-                            index={index}
-                            editQuote={editQuote}
-                            toggleStarred={toggleStarred}
-                            deleteQuote={deleteQuote}
-                        />
-                    ))}
-        </div>
+const filterQuotes = quotes => {
+    Object.keys(quotes).filter(
+        index => !quotes[index].starred && delete quotes[index]
     );
+    return quotes;
+};
+
+const Starred = props => {
+    const { quotes, ...otherProps } = props;
+    return <Quotes {...otherProps} quotes={filterQuotes({ ...quotes })} />;
 };
 
 export default Starred;
