@@ -11,7 +11,8 @@ import { ShareButtons } from 'react-share';
 const { FacebookShareButton } = ShareButtons;
 
 const iconButtonElement = (
-    <IconButton touch={true}>
+    <IconButton touch={true} style={{width: '40px',
+    height: '40px', padding: '0'}}>
         <MoreVertIcon color={grey400} />
     </IconButton>
 );
@@ -21,7 +22,7 @@ const QuoteOptions = ({ deleteQuote, toggleStarred, qid, quote, starred }) => {
         <div>
             <IconMenu
                 iconButtonElement={iconButtonElement}
-                style={{ position: 'absolute', top: '10px', right: '5px' }}
+                style={{ position: 'absolute', top: '5px', right: '0' }}
             >
                 <MenuItem onTouchTap={() => deleteQuote(qid)}>Delete</MenuItem>
 

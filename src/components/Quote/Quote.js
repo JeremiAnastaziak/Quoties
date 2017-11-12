@@ -1,9 +1,26 @@
 import React from 'react';
 import { ListItem } from 'material-ui/List';
 import QuoteOptions from './QuoteOptions';
-import { cyan500, pinkA200, transparent } from 'material-ui/styles/colors';
+import {
+    cyan500,
+    pinkA200,
+    transparent,
+    yellow500,
+    grey500
+} from 'material-ui/styles/colors';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
+import Card from 'material-ui/Card';
+import classNames from 'classnames';
+import Favs from 'material-ui/svg-icons/toggle/star';
+import NotFavs from 'material-ui/svg-icons/toggle/star-border';
+
+const starStyles = {
+    position: 'absolute',
+    right: '3px',
+    top: '40px',
+    padding: '5px'
+};
 
 const Quote = ({
     deleteQuote,
@@ -14,7 +31,7 @@ const Quote = ({
     renderAvatar
 }) => {
     return (
-        <div key={index} className={quote.starred ? 'starred quote' : 'quote'}>
+        <Card key={index} className={classNames({ starred: quote.starred })}>
             <ListItem
                 key={index}
                 primaryText={quote.quoteText}
@@ -49,17 +66,32 @@ const Quote = ({
                     )
                 }
                 rightIconButton={
-                    <QuoteOptions
-                        key={index}
-                        qid={index}
-                        quote={quote}
-                        starred={quote.starred}
-                        deleteQuote={deleteQuote}
-                        toggleStarred={toggleStarred}
-                    />
+                    <div>
+                        <QuoteOptions
+                            key={index}
+                            qid={index}
+                            quote={quote}
+                            starred={quote.starred}
+                            deleteQuote={deleteQuote}
+                            toggleStarred={toggleStarred}
+                        />
+                        {quote.starred ? (
+                            <Favs
+                                onTouchTap={() => toggleStarred(index)}
+                                color={yellow500}
+                                style={starStyles}
+                            />
+                        ) : (
+                            <NotFavs
+                                onTouchTap={() => toggleStarred(index)}
+                                color={grey500}
+                                style={starStyles}
+                            />
+                        )}
+                    </div>
                 }
             />
-        </div>
+        </Card>
     );
 };
 
