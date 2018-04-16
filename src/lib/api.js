@@ -5,10 +5,6 @@ export function initFirebase() {
     firebase.initializeApp(config);
 }
 
-export function authenticate() {
-
-}
-
 export function loginWithGoogle() {
     let provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope('https://www.googleapis.com/auth/contacts.readonly');

@@ -6,7 +6,6 @@ import './NewPost.css'
 import { toggleBodyClass } from '../../lib/helpers';
 
 class NewPost extends Component {
-
 	constructor() {
 		super();
 		this.state = {
@@ -20,16 +19,13 @@ class NewPost extends Component {
 	}
 
 	componentDidMount() {
-		const quotes = this.props.quotes;
-		let editionId;
-		if(this.props.edition) editionId = this.props.edition.quoteId;
-
-		quotes && editionId && this.setState({
-			...quotes[editionId],
-			quoteTags: quotes[editionId].quoteTags && (quotes[editionId].quoteTags.join(' ') + ' ')
-		})
-		console.log('mounted');
-
+		console.log(this.state);
+		if(this.props.quote) {
+			this.setState({
+				...this.props.quote,
+				quoteTags: this.props.quote.quoteTags && (this.props.quote.quoteTags.join(' ') + ' ')
+			})
+		}
 	}
 
 	submitQuote = (e) => {
@@ -41,7 +37,6 @@ class NewPost extends Component {
 			quoteTitle: this.state.quoteTitle,
 			quoteTags: this.state.quoteTags ? this.state.quoteTags.trim().split(' ') : []
 		})
-
 	}
 
 	render() {
@@ -60,6 +55,7 @@ class NewPost extends Component {
 						searchText={this.state.quoteAuthor}
 						filter={AutoComplete.caseInsensitiveFilter}
 						dataSource={this.props.authors}
+						floatingLabelFixed
 					/>
 					<TextField
 						className="field"
@@ -73,6 +69,7 @@ class NewPost extends Component {
 						fullWidth
 						required
 						value={this.state.quoteText}
+						floatingLabelFixed
 					/>
 					<TextField
 						className="field"
@@ -82,6 +79,7 @@ class NewPost extends Component {
 						floatingLabelText="Source"
 						fullWidth
 						value={this.state.quoteTitle}
+						floatingLabelFixed
 					/>
 					<TextField
 						className="field"
@@ -91,6 +89,7 @@ class NewPost extends Component {
 						floatingLabelText="Tags"
 						fullWidth
 						value={this.state.quoteTags}
+						floatingLabelFixed
 					/>
 					<RaisedButton
 						className="button-submit"

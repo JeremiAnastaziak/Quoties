@@ -42,15 +42,20 @@ const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
                     <Route
                         exact
                         path="/quote"
-                        component={routerParams => (
-                            <NewPost
-                                quotes={quotes}
-                                user={user}
-                                edition={routerParams.location.state}
-                                submitQuote={submitQuote}
-                                authors={authors}
-                            />
-                        )}
+                        component={ routerParams =>
+                            (routerParams.location.state) ?
+                                (<NewPost
+                                    quote={quotes[routerParams.location.state.quoteId]}
+                                    user={user}
+                                    submitQuote={submitQuote}
+                                    authors={authors}
+                                />) : (
+                                <NewPost
+                                    user={user}
+                                    submitQuote={submitQuote}
+                                    authors={authors}
+                                />)
+                        }
                     />
                     <Route
                         exact
