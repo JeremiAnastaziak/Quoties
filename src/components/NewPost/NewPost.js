@@ -28,6 +28,12 @@ class NewPost extends Component {
 		}
 	}
 
+	updateInput = ({ target: { name, value } }) => {
+		this.setState({
+			[name]: value
+		})
+	}
+
 	submitQuote = (e) => {
 		e.preventDefault();
 		const isEdition = this.props.edition;
@@ -42,9 +48,10 @@ class NewPost extends Component {
 	render() {
 		return (
 			<div className="wrapper">
-				<form ref={(input) => this.quoteForm = input} onSubmit={(e) => this.submitQuote(e)}>
+				<form ref={(form) => this.quoteForm = form} onSubmit={(e) => this.submitQuote(e)}>
 					<AutoComplete
 						className="field"
+						name="quoteAuthor"
 						ref={(input) => this.qAuthor = input}
 						onUpdateInput={value => this.setState({ quoteAuthor: value })}
 						onFocus={e => this.setState({ edition: true })}
@@ -59,8 +66,9 @@ class NewPost extends Component {
 					/>
 					<TextField
 						className="field"
+						name="quoteText"
 						ref={(input) => this.qText = input}
-						onChange={e => this.setState({ quoteText: e.target.value })}
+						onChange={this.updateInput}
 						onFocus={e => this.setState({ edition: true })}
 						onBlur={e => this.setState({ edition: false })}
 						floatingLabelText="Text"
@@ -73,7 +81,8 @@ class NewPost extends Component {
 					/>
 					<TextField
 						className="field"
-						onChange={e => this.setState({ quoteTitle: e.target.value })}
+						name="quoteTitle"
+						onChange={this.updateInput}
 						onFocus={e => this.setState({ edition: true })}
 						onBlur={e => this.setState({ edition: false })}
 						floatingLabelText="Source"
@@ -83,7 +92,8 @@ class NewPost extends Component {
 					/>
 					<TextField
 						className="field"
-						onChange={e => this.setState({ quoteTags: e.target.value })}
+						name="quoteTags"
+						onChange={this.updateInput}
 						onFocus={e => this.setState({ edition: true })}
 						onBlur={e => this.setState({ edition: false })}
 						floatingLabelText="Tags"

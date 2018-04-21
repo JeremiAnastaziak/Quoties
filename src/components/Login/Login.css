@@ -1,18 +1,15 @@
 .landing {
     flex-direction: column;
     height: 100vh;
-    color: #fff;
-    object-fit: cover;
-    background-position: 52% 95%;
-    background-size: 1000px;
-    background-image: url('./landing0.jpeg');
+    color: #757575;
 }
 .header {
     text-align: center;
     padding-bottom: 50px;
 }
 .header-heading {
-    font-size: 50px;
+    font-size: 80px;
+    font-weight: 300;
     margin: 0 0 30px;
 }
 
