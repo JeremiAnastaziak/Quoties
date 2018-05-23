@@ -37,6 +37,10 @@ class App extends Component {
                 this.setState({ user: null });
             }
         });
+
+        document.addEventListener('backbutton', function() {
+            alert('back button');
+        })
     }
 
     submitQuote = (isEdition, quoteId, quote) => {

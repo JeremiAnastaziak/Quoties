@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import { grey400 } from 'material-ui/styles/colors';
@@ -17,7 +17,7 @@ const iconButtonElement = (
     </IconButton>
 );
 
-const QuoteOptions = ({ deleteQuote, toggleStarred, qid, quote, starred }) => {
+const QuoteOptions = ({ deleteQuote, toggleStarred, qid, quote, starred, history }) => {
     return (
         <div>
             <IconMenu
@@ -26,16 +26,9 @@ const QuoteOptions = ({ deleteQuote, toggleStarred, qid, quote, starred }) => {
             >
                 <MenuItem onTouchTap={() => deleteQuote(qid)}>Delete</MenuItem>
 
-                <Link
-                    to={{
-                        pathname: '/quote',
-                        state: {
-                            quoteId: qid
-                        }
-                    }}
-                >
-                    <MenuItem>Edit</MenuItem>
-                </Link>
+                <MenuItem onClick={() => history.push(`/quote/${qid}`, { quoteId: qid })}>
+                    Edit
+                </MenuItem>
 
                 <MenuItem onTouchTap={() => toggleStarred(qid)}>
                     {starred ? 'Remove from favourite' : 'Add to favourite'}
@@ -54,4 +47,4 @@ const QuoteOptions = ({ deleteQuote, toggleStarred, qid, quote, starred }) => {
     );
 };
 
-export default QuoteOptions;
+export default withRouter(QuoteOptions);

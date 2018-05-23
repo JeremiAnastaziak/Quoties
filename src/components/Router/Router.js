@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import NewPost from '../NewPost/NewPost';
 import Quotes from '../Quotes/Quotes';
 import Authors from '../Authors/Authors';
@@ -23,7 +23,7 @@ const extractAuthors = (quotes) => {
 const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
     const authors = extractAuthors(quotes);
     return (
-        <HashRouter>
+        <BrowserRouter>
             <div>
                 <Header user={user} />
                 <div style={{ marginBottom: '55px' }}>
@@ -41,20 +41,15 @@ const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
                     />
                     <Route
                         exact
-                        path="/quote"
-                        component={ routerParams =>
-                            (routerParams.location.state) ?
-                                (<NewPost
-                                    quote={quotes[routerParams.location.state.quoteId]}
-                                    user={user}
-                                    submitQuote={submitQuote}
-                                    authors={authors}
-                                />) : (
-                                <NewPost
-                                    user={user}
-                                    submitQuote={submitQuote}
-                                    authors={authors}
-                                />)
+                        path="/quote/:quoteId"
+                        component={(props) =>
+                            <NewPost
+                                {...props}
+                                user={user}
+                                quotes={quotes}
+                                submitQuote={submitQuote}
+                                authors={authors}
+                            />
                         }
                     />
                     <Route
@@ -111,7 +106,7 @@ const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
                     <BottomNav />
                 </div>
             </div>
-        </HashRouter>
+        </BrowserRouter>
     );
 };
 

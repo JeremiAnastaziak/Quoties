@@ -75,19 +75,12 @@ const Quote = ({
                             deleteQuote={deleteQuote}
                             toggleStarred={toggleStarred}
                         />
-                        {quote.starred ? (
+                        {quote.starred &&
                             <Favs
-                                onTouchTap={() => toggleStarred(index)}
                                 color={yellow500}
                                 style={starStyles}
                             />
-                        ) : (
-                            <NotFavs
-                                onTouchTap={() => toggleStarred(index)}
-                                color={grey500}
-                                style={starStyles}
-                            />
-                        )}
+                        }
                     </div>
                 }
             />

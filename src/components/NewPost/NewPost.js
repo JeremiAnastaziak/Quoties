@@ -19,11 +19,14 @@ class NewPost extends Component {
 	}
 
 	componentDidMount() {
-		console.log(this.state);
-		if(this.props.quote) {
+		const { quoteId } = this.props.match.params;
+
+		if (this.props.quotes && quoteId) {
+			const quote = this.props.quotes[quoteId];
+
 			this.setState({
-				...this.props.quote,
-				quoteTags: this.props.quote.quoteTags && (this.props.quote.quoteTags.join(' ') + ' ')
+				...quote,
+				quoteTags: quote.quoteTags && (quote.quoteTags.join(' ') + ' ')
 			})
 		}
 	}
