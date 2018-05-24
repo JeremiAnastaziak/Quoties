@@ -6,3 +6,10 @@
     z-index: 1;
     border-bottom: 1px solid var(--color-grey);
 }
+button.active svg {
+    fill: var(--color-accent) !important;
+}
+
+button.active div {
+    color: var(--color-accent) !important;
+}

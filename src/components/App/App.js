@@ -43,11 +43,11 @@ class App extends Component {
         })
     }
 
-    submitQuote = (isEdition, quoteId, quote) => {
+    submitQuote = (quoteId, quote) => {
         let quoteRef = firebase
             .database()
             .ref(
-                `users/${this.state.user.uid}/quotes/${isEdition ? quoteId : uuid()}`
+                `users/${this.state.user.uid}/quotes/${quoteId || uuid()}`
             );
         quoteRef
             .set({
@@ -55,10 +55,6 @@ class App extends Component {
             })
             .then(() => {
                 console.log('q updated');
-                isEdition &&
-                    this.setState({
-                        edited: true
-                    });
             })
             .catch(error => console.log(error));
     };

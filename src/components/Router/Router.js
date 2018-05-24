@@ -41,7 +41,7 @@ const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
                     />
                     <Route
                         exact
-                        path="/quote/:quoteId"
+                        path="/quote/:quoteId?"
                         component={(props) =>
                             <NewPost
                                 {...props}

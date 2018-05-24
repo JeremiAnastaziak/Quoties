@@ -26,6 +26,7 @@ class NewPost extends Component {
 
 			this.setState({
 				...quote,
+				edition: true,
 				quoteTags: quote.quoteTags && (quote.quoteTags.join(' ') + ' ')
 			})
 		}
@@ -39,8 +40,9 @@ class NewPost extends Component {
 
 	submitQuote = (e) => {
 		e.preventDefault();
-		const isEdition = this.props.edition;
-		this.props.submitQuote(isEdition, isEdition ? this.props.edition.quoteId : null, {
+		const { quoteId } = this.props.match.params;
+
+		this.props.submitQuote(quoteId, {
 			quoteAuthor: this.state.quoteAuthor,
 			quoteText: this.state.quoteText,
 			quoteTitle: this.state.quoteTitle,
