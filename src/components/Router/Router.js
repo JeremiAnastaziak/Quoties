@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+import Snackbar from 'material-ui/Snackbar';
 import NewPost from '../NewPost/NewPost';
 import Quotes from '../Quotes/Quotes';
 import Authors from '../Authors/Authors';
@@ -20,7 +21,7 @@ const extractAuthors = (quotes) => {
     return authors;
 };
 
-const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
+const Router = ({ user, quotes, notifications, submitQuote, toggleStarred, deleteQuote }) => {
     const authors = extractAuthors(quotes);
     return (
         <BrowserRouter>
@@ -29,7 +30,7 @@ const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
                 <div style={{ marginBottom: '55px' }}>
                     <Route
                         exact
-                        path="/"
+                        path="/home"
                         component={() => (
                             <Quotes
                                 user={user}
@@ -102,7 +103,13 @@ const Router = ({ user, quotes, submitQuote, toggleStarred, deleteQuote }) => {
                             />
                         )}
                     />
-
+                    {/* {notifications.map(notification => (
+                        <Snackbar
+                            style={{ bottom: '57px' }}
+                            open={true}
+                            message={notification.text}
+                        />
+                    ))} */}
                     <BottomNav />
                 </div>
             </div>

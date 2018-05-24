@@ -12,7 +12,8 @@ class App extends Component {
 
         this.state = {
             quotes: null,
-            activePage: 0
+            notifications: [],
+            activePage: 0,
         };
     }
 
@@ -21,6 +22,8 @@ class App extends Component {
     }
 
     componentDidMount() {
+        this.getQuotesFromLocalStorage();
+
         const auth = new firebase.auth();
         auth.onAuthStateChanged(user => {
             if (user) {
@@ -37,10 +40,16 @@ class App extends Component {
                 this.setState({ user: null });
             }
         });
+    }
 
-        document.addEventListener('backbutton', function() {
-            alert('back button');
-        })
+    getQuotesFromLocalStorage() {
+        const storageDate = window.localStorage.getItem('quoties');
+        if (storageDate && !this.state.user) {
+            const { quotes } = JSON.parse(storageDate);
+            this.setState({
+                quotes
+            })
+        }
     }
 
     submitQuote = (quoteId, quote) => {
@@ -55,6 +64,17 @@ class App extends Component {
             })
             .then(() => {
                 console.log('q updated');
+                this.setState({
+                    ...this.state,
+                    notifications: [{text: 'Q updated', show: true}]
+
+                })
+
+                setTimeout(() => {
+                    this.setState({
+                    ...this.state,
+                    notifications: [{text: 'Quote updated', show: false}]
+                })}, 400000)
             })
             .catch(error => console.log(error));
     };
@@ -90,6 +110,7 @@ class App extends Component {
                     <Login />
                 ) : (
                     <Router
+                        notifications={this.state.notifications}
                         quotes={this.state.quotes}
                         submitQuote={this.submitQuote}
                         toggleStarred={this.toggleStarred}

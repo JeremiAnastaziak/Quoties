@@ -2,7 +2,6 @@ import React from 'react';
 import Quote from '../Quote/Quote';
 
 const Quotes = ({ quotes, toggleStarred, editQuote, deleteQuote }) => {
-    console.log(quotes);
     return (
         <div>
             {quotes &&

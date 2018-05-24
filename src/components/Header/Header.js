@@ -21,7 +21,7 @@ const Logged = props => {
             targetOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
-            <Link to="/">
+            <Link to="/home">
                 <MenuItem
                     primaryText="Sign out"
                     onClick={() => {
@@ -45,7 +45,7 @@ function Header() {
             <AppBar
                 title={
                     <Link
-                        to="/"
+                        to="/home"
                         style={{
                             color: '#fff',
                             textDecoration: 'none',

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { BottomNavigation, BottomNavigationItem } from 'material-ui/BottomNavigation';
 import Paper from 'material-ui/Paper';
 import AddIcon from 'material-ui/svg-icons/editor/mode-edit';
@@ -10,12 +10,11 @@ import StarredIcon from 'material-ui/svg-icons/toggle/star';
 import classNames from 'classnames';
 
 import './BottomNav.css';
-
 import { routes } from 'config';
 
 function BottomNav({ history }) {
 
-  const matchPathname = (route) => window.location.pathname === route;
+  const matchPathname = (route) => window.location.pathname.includes(route.slice(1));
 
   const iconsMap = {
     'Home': <HomeIcon />,
