@@ -3,6 +3,7 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import './NewPost.css'
+import Capture from '../Capture/Capture';
 import { toggleBodyClass } from '../../lib/helpers';
 import { visionApiKey } from 'private/config';
 
@@ -14,7 +15,8 @@ class NewPost extends Component {
 			quoteAuthor: '',
 			quoteTitle: '',
 			quoteTags: '',
-			edition: false
+			edition: false,
+			data: { responses: [{ textAnnotations: []}]},
 		}
 
 	}
@@ -51,46 +53,10 @@ class NewPost extends Component {
 		})
 	}
 
-
-	getBase64 = (file) => {
-		const recognizeText = (base64string) => {
-			console.log(base64string);
-			fetch(`https://vision.googleapis.com/v1/images:annotate?key=${visionApiKey}`,{
-				method: 'POST',
-				body: JSON.stringify({
-					"requests": [
-						{
-						"image": {
-							"content": base64string.split(',')[1]
-						},
-						"features": [
-							{
-							"type": "TEXT_DETECTION"
-							}
-						]
-						}
-					]
-				}),
-			})
-			.then(response => response.json())
-			.then(console.log)
-			.catch(console.log)
-		}
-		var reader = new FileReader();
-		reader.readAsDataURL(file);
-		reader.onload = function () {
-		  console.log(reader.result);
-		  recognizeText(reader.result);
-		};
-		reader.onerror = function (error) {
-		  console.log('Error: ', error);
-		};
-	 }
-
 	render() {
 		return (
 			<div className="wrapper">
-				<input type="file" accept="image/*" onChange={(e) => this.getBase64(e.target.files[0])}/>
+				<Capture />
 				<form ref={(form) => this.quoteForm = form} onSubmit={(e) => this.submitQuote(e)}>
 					<AutoComplete
 						className="field"
