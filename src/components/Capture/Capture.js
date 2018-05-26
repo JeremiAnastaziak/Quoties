@@ -1,37 +1,62 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
+import CircularProgress from 'material-ui/CircularProgress';
 import CaptureIcon from 'material-ui/svg-icons/image/add-a-photo';
-import getBase64 from 'lib/base64';
+import { getBase64, getImageDimension } from 'lib/base64';
 import recognizeText from 'api/vision';
+import baseMock from './base64';
+import dataMock from './mock';
 
 export default class Capture extends React.Component {
     constructor() {
 		super();
 		this.state = {
-            data: { responses: [ { textAnnotations: [] } ] },
+            data: dataMock,
+            base64: baseMock,
             text: '',
+            fetching: false,
+            scale: 1,
         }
     }
 
-    drawImage = (imageFile) => {
-        const ctx = this.canvas.getContext('2d');
-        const img = new Image;
-        img.onload = function() {
-            ctx.drawImage(img, 0, 0);
-        }
-        img.src = URL.createObjectURL(imageFile);
+    componentDidMount() {
+        console.log(this.state);
+        // this.drawRectangle();
+        this.state.data.responses[0].textAnnotations.slice(1).map(word => {
+            this.drawRectangle(word.boundingPoly.vertices.map(({ x, y }) => ({
+                    x: x * this.state.scale,
+                    y: y * this.state.scale
+                })
+            ))
+        })
     }
 
-    handleImage = ({ target: { files } }) => {
-        getBase64(files[0])
-            .then(recognizeText)
-            .then(this.displayResponse)
-            .catch(console.log)
+    toggleFetching = () =>
+        this.setState({ fetching: !this.state.fetching });
+
+    drawRectangle = (vertices) => {
+        console.log(vertices);
+        const ctx = this.canvas.getContext("2d");
+        ctx.rect(vertices[0].x, vertices[0].y, vertices[1].x - vertices[0].x, vertices[2].y - vertices[0].y);
+        ctx.stroke();
+    }
+
+    handleImage = async ({ target: { files } }) => {
+        const base64 = await getBase64(files[0]);
+        const { width, height } = await getImageDimension(files[0]);
+        console.log(this.image.offsetWidth, width);
+        this.setState({ scale: width / this.image.offsetWidth, base64 })
+        console.log(this.state);
+
+        // this.toggleFetching();
+        // recognizeText(base64)
+        //     .then(this.displayResponse)
+        //     .finally(this.toggleFetching)
     }
 
     displayResponse = (data) => {
         const text = data.responses[0].textAnnotations[0].description;
-        console.log(text);
+        console.log(data, text);
 
         this.setState({ data, text });
         this.props.fillQuoteText(text)
@@ -39,31 +64,43 @@ export default class Capture extends React.Component {
 
     render() {
         return (
-            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: '15px' }}>
-                <IconButton
-                    onClick={() => this.file.click()}
-                    style={{
-                        boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 5px, rgba(0, 0, 0, 0.23) 0px 1px 10px',
-                        borderRadius: '100%',
-                        float: 'right',
-                        marginRight: '10px'
-                    }}>
-                    <input type="file"
-                        className="input-file"
-                        ref={(dom) => this.file = dom}
-                        accept="image/*"
-                        onChange={this.handleImage}/>
-                    {/* <Capture/> */}
-                    <CaptureIcon />
-                    {/* <textarea value={this.state.text}/> */}
-                    {/* <pre>
-                        { JSON.stringify(this.state.data.responses[0].textAnnotations, null, 2) }
-                    </pre> */}
+            <div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: '15px' }}>
+                    {this.state.fetching && <CircularProgress />}
+                    <IconButton
+                        onClick={() => this.file.click()}
+                        style={{
+                            boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 5px, rgba(0, 0, 0, 0.23) 0px 1px 10px',
+                            borderRadius: '100%',
+                            margin: '0 10px'
+                        }}>
+                        <input type="file"
+                            className="input-file"
+                            ref={(dom) => this.file = dom}
+                            accept="image/*"
+                            onChange={this.handleImage}/>
+                        {/* <Capture/> */}
+                        <CaptureIcon />
+                        {/* <textarea value={this.state.text}/> */}
+                        {/* <pre>
+                            { JSON.stringify(this.state.data.responses[0].textAnnotations, null, 2) }
+                        </pre> */}
 
-                    {/* <div style={{width: '100%', overflow: 'scroll'}}>
-                        <canvas style={{ width: '200vw', height: 'auto' }}  id="canvas" ref={(form) => this.canvas = form} />
-                    </div> */}
-                </IconButton>
+                        {/* <div style={{width: '100%', overflow: 'scroll'}}>
+                            <canvas style={{ width: '200vw', height: 'auto' }}  id="canvas" ref={(form) => this.canvas = form} />
+                        </div> */}
+                    </IconButton>
+                </div>
+                <div style={{position: 'relative'}}>
+                    <img
+                        ref={(image) => this.image = image}
+                        src={this.state.base64}
+                        style={{ position: 'absolute', zIndex: '-1' }}/>
+                    <canvas
+                        ref={(canvas) => this.canvas = canvas}
+                        width="696" height="415"
+                    />
+                </div>
             </div>
         )
     }
