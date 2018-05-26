@@ -56,7 +56,6 @@ class NewPost extends Component {
 	render() {
 		return (
 			<div className="wrapper">
-				<Capture />
 				<form ref={(form) => this.quoteForm = form} onSubmit={(e) => this.submitQuote(e)}>
 					<AutoComplete
 						className="field"
@@ -118,6 +117,7 @@ class NewPost extends Component {
 					/>
 					{this.state.edition ? toggleBodyClass('edition-mode') : ''}
 				</form>
+				<Capture fillQuoteText={(quoteText) => this.setState({ quoteText })}/>
 			</div>
 		);
 	}

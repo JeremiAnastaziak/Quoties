@@ -1,6 +1,6 @@
 .wrapper {
 	max-width: 500px;
-	margin: 0 auto;		
+	margin: 0 auto;
 	padding: 0;
 }
 
@@ -17,4 +17,8 @@
 	margin: 20px 10px;
 	box-sizing: border-box;
 	display: block;
+}
+
+.input-file {
+	display: none;
 }
