@@ -20,47 +20,41 @@ export default class Capture extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.state);
-        // this.drawRectangle();
-        this.state.data.responses[0].textAnnotations.slice(1).map(word => {
-            this.drawRectangle(word.boundingPoly.vertices.map(({ x, y }) => ({
-                    x: x * this.state.scale,
-                    y: y * this.state.scale
-                })
-            ))
-        })
+
     }
 
-    toggleFetching = () =>
-        this.setState({ fetching: !this.state.fetching });
-
-    drawRectangle = (vertices) => {
-        console.log(vertices);
-        const ctx = this.canvas.getContext("2d");
-        ctx.rect(vertices[0].x, vertices[0].y, vertices[1].x - vertices[0].x, vertices[2].y - vertices[0].y);
-        ctx.stroke();
-    }
 
     handleImage = async ({ target: { files } }) => {
         const base64 = await getBase64(files[0]);
         const { width, height } = await getImageDimension(files[0]);
-        console.log(this.image.offsetWidth, width);
-        this.setState({ scale: width / this.image.offsetWidth, base64 })
-        console.log(this.state);
 
-        // this.toggleFetching();
-        // recognizeText(base64)
-        //     .then(this.displayResponse)
-        //     .finally(this.toggleFetching)
+        this.setState({ base64, width, height });
+
+        Capture.drawRectangle = (vertices) => {
+            const ctx = this.canvas.getContext("2d");
+            ctx.rect(vertices[0].x, vertices[0].y, vertices[1].x - vertices[0].x, vertices[2].y - vertices[0].y);
+            ctx.stroke();
+        }
+
+        Capture.handleResponse = ({ responses }) => {
+            console.log(responses);
+            responses[0].textAnnotations.slice(1).map(word => {
+                Capture.drawRectangle(word.boundingPoly.vertices.map(({ x, y }) => ({
+                        x: x * this.state.scale,
+                        y: y * this.state.scale
+                    })
+                ))
+            })
+        }
+
+        this.toggleFetching();
+        recognizeText(base64)
+            .then(Capture.handleResponse)
+            .finally(this.toggleFetching)
     }
 
-    displayResponse = (data) => {
-        const text = data.responses[0].textAnnotations[0].description;
-        console.log(data, text);
-
-        this.setState({ data, text });
-        this.props.fillQuoteText(text)
-    }
+    toggleFetching = () =>
+        this.setState({ fetching: !this.state.fetching });
 
     render() {
         return (
@@ -96,10 +90,10 @@ export default class Capture extends React.Component {
                         ref={(image) => this.image = image}
                         src={this.state.base64}
                         style={{ position: 'absolute', zIndex: '-1' }}/>
-                    <canvas
+                    {this.state.width && <canvas
                         ref={(canvas) => this.canvas = canvas}
-                        width="696" height="415"
-                    />
+                        width={this.state.width} height={this.state.height}
+                    />}
                 </div>
             </div>
         )
