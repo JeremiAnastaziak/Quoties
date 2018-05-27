@@ -1,5 +1,4 @@
 export const drawRectangle = (canvas, vertices, padding, strokeStyle, fillStyle) => {
-    console.log(drawRectangle);
     const ctx = canvas.getContext("2d");
 
     if (fillStyle) {

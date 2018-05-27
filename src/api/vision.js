@@ -34,6 +34,5 @@ export default function (base64string) {
         }),
     })
     .then(response => response.json())
-    .then(mapResponse)
     .catch(console.log)
 }

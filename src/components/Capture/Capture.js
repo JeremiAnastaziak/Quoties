@@ -12,12 +12,14 @@ export default class Capture extends React.Component {
     constructor() {
 		super();
 		this.state = {
-            data: dataMock,
-            base64: baseMock,
+            data: {},
+            base64: null,
             text: '',
             fetching: false,
             scale: 1,
-            words: []
+            words: [],
+            indexStart: null,
+            indexEnd: null,
         }
     }
 
@@ -36,16 +38,22 @@ export default class Capture extends React.Component {
             height
         });
 
-        const words = mapResponse(this.state.data, this.state.scale);
-        this.setState({ words });
+        // const words = mapResponse(this.state.data, this.state.scale);
+        // this.setState({ words });
 
-        this.state.words.forEach(({ boundingPoly: { vertices } }) =>
-            drawRectangle(this.canvas, vertices, 3, '#00bcd4'))
+        // this.state.words.forEach(({ boundingPoly: { vertices } }) =>
+        //     drawRectangle(this.canvas, vertices, 3, '#00bcd4'))
 
-        // this.toggleFetching();
-        // recognizeText(base64)
-        //     .then(Capture.handleResponse)
-        //     .finally(this.toggleFetching)
+        this.toggleFetching();
+        recognizeText(base64)
+            .then((data) => mapResponse(data, this.state.scale))
+            .then((words) => {
+                console.log(words);
+                words.forEach(({ boundingPoly: { vertices } }) =>
+                    drawRectangle(this.canvas, vertices, 3, '#00bcd4'))
+                this.setState({ words });
+            })
+            .finally(this.toggleFetching)
     }
 
     handleCanvasClick = ({ clientX, clientY, pageX, pageY }) => {
@@ -62,28 +70,40 @@ export default class Capture extends React.Component {
                 vertices[0].y < cords.y &&
                 vertices[2].y > cords.y
 
-        const index = this.state.words.findIndex(findMatchingWord(canvasCoords))
-        if (index && !this.state.indexStart) {
-            this.setState({ indexStart: index });
-            drawRectangle(this.canvas, this.state.words[index].boundingPoly.vertices, 3, '#00bcd4', '#00bcd47d');
+        const index = this.state.words.findIndex(findMatchingWord(canvasCoords));
+        if (index > -1) {
+            if (this.state.indexStart !== null) {
+                this.setState({ indexEnd: index });
+                drawRectangle(this.canvas, this.state.words[index].boundingPoly.vertices, 3, '#00bcd4', '#00bcd47d');
+                this.state.words
+                    .slice(this.state.indexStart, index)
+                    .forEach(({ boundingPoly: { vertices } }) =>
+                        drawRectangle(this.canvas, vertices, 3, '#00bcd4', '#00bcd47d'))
+
+                const text = this.state.words
+                    .slice(this.state.indexStart, index + 1)
+                    .map(({ description }) => description)
+                    .join(' ')
+
+                this.props.fillQuoteText(text);
+                setTimeout(() => {
+                    this.canvas.getContext("2d").clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    this.state.words
+                        .forEach(({ boundingPoly: { vertices } }) =>
+                            drawRectangle(this.canvas, vertices, 3, '#00bcd4'))
+                    this.setState({
+                        indexStart: null,
+                        indexEnd: null,
+                    })
+                }, 1000)
+                return;
+            }
+
+            if (!this.state.indexStart) {
+                this.setState({ indexStart: index });
+                drawRectangle(this.canvas, this.state.words[index].boundingPoly.vertices, 3, '#00bcd4', '#00bcd47d');
+            }
         }
-        if (index && this.state.indexStart) {
-            this.setState({ indexEnd: index });
-            drawRectangle(this.canvas, this.state.words[index].boundingPoly.vertices, 3, '#00bcd4', '#00bcd47d');
-            this.state.words
-                .slice(this.state.indexStart, index)
-                .forEach(({ boundingPoly: { vertices } }) =>
-                    drawRectangle(this.canvas, vertices, 3, '#00bcd4', '#00bcd47d'))
-
-            const text = this.state.words
-                .slice(this.state.indexStart, index + 1)
-                .map(({ description }) => description)
-                .join(' ')
-
-            this.props.fillQuoteText(text);
-
-        }
-
     }
 
     toggleFetching = () =>
