@@ -7,7 +7,7 @@ import recognizeText, { mapResponse } from 'api/vision';
 import baseMock from './base64';
 import dataMock from './mock';
 import { drawRectangle } from './canvas';
-
+import './index.css';
 export default class Capture extends React.Component {
     constructor() {
 		super();
@@ -37,6 +37,7 @@ export default class Capture extends React.Component {
             width,
             height
         });
+        this.canvas.getContext("2d").clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // const words = mapResponse(this.state.data, this.state.scale);
         // this.setState({ words });
@@ -48,7 +49,7 @@ export default class Capture extends React.Component {
         recognizeText(base64)
             .then((data) => mapResponse(data, this.state.scale))
             .then((words) => {
-                console.log(words);
+                console.log(this.canvas, words);
                 words.forEach(({ boundingPoly: { vertices } }) =>
                     drawRectangle(this.canvas, vertices, 3, '#00bcd4'))
                 this.setState({ words });
@@ -83,7 +84,10 @@ export default class Capture extends React.Component {
                 const text = this.state.words
                     .slice(this.state.indexStart, index + 1)
                     .map(({ description }) => description)
-                    .join(' ')
+                    .reduce((acc, next) =>
+                        acc.slice(-1) === '-' ?
+                            acc.slice(0, -1).concat(next) :
+                            acc.length ? [acc, next].join(' ') : next, '')
 
                 this.props.fillQuoteText(text);
                 setTimeout(() => {
@@ -129,11 +133,12 @@ export default class Capture extends React.Component {
                         <CaptureIcon />
                     </IconButton>
                 </div>
-                <div style={{position: 'relative'}}>
+                <div style={{position: 'relative', padding: '0 10px 10px'}}>
                     <img
                         ref={(image) => this.image = image}
                         src={this.state.base64}
-                        style={{ position: 'absolute', zIndex: '-1', width: '100vw' }}/>
+                        className="capture-image"
+                        style={{ position: 'absolute', zIndex: '-1' }}/>
                     {this.state.width && <canvas
                         onClick={this.handleCanvasClick}
                         ref={(canvas) => this.canvas = canvas}

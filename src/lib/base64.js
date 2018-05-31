@@ -1,5 +1,8 @@
 export const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
+        if (!file) {
+            reject();
+        }
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function () {
@@ -12,7 +15,10 @@ export const getBase64 = (file) => {
 }
 
 export const getImageDimension = (imageFile) => {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
+        if (!imageFile) {
+            reject();
+        }
         const img = new Image;
         img.onload = function() {
             const { width, height } = img;
