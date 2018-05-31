@@ -17,7 +17,7 @@ const iconButtonElement = (
     </IconButton>
 );
 
-const QuoteOptions = ({ deleteQuote, toggleStarred, qid, quote, starred, history }) => {
+const QuoteOptions = ({ deleteQuote, submitQuote, qid, quote, starred, history }) => {
     return (
         <div>
             <IconMenu
@@ -30,7 +30,7 @@ const QuoteOptions = ({ deleteQuote, toggleStarred, qid, quote, starred, history
                     Edit
                 </MenuItem>
 
-                <MenuItem onTouchTap={() => toggleStarred(qid)}>
+                <MenuItem onTouchTap={() => submitQuote(qid, { ...quote, starred: !quote.starred })}>
                     {starred ? 'Remove from favourite' : 'Add to favourite'}
                 </MenuItem>
                 <MenuItem>

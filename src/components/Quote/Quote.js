@@ -24,7 +24,7 @@ const starStyles = {
 
 const Quote = ({
     deleteQuote,
-    toggleStarred,
+    submitQuote,
     quote,
     divider,
     index,
@@ -72,8 +72,8 @@ const Quote = ({
                             qid={index}
                             quote={quote}
                             starred={quote.starred}
+                            submitQuote={submitQuote}
                             deleteQuote={deleteQuote}
-                            toggleStarred={toggleStarred}
                         />
                         {quote.starred &&
                             <Favs

@@ -14,32 +14,35 @@ class App extends Component {
             quotes: null,
             notifications: [],
             activePage: 0,
+            checkingActiveSession: true,
         };
-    }
-
-    componentDidUpdate() {
-        window.localStorage.setItem('quoties', JSON.stringify(this.state));
     }
 
     componentDidMount() {
         this.getQuotesFromLocalStorage();
 
-        const auth = new firebase.auth();
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                const quotesRef = firebase
+        new firebase.auth().
+            onAuthStateChanged(user => {
+                this.setState({
+                    checkingActiveSession: false,
+                    user,
+                    ref: `users/${user.uid}/quotes/`,
+                })
+
+                if (user) {
+                    firebase
                     .database()
-                    .ref(`users/${user.uid}/quotes`);
-                quotesRef.on('value', snapshot => {
-                    this.setState({
-                        quotes: snapshot.val()
-                    });
-                });
-                this.setState({ user });
-            } else {
-                this.setState({ user: null });
-            }
-        });
+                    .ref(this.state.ref)
+                    .on('value', snapshot =>
+                        this.setState({
+                            quotes: snapshot.val()
+                        }));
+                }
+            });
+    }
+
+    componentDidUpdate() {
+        window.localStorage.setItem('quoties', JSON.stringify(this.state));
     }
 
     getQuotesFromLocalStorage() {
@@ -53,67 +56,44 @@ class App extends Component {
     }
 
     submitQuote = (quoteId, quote) => {
-        let quoteRef = firebase
+        const handleQuoteSubmit = () =>
+            this.setState({
+                ...this.state,
+                // notifications: [{text: 'Q updated', show: true}]
+                // setTimeout(() => {
+                //     this.setState({
+                //     ...this.state,
+                //     notifications: [{text: 'Quote updated', show: false}]
+                // })}, 400000)
+            });
+
+        firebase
             .database()
-            .ref(
-                `users/${this.state.user.uid}/quotes/${quoteId || uuid()}`
-            );
-        quoteRef
-            .set({
-                ...quote
-            })
-            .then(() => {
-                console.log('q updated');
-                this.setState({
-                    ...this.state,
-                    notifications: [{text: 'Q updated', show: true}]
-
-                })
-
-                setTimeout(() => {
-                    this.setState({
-                    ...this.state,
-                    notifications: [{text: 'Quote updated', show: false}]
-                })}, 400000)
-            })
-            .catch(error => console.log(error));
-    };
-
-    toggleStarred = quoteId => {
-        const qRef = firebase
-            .database()
-            .ref(`/users/${this.state.user.uid}/quotes/${quoteId}`);
-        qRef.update({ starred: !this.state.quotes[quoteId].starred });
+            .ref(this.state.ref.concat(quoteId || uuid()))
+            .set({ ...quote })
+            // .then(handleQuoteSubmit)
+            .catch(console.error);
     };
 
     deleteQuote = quoteId => {
-        const qRef = firebase
+        firebase
             .database()
-            .ref(`/users/${this.state.user.uid}/quotes/${quoteId}`);
-        qRef
+            .ref(this.state.ref.concat(quoteId))
             .remove()
-            .then(() => {
-                console.log('Q deleted');
-            })
-            .catch(error => {
-                console.error(error);
-            });
+            .catch(console.error);
     };
 
     render() {
-        const ifLoggedIn = () => this.state.user;
-        const ifUserStateChecked = () => this.state.hasOwnProperty('user');
         return (
             <div>
-                {!ifUserStateChecked() && <LoadingScreen />}
-                {!ifLoggedIn() && ifUserStateChecked() ? (
+                {this.state.checkingActiveSession && <LoadingScreen />}
+                {!this.state.user && !this.state.checkingActiveSession ? (
                     <Login />
                 ) : (
                     <Router
                         notifications={this.state.notifications}
                         quotes={this.state.quotes}
                         submitQuote={this.submitQuote}
-                        toggleStarred={this.toggleStarred}
                         deleteQuote={this.deleteQuote}
                     />
                 )}

@@ -1,7 +1,7 @@
 import React from 'react';
 import Quote from '../Quote/Quote';
 
-const Quotes = ({ quotes, toggleStarred, editQuote, deleteQuote }) => {
+const Quotes = ({ quotes, submitQuote, deleteQuote }) => {
     return (
         <div>
             {quotes &&
@@ -12,8 +12,7 @@ const Quotes = ({ quotes, toggleStarred, editQuote, deleteQuote }) => {
                             key={index}
                             quote={quotes[index]}
                             index={index}
-                            editQuote={editQuote}
-                            toggleStarred={toggleStarred}
+                            submitQuote={submitQuote}
 							deleteQuote={deleteQuote}
                         />
                     ))}

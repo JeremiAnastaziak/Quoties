@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, withRouter } from 'react-router-dom';
 import Snackbar from 'material-ui/Snackbar';
 import NewPost from '../NewPost/NewPost';
 import Quotes from '../Quotes/Quotes';
@@ -10,32 +10,25 @@ import BottomNav from '../BottomNav/BottomNav';
 import Header from '../Header/Header';
 import AuthorQuotes from '../AuthorQuotes/AuthorQuotes';
 
-const extractAuthors = (quotes) => {
-    let authors = [];
-    quotes &&
-        Object.keys(quotes).map(
-            index =>
-                !authors.includes(quotes[index].quoteAuthor) &&
-                authors.push(quotes[index].quoteAuthor)
-        );
-    return authors;
-};
+const extractAuthors = (quotes) =>
+    Object.values(quotes || {})
+        .reduce((curr, next) =>
+            curr.includes(next.quoteAuthor) ? curr : curr.concat(next.quoteAuthor), []);
 
-const Router = ({ user, quotes, notifications, submitQuote, toggleStarred, deleteQuote }) => {
+const Router = ({ user, quotes, notifications, submitQuote, deleteQuote }) => {
     const authors = extractAuthors(quotes);
     return (
         <BrowserRouter>
             <div>
                 <Header user={user} />
-                <div style={{ marginBottom: '55px' }}>
+                <div style={{ marginBottom: 'var(--bottom-nav-height)' }}>
                     <Route
-                        exact
                         path="/home"
                         component={() => (
                             <Quotes
                                 user={user}
                                 quotes={quotes}
-                                toggleStarred={toggleStarred}
+                                submitQuote={submitQuote}
                                 deleteQuote={deleteQuote}
                             />
                         )}
@@ -60,7 +53,7 @@ const Router = ({ user, quotes, notifications, submitQuote, toggleStarred, delet
                             <Authors
                                 quotes={quotes}
                                 user={user}
-                                toggleStarred={toggleStarred}
+                                submitQuote={submitQuote}
                                 deleteQuote={deleteQuote}
                                 authors={authors}
                             />
@@ -73,7 +66,7 @@ const Router = ({ user, quotes, notifications, submitQuote, toggleStarred, delet
                             <AuthorQuotes
                                 user={user}
                                 quotes={quotes}
-                                toggleStarred={toggleStarred}
+                                submitQuote={submitQuote}
                                 deleteQuote={deleteQuote}
                                 author={routerParams.match.params.author}
                             />
@@ -86,7 +79,7 @@ const Router = ({ user, quotes, notifications, submitQuote, toggleStarred, delet
                             <Search
                                 quotes={quotes}
                                 user={user}
-                                toggleStarred={toggleStarred}
+                                submitQuote={submitQuote}
                                 deleteQuote={deleteQuote}
                             />
                         )}
@@ -98,7 +91,7 @@ const Router = ({ user, quotes, notifications, submitQuote, toggleStarred, delet
                             <Starred
                                 quotes={quotes}
                                 user={user}
-                                toggleStarred={toggleStarred}
+                                submitQuote={submitQuote}
                                 deleteQuote={deleteQuote}
                             />
                         )}

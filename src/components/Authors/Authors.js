@@ -5,7 +5,7 @@ import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import './Authors.css';
 
-const Authors = ({ editQuote, toggleStarred, deleteQuote, quotes, authors }) => {
+const Authors = ({ authors }) => {
     return (
         <List>
             {authors.map((author, index) => (

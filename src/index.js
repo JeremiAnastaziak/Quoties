@@ -6,7 +6,7 @@ import App from './components/App/App';
 import registerServiceWorker from './registerServiceWorker';
 import { initFirebase } from './lib/api';
 
-import './styles/colors.css';
+import './styles/config.css';
 
 initFirebase();
 injectTapEventPlugin();
