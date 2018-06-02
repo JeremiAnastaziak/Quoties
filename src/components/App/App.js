@@ -6,13 +6,18 @@ import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import uuid from 'uuid/v1';
 import './App.css';
 
+const extractAuthors = (quotes) =>
+    Object.values(quotes || {})
+        .reduce((curr, next) =>
+            curr.includes(next.quoteAuthor) ? curr : curr.concat(next.quoteAuthor), []);
+
 class App extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             quotes: null,
-            notifications: [],
+            authors: [],
             activePage: 0,
             checkingActiveSession: true,
         };
@@ -21,22 +26,28 @@ class App extends Component {
     componentDidMount() {
         this.getQuotesFromLocalStorage();
 
-        new firebase.auth().
-            onAuthStateChanged(user => {
+        new firebase.auth()
+            .onAuthStateChanged(user => {
                 this.setState({
                     checkingActiveSession: false,
-                    user,
-                    ref: `users/${user.uid}/quotes/`,
-                })
+                });
 
                 if (user) {
+                    this.setState({
+                        user,
+                        ref: `users/${user.uid}/quotes/`,
+                    })
+
                     firebase
-                    .database()
-                    .ref(this.state.ref)
-                    .on('value', snapshot =>
-                        this.setState({
-                            quotes: snapshot.val()
-                        }));
+                        .database()
+                        .ref(this.state.ref)
+                        .on('value', snapshot => {
+                            const quotes = snapshot.val();
+                            this.setState({
+                                authors: extractAuthors(quotes),
+                                quotes
+                            })
+                        })
                 }
             });
     }
@@ -56,16 +67,16 @@ class App extends Component {
     }
 
     submitQuote = (quoteId, quote) => {
-        const handleQuoteSubmit = () =>
-            this.setState({
-                ...this.state,
-                // notifications: [{text: 'Q updated', show: true}]
-                // setTimeout(() => {
-                //     this.setState({
-                //     ...this.state,
-                //     notifications: [{text: 'Quote updated', show: false}]
-                // })}, 400000)
-            });
+        // const handleQuoteSubmit = () =>
+        //     this.setState({
+        //         ...this.state,
+        //         notifications: [{text: 'Q updated', show: true}]
+        //         setTimeout(() => {
+        //             this.setState({
+        //             ...this.state,
+        //             notifications: [{text: 'Quote updated', show: false}]
+        //         })}, 400000)
+        //     });
 
         firebase
             .database()
@@ -86,17 +97,18 @@ class App extends Component {
     render() {
         return (
             <div>
-                {this.state.checkingActiveSession && <LoadingScreen />}
-                {!this.state.user && !this.state.checkingActiveSession ? (
-                    <Login />
-                ) : (
-                    <Router
-                        notifications={this.state.notifications}
-                        quotes={this.state.quotes}
-                        submitQuote={this.submitQuote}
-                        deleteQuote={this.deleteQuote}
-                    />
-                )}
+                {this.state.checkingActiveSession ?
+                    <LoadingScreen /> :
+                    !this.state.user ?
+                        <Login /> :
+                        <Router
+                            notifications={this.state.notifications}
+                            quotes={this.state.quotes}
+                            authors={this.state.authors}
+                            submitQuote={this.submitQuote}
+                            deleteQuote={this.deleteQuote}
+                        />
+                }
             </div>
         );
     }

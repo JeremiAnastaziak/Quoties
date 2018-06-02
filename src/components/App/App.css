@@ -27,3 +27,8 @@ a:-webkit-any-link {
 body.edition-mode .navigation {
   display: none;
 }
+
+.cards > div {
+  margin: 8px;
+}
+

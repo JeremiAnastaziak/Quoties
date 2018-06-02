@@ -2,18 +2,12 @@ import React from 'react';
 import { ListItem } from 'material-ui/List';
 import QuoteOptions from './QuoteOptions';
 import {
-    cyan500,
     pinkA200,
-    transparent,
-    yellow500,
-    grey500
+    yellow500
 } from 'material-ui/styles/colors';
-import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import Card from 'material-ui/Card';
-import classNames from 'classnames';
 import Favs from 'material-ui/svg-icons/toggle/star';
-import NotFavs from 'material-ui/svg-icons/toggle/star-border';
 
 const starStyles = {
     position: 'absolute',
@@ -28,50 +22,37 @@ const Quote = ({
     quote,
     divider,
     index,
-    renderAvatar
 }) => {
+    const { quoteText, quoteAuthor, quoteTags = [] } = quote;
     return (
-        <Card key={index} className={classNames({ starred: quote.starred })}>
+        <Card>
             <ListItem
-                key={index}
-                primaryText={quote.quoteText}
+                primaryText={quoteText}
                 secondaryText={
                     <div className="secondary-wrapper">
-                        <p className="author">{quote.quoteAuthor}</p>
-                        {quote.quoteTags && (
-                            <p className="tags">
-                                {quote.quoteTags.map((tag, position) => (
-                                    <Chip
-                                        className="tag"
-                                        backgroundColor={pinkA200}
-                                        key={`${index}-${position}`}
-                                    >
-                                        {tag}
-                                    </Chip>
-                                ))}
-                            </p>
-                        )}
+                        <p className="author">
+                            {quoteAuthor}
+                        </p>
+                        <p className="tags">
+                        {
+                            quoteTags.map((tag, position) =>
+                                <Chip
+                                    className="tag"
+                                    backgroundColor={pinkA200}
+                                    key={`${index}-${position}`}
+                                >
+                                    {tag}
+                                </Chip>
+                            )
+                        }
+                        </p>
                     </div>
                 }
-                secondaryTextLines={2}
-                leftAvatar={
-                    renderAvatar && (
-                        <Avatar
-                            color={cyan500}
-                            backgroundColor={transparent}
-                            style={{ left: 8 }}
-                        >
-                            {quote.quoteAuthor[0]}
-                        </Avatar>
-                    )
-                }
                 rightIconButton={
-                    <div>
+                    <div style={{ marginTop: '-10px' }}>
                         <QuoteOptions
-                            key={index}
-                            qid={index}
+                            quoteId={index}
                             quote={quote}
-                            starred={quote.starred}
                             submitQuote={submitQuote}
                             deleteQuote={deleteQuote}
                         />

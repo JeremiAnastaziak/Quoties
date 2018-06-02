@@ -19,7 +19,7 @@ export const getImageDimension = (imageFile) => {
         if (!imageFile) {
             reject();
         }
-        const img = new Image;
+        const img = new Image();
         img.onload = function() {
             const { width, height } = img;
             resolve({ width, height });

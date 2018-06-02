@@ -5,7 +5,6 @@ import AutoComplete from 'material-ui/AutoComplete';
 import './NewPost.css'
 import Capture from '../Capture/Capture';
 import { toggleBodyClass } from '../../lib/helpers';
-import { visionApiKey } from 'private/config';
 
 class NewPost extends Component {
 	constructor() {

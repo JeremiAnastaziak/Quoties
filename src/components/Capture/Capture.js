@@ -4,7 +4,9 @@ import CircularProgress from 'material-ui/CircularProgress';
 import CaptureIcon from 'material-ui/svg-icons/image/add-a-photo';
 import { getBase64, getImageDimension } from 'lib/base64';
 import recognizeText, { mapResponse } from 'api/vision';
+// eslint-disable-next-line
 import baseMock from './base64';
+// eslint-disable-next-line
 import dataMock from './mock';
 import { drawRectangle } from './canvas';
 import './index.css';
@@ -137,6 +139,7 @@ export default class Capture extends React.Component {
                     <img
                         ref={(image) => this.image = image}
                         src={this.state.base64}
+                        alt="Scanned"
                         className="capture-image"
                         style={{ position: 'absolute', zIndex: '-1' }}/>
                     {this.state.width && <canvas

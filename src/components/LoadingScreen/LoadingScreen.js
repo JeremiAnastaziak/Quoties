@@ -13,12 +13,9 @@ const screenStyles = {
     alignItems: 'center'
 };
 
-const LoadingScreen = () => {
-    return (
-        <div style={screenStyles}>
-            <CircularProgress size={80} thickness={5} />
-        </div>
-    );
-};
+const LoadingScreen = () =>
+    <div style={screenStyles}>
+        <CircularProgress size={80} thickness={5} />
+    </div>
 
 export default LoadingScreen;

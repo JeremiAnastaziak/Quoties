@@ -1,22 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import Quote from '../Quote/Quote';
+import { withRouter } from 'react-router-dom';
 import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import './Authors.css';
 
-const Authors = ({ authors }) => {
+const Authors = ({ authors, history }) => {
     return (
-        <List>
+        <List className="cards" style={{ padding: 0 }}>
             {authors.map((author, index) => (
-                <Link to={`/authors/${author.toLowerCase().replace(' ','-')}`} key={index}>
-                    <Paper zDepth={1} className="author-wrapper">
-                        <ListItem primaryText={author} />
-                    </Paper>
-                </Link>
+                <Paper
+                    key={index}
+                    className="author-wrapper"
+                    zDepth={1}
+                    onClick={() => history.push(`/quotes/${author.replace(' ','-')}`)}>
+                    <ListItem primaryText={author} />
+                </Paper>
             ))}
         </List>
     );
 };
 
-export default Authors;
+export default withRouter(Authors);

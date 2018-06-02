@@ -21,14 +21,13 @@ const Logged = props => {
             targetOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
-            <Link to="/home">
+            <Link to="/quotes">
                 <MenuItem
                     primaryText="Sign out"
                     onClick={() => {
                         firebase
                             .auth()
                             .signOut()
-                            .then(() => {})
                             .catch(error => {
                                 console.error(error);
                             });
@@ -45,7 +44,7 @@ function Header() {
             <AppBar
                 title={
                     <Link
-                        to="/home"
+                        to="/quotes"
                         style={{
                             color: '#fff',
                             textDecoration: 'none',

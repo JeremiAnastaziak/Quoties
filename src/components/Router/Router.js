@@ -1,6 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, withRouter } from 'react-router-dom';
-import Snackbar from 'material-ui/Snackbar';
+import { BrowserRouter, Route } from 'react-router-dom';
 import NewPost from '../NewPost/NewPost';
 import Quotes from '../Quotes/Quotes';
 import Authors from '../Authors/Authors';
@@ -8,67 +7,30 @@ import Starred from '../Starred/Starred';
 import Search from '../Search/Search';
 import BottomNav from '../BottomNav/BottomNav';
 import Header from '../Header/Header';
-import AuthorQuotes from '../AuthorQuotes/AuthorQuotes';
 
-const extractAuthors = (quotes) =>
-    Object.values(quotes || {})
-        .reduce((curr, next) =>
-            curr.includes(next.quoteAuthor) ? curr : curr.concat(next.quoteAuthor), []);
-
-const Router = ({ user, quotes, notifications, submitQuote, deleteQuote }) => {
-    const authors = extractAuthors(quotes);
+const Router = ({ quotes, authors, notifications, submitQuote, deleteQuote }) => {
     return (
         <BrowserRouter>
             <div>
-                <Header user={user} />
+                <Header />
                 <div style={{ marginBottom: 'var(--bottom-nav-height)' }}>
                     <Route
-                        path="/home"
-                        component={() => (
+                        path="/quotes/:author?"
+                        component={({ match: { params } }) => (
                             <Quotes
-                                user={user}
+                                author={params.author}
                                 quotes={quotes}
                                 submitQuote={submitQuote}
                                 deleteQuote={deleteQuote}
                             />
                         )}
-                    />
-                    <Route
-                        exact
-                        path="/quote/:quoteId?"
-                        component={(props) =>
-                            <NewPost
-                                {...props}
-                                user={user}
-                                quotes={quotes}
-                                submitQuote={submitQuote}
-                                authors={authors}
-                            />
-                        }
                     />
                     <Route
                         exact
                         path="/authors"
                         component={() => (
                             <Authors
-                                quotes={quotes}
-                                user={user}
-                                submitQuote={submitQuote}
-                                deleteQuote={deleteQuote}
                                 authors={authors}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path="/authors/:author"
-                        component={(routerParams) => (
-                            <AuthorQuotes
-                                user={user}
-                                quotes={quotes}
-                                submitQuote={submitQuote}
-                                deleteQuote={deleteQuote}
-                                author={routerParams.match.params.author}
                             />
                         )}
                     />
@@ -78,7 +40,6 @@ const Router = ({ user, quotes, notifications, submitQuote, deleteQuote }) => {
                         component={() => (
                             <Search
                                 quotes={quotes}
-                                user={user}
                                 submitQuote={submitQuote}
                                 deleteQuote={deleteQuote}
                             />
@@ -88,13 +49,25 @@ const Router = ({ user, quotes, notifications, submitQuote, deleteQuote }) => {
                         exact
                         path="/starred"
                         component={() => (
-                            <Starred
-                                quotes={quotes}
-                                user={user}
+                            <Quotes
+                                starred={true}
                                 submitQuote={submitQuote}
                                 deleteQuote={deleteQuote}
+                                quotes={quotes}
                             />
                         )}
+                    />
+                    <Route
+                        exact
+                        path="/quote/:quoteId?"
+                        component={(props) =>
+                            <NewPost
+                                {...props}
+                                quotes={quotes}
+                                authors={authors}
+                                submitQuote={submitQuote}
+                            />
+                        }
                     />
                     {/* {notifications.map(notification => (
                         <Snackbar

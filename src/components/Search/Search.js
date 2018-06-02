@@ -27,9 +27,7 @@ class Search extends React.Component {
     };
 
     render() {
-        const { deleteQuote, quotes } = this.props;
-
-        const searchText = this.state.searchText || null;
+        const { quotes } = this.props;
 
         return (
             <div>
