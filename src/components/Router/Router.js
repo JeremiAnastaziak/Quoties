@@ -3,7 +3,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import NewPost from '../NewPost/NewPost';
 import Quotes from '../Quotes/Quotes';
 import Authors from '../Authors/Authors';
-import Starred from '../Starred/Starred';
 import Search from '../Search/Search';
 import BottomNav from '../BottomNav/BottomNav';
 import Header from '../Header/Header';
@@ -50,7 +49,7 @@ const Router = ({ quotes, authors, notifications, submitQuote, deleteQuote }) =>
                         path="/starred"
                         component={() => (
                             <Quotes
-                                starred={true}
+                                starred
                                 submitQuote={submitQuote}
                                 deleteQuote={deleteQuote}
                                 quotes={quotes}

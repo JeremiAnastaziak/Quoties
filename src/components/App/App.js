@@ -30,14 +30,11 @@ class App extends Component {
             .onAuthStateChanged(user => {
                 this.setState({
                     checkingActiveSession: false,
-                });
+                    user,
+                    ref: `users/${(user && user.uid) || null}/quotes/`,
+                })
 
                 if (user) {
-                    this.setState({
-                        user,
-                        ref: `users/${user.uid}/quotes/`,
-                    })
-
                     firebase
                         .database()
                         .ref(this.state.ref)
