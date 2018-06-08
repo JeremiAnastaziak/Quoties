@@ -41,19 +41,12 @@ export default class Capture extends React.Component {
         });
         this.canvas.getContext("2d").clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // const words = mapResponse(this.state.data, this.state.scale);
-        // this.setState({ words });
-
-        // this.state.words.forEach(({ boundingPoly: { vertices } }) =>
-        //     drawRectangle(this.canvas, vertices, 3, '#00bcd4'))
-
         this.toggleFetching();
         recognizeText(base64)
             .then((data) => mapResponse(data, this.state.scale))
             .then((words) => {
-                console.log(this.canvas, words);
-                words.forEach(({ boundingPoly: { vertices } }) =>
-                    drawRectangle(this.canvas, vertices, 3, '#00bcd4'))
+                // words.forEach(({ boundingPoly: { vertices } }) =>
+                    // drawRectangle(this.canvas, vertices, 3, '#00bcd4'))
                 this.setState({ words });
             })
             .finally(this.toggleFetching)
@@ -94,9 +87,9 @@ export default class Capture extends React.Component {
                 this.props.fillQuoteText(text);
                 setTimeout(() => {
                     this.canvas.getContext("2d").clearRect(0, 0, this.canvas.width, this.canvas.height);
-                    this.state.words
-                        .forEach(({ boundingPoly: { vertices } }) =>
-                            drawRectangle(this.canvas, vertices, 3, '#00bcd4'))
+                    // this.state.words
+                    //     .forEach(({ boundingPoly: { vertices } }) =>
+                    //         drawRectangle(this.canvas, vertices, 3, '#00bcd4'))
                     this.setState({
                         indexStart: null,
                         indexEnd: null,
@@ -118,8 +111,9 @@ export default class Capture extends React.Component {
     render() {
         return (
             <div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: '15px' }}>
-                    {this.state.fetching && <CircularProgress />}
+                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', paddingBottom: '15px' }}>
+                    <label htmlFor="inputFile">Scan text from photo</label>
+                    {this.state.fetching && <CircularProgress style={{margin: '0 5px'}}/>}
                     <IconButton
                         onClick={() => this.file.click()}
                         style={{
@@ -128,6 +122,7 @@ export default class Capture extends React.Component {
                             margin: '0 10px'
                         }}>
                         <input type="file"
+                            id="inputFile"
                             className="input-file"
                             ref={(dom) => this.file = dom}
                             accept="image/*"
@@ -135,18 +130,21 @@ export default class Capture extends React.Component {
                         <CaptureIcon />
                     </IconButton>
                 </div>
-                <div style={{position: 'relative', padding: '0 10px 10px'}}>
+                <div style={{position: 'relative', padding: '0 10px 10px', maxWidth: 'var(--app-max-width)'}}>
+                    {this.state.width ?
+                        <p>To extract text, tap at the image on starting and ending word.</p> : ''}
                     <img
                         ref={(image) => this.image = image}
                         src={this.state.base64}
-                        alt="Scanned"
                         className="capture-image"
-                        style={{ position: 'absolute', zIndex: '-1' }}/>
-                    {this.state.width && <canvas
-                        onClick={this.handleCanvasClick}
-                        ref={(canvas) => this.canvas = canvas}
-                        width={this.image.offsetWidth} height={this.image.offsetHeight}
-                    />}
+                        style={{ position: 'absolute', zIndex: '-1', marginBottom: 'var(--bottom-nav-height)' }}/>
+                    {this.state.width &&
+                        <canvas
+                            onClick={this.handleCanvasClick}
+                            ref={(canvas) => this.canvas = canvas}
+                            width={this.image.offsetWidth} height={this.image.offsetHeight}
+                        />
+                        }
                 </div>
             </div>
         )

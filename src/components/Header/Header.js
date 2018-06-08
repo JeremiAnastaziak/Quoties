@@ -40,8 +40,9 @@ const Logged = props => {
 
 function Header() {
     return (
-        <div>
+        <div style={{backgroundColor: 'var(--color-accent)'}}>
             <AppBar
+                style={{ maxWidth: 'var(--app-max-width)', margin: '0 auto', boxShadow: 'none'}}
                 title={
                     <Link
                         to="/quotes"

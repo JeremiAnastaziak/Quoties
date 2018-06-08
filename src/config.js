@@ -3,5 +3,5 @@ export const routes = [
     { path: '/authors',     label: 'Authors' },
     { path: '/search',      label: 'Search' },
     { path: '/starred',     label: 'Starred' },
-    { path: '/quote',       label: 'Quote' },
+    { path: '/add',       label: 'Quote' },
 ]

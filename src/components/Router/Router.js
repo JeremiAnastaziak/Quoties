@@ -12,7 +12,19 @@ const Router = ({ quotes, authors, notifications, submitQuote, deleteQuote }) =>
         <BrowserRouter>
             <div>
                 <Header />
-                <div style={{ marginBottom: 'var(--bottom-nav-height)' }}>
+                <div style={{ margin: '0 auto var(--bottom-nav-height)', maxWidth: 'var(--app-max-width)' }}>
+                    <Route
+                        exact
+                        path="/"
+                        component={({ match: { params } }) => (
+                            <Quotes
+                                author={params.author}
+                                quotes={quotes}
+                                submitQuote={submitQuote}
+                                deleteQuote={deleteQuote}
+                            />
+                        )}
+                    />
                     <Route
                         path="/quotes/:author?"
                         component={({ match: { params } }) => (
@@ -58,7 +70,7 @@ const Router = ({ quotes, authors, notifications, submitQuote, deleteQuote }) =>
                     />
                     <Route
                         exact
-                        path="/quote/:quoteId?"
+                        path="/add/:quoteId?"
                         component={(props) =>
                             <NewPost
                                 {...props}

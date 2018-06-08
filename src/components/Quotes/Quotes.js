@@ -2,9 +2,10 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Quote from '../Quote/Quote';
 import Chip from 'material-ui/Chip';
+import RaisedButton from 'material-ui/RaisedButton';
 import './index.css';
 
-const Quotes = ({ history, author, starred, quotes = {}, submitQuote, deleteQuote }) => {
+const Quotes = ({ history, author, starred, quotes, submitQuote, deleteQuote }) => {
     return (
         <div>
             { author &&
@@ -14,7 +15,7 @@ const Quotes = ({ history, author, starred, quotes = {}, submitQuote, deleteQuot
                 </Chip>
             }
             <div className="cards">
-                { Object.keys(quotes)
+                { quotes && Object.keys(quotes)
                     .reverse()
                     .filter(index => !author || quotes[index].quoteAuthor === author.replace('-', ' '))
                     .filter(index => !starred || quotes[index].starred)
@@ -26,6 +27,16 @@ const Quotes = ({ history, author, starred, quotes = {}, submitQuote, deleteQuot
                             submitQuote={submitQuote}
                             deleteQuote={deleteQuote}
                         />))
+                }
+                {!quotes &&
+                    <div style={{textAlign: 'center'}}>
+                        <p>You don't have any quotes yet.</p>
+                        <RaisedButton
+                            onClick={() => history.push('/add')}
+                            label='Add your first quote'
+                            primary
+                        />
+                    </div>
                 }
             </div>
         </div>

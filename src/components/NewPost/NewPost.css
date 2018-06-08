@@ -1,11 +1,6 @@
-.wrapper {
-	max-width: 500px;
-	margin: 0 auto;
-	padding: 0;
-}
-
 .field label {
 	left: 10px;
+	font-size: 18px;
 }
 
 .field textarea, .field input {

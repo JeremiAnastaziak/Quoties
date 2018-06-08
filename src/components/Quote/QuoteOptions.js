@@ -29,7 +29,7 @@ const QuoteOptions = ({ deleteQuote, submitQuote, quoteId, quote, history }) => 
             <MenuItem onTouchTap={() => deleteQuote(quoteId)}>
                 Delete
             </MenuItem>
-            <MenuItem onClick={() => history.push(`/quote/${quoteId}`, { quoteId })}>
+            <MenuItem onClick={() => history.push(`/add/${quoteId}`, { quoteId })}>
                 Edit
             </MenuItem>
             <MenuItem onTouchTap={() => submitQuote(quoteId, { ...quote, starred: !quote.starred })}>

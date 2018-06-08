@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import Snackbar from 'material-ui/Snackbar';
 import Router from '../Router/Router';
 import Login from '../Login/Login';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
@@ -56,10 +57,12 @@ class App extends Component {
     getQuotesFromLocalStorage() {
         const storageDate = window.localStorage.getItem('quoties');
         if (storageDate && !this.state.user) {
-            const { quotes } = JSON.parse(storageDate);
-            this.setState({
-                quotes
-            })
+            const { quotes, user } = JSON.parse(storageDate);
+            if(this.state.user && this.state.user.uid === user && user.uid) {
+                this.setState({
+                    quotes
+                })
+            }
         }
     }
 
@@ -106,6 +109,7 @@ class App extends Component {
                             deleteQuote={this.deleteQuote}
                         />
                 }
+
             </div>
         );
     }
