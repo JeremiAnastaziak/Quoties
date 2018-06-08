@@ -1,7 +1,6 @@
 import React from 'react';
 import * as firebase from 'firebase';
-import { Link } from 'react-router-dom';
-
+import { withRouter } from 'react-router-dom';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
@@ -11,6 +10,12 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import './Header.css';
 
 const Logged = props => {
+    const logOut = () =>
+        firebase
+            .auth()
+            .signOut()
+            .catch(console.error);
+
     return (
         <IconMenu
             iconButtonElement={
@@ -21,44 +26,29 @@ const Logged = props => {
             targetOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
-            <Link to="/quotes">
-                <MenuItem
-                    primaryText="Sign out"
-                    onClick={() => {
-                        firebase
-                            .auth()
-                            .signOut()
-                            .catch(error => {
-                                console.error(error);
-                            });
-                    }}
-                />
-            </Link>
+            <MenuItem
+                primaryText="Sign out"
+                onClick={logOut}
+            />
         </IconMenu>
     );
 };
 
-function Header() {
+function Header(props) {
+    const { history } = props;
+    const goToQuotes = () => history.push('/quotes');
+
     return (
         <div style={{backgroundColor: 'var(--color-accent)'}}>
             <AppBar
                 style={{ maxWidth: 'var(--app-max-width)', margin: '0 auto', boxShadow: 'none'}}
-                title={
-                    <Link
-                        to="/quotes"
-                        style={{
-                            color: '#fff',
-                            textDecoration: 'none',
-                            fontWeight: '300'
-                        }}
-                    >
-                        Quoties
-                    </Link>
-                }
+                title="Quoties"
+                titleStyle={{fontWeight: 300, cursor: 'pointer'}}
+                onTitleTouchTap={goToQuotes}
                 iconElementRight={<Logged />}
             />
         </div>
     );
 }
 
-export default Header;
+export default withRouter(Header);

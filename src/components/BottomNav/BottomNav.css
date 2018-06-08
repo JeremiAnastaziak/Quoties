@@ -1,9 +1,7 @@
 .navigation {
-    position: fixed;
-    bottom: 0;
+    height: var(--bottom-nav-height);
     width: 100vw;
-    left: 0;
-    z-index: 1;
+    overflow: hidden;
     border-bottom: 1px solid var(--color-grey);
 }
 button.active svg {

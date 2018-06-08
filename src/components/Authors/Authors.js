@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
+import Encouragement from '../Encouragement/Encouragement';
 import './Authors.css';
 
 const Authors = ({ authors, history }) => {
@@ -16,6 +17,7 @@ const Authors = ({ authors, history }) => {
                     <ListItem primaryText={author} />
                 </Paper>
             ))}
+            {!authors.length && <Encouragement page="author"/>}
         </List>
     );
 };

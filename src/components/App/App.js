@@ -17,10 +17,14 @@ class App extends Component {
         super(props);
 
         this.state = {
-            quotes: null,
+            quotes: {},
             authors: [],
             activePage: 0,
             checkingActiveSession: true,
+            notification: {
+                text: '',
+                open: false,
+            }
         };
     }
 
@@ -66,23 +70,18 @@ class App extends Component {
         }
     }
 
-    submitQuote = (quoteId, quote) => {
-        // const handleQuoteSubmit = () =>
-        //     this.setState({
-        //         ...this.state,
-        //         notifications: [{text: 'Q updated', show: true}]
-        //         setTimeout(() => {
-        //             this.setState({
-        //             ...this.state,
-        //             notifications: [{text: 'Quote updated', show: false}]
-        //         })}, 400000)
-        //     });
+    notify = (text) => {
+        this.setState({
+            notification: { text, open: true }
+        })
+    }
 
+    submitQuote = (quoteId, quote) => {
         firebase
             .database()
             .ref(this.state.ref.concat(quoteId || uuid()))
             .set({ ...quote })
-            // .then(handleQuoteSubmit)
+            .then(() => this.notify('Quote submitted'))
             .catch(console.error);
     };
 
@@ -91,6 +90,7 @@ class App extends Component {
             .database()
             .ref(this.state.ref.concat(quoteId))
             .remove()
+            .then(() => this.notify('Quote deleted'))
             .catch(console.error);
     };
 
@@ -102,14 +102,20 @@ class App extends Component {
                     !this.state.user ?
                         <Login /> :
                         <Router
-                            notifications={this.state.notifications}
                             quotes={this.state.quotes}
                             authors={this.state.authors}
                             submitQuote={this.submitQuote}
                             deleteQuote={this.deleteQuote}
                         />
                 }
-
+                <Snackbar
+                    open={this.state.notification.open}
+                    message={this.state.notification.text}
+                    autoHideDuration={3000}
+                    onRequestClose={() => this.setState({
+                        notification: { text: '', open: false }
+                    })}
+                />
             </div>
         );
     }

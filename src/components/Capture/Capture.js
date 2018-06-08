@@ -1,5 +1,6 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import CaptureIcon from 'material-ui/svg-icons/image/add-a-photo';
 import { getBase64, getImageDimension } from 'lib/base64';
@@ -23,10 +24,6 @@ export default class Capture extends React.Component {
             indexStart: null,
             indexEnd: null,
         }
-    }
-
-    componentDidMount() {
-
     }
 
     handleImageChange = async ({ target: { files } }) => {
@@ -111,24 +108,34 @@ export default class Capture extends React.Component {
     render() {
         return (
             <div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', paddingBottom: '15px' }}>
-                    <label htmlFor="inputFile">Scan text from photo</label>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '5px' }}>
+                    {/* <label htmlFor="inputFile">Scan text from photo</label> */}
                     {this.state.fetching && <CircularProgress style={{margin: '0 5px'}}/>}
-                    <IconButton
+                    <RaisedButton
                         onClick={() => this.file.click()}
-                        style={{
-                            boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 5px, rgba(0, 0, 0, 0.23) 0px 1px 10px',
-                            borderRadius: '100%',
-                            margin: '0 10px'
-                        }}>
+                        labelPosition="before"
+                        label="Scan text from photo"
+                        secondary={true}
+                        fullWidth
+                        icon={<CaptureIcon />}
+                    >
                         <input type="file"
                             id="inputFile"
                             className="input-file"
                             ref={(dom) => this.file = dom}
                             accept="image/*"
                             onChange={this.handleImageChange}/>
+                    </ RaisedButton>
+                    {/* <IconButton
+                        onClick={() => this.file.click()}
+                        style={{
+                            boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 5px, rgba(0, 0, 0, 0.23) 0px 1px 10px',
+                            borderRadius: '100%',
+                            margin: '0 10px'
+                        }}>
+
                         <CaptureIcon />
-                    </IconButton>
+                    </IconButton> */}
                 </div>
                 <div style={{position: 'relative', padding: '0 10px 10px', maxWidth: 'var(--app-max-width)'}}>
                     {this.state.width ?
@@ -137,7 +144,7 @@ export default class Capture extends React.Component {
                         ref={(image) => this.image = image}
                         src={this.state.base64}
                         className="capture-image"
-                        style={{ position: 'absolute', zIndex: '-1', marginBottom: 'var(--bottom-nav-height)' }}/>
+                        style={{ position: 'absolute', zIndex: '-1' }}/>
                     {this.state.width &&
                         <canvas
                             onClick={this.handleCanvasClick}

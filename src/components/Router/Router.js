@@ -1,94 +1,46 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import NewPost from '../NewPost/NewPost';
-import Quotes from '../Quotes/Quotes';
-import Authors from '../Authors/Authors';
-import Search from '../Search/Search';
+import ResizeObserver from 'react-resize-observer';
+import { BrowserRouter } from 'react-router-dom';
 import BottomNav from '../BottomNav/BottomNav';
 import Header from '../Header/Header';
+import Routes from '../Routes/Routes';
 
-const Router = ({ quotes, authors, notifications, submitQuote, deleteQuote }) => {
+const Router = props => {
+    const { quotes, authors, submitQuote, deleteQuote } = props;
+
+    const hideBottomNavOnMobileDeviceKeyboard = (rect) => {
+        console.log(rect);
+        const html = document.querySelector('html');
+        if(rect.height < 300) {
+            html.style.setProperty("--bottom-nav-height", "0px");
+            return;
+        }
+        html.style.setProperty("--bottom-nav-height", "57px");
+    }
+
     return (
         <BrowserRouter>
             <div>
                 <Header />
-                <div style={{ margin: '0 auto var(--bottom-nav-height)', maxWidth: 'var(--app-max-width)' }}>
-                    <Route
-                        exact
-                        path="/"
-                        component={({ match: { params } }) => (
-                            <Quotes
-                                author={params.author}
-                                quotes={quotes}
-                                submitQuote={submitQuote}
-                                deleteQuote={deleteQuote}
-                            />
-                        )}
+                <div style={{
+                    maxWidth: 'var(--app-max-width)',
+                    minHeight: 'var(--app-wrapper-height)',
+                    margin: '0 auto',
+                }}>
+                    <div style={{
+                        height: 'var(--app-wrapper-height)',
+                        overflowY: 'scroll',
+                    }}>
+                    <ResizeObserver onResize={hideBottomNavOnMobileDeviceKeyboard} />
+                    <Routes
+                        quotes={quotes}
+                        authors={authors}
+                        submitQuote={submitQuote}
+                        deleteQuote={deleteQuote}
                     />
-                    <Route
-                        path="/quotes/:author?"
-                        component={({ match: { params } }) => (
-                            <Quotes
-                                author={params.author}
-                                quotes={quotes}
-                                submitQuote={submitQuote}
-                                deleteQuote={deleteQuote}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path="/authors"
-                        component={() => (
-                            <Authors
-                                authors={authors}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path="/search"
-                        component={() => (
-                            <Search
-                                quotes={quotes}
-                                submitQuote={submitQuote}
-                                deleteQuote={deleteQuote}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path="/starred"
-                        component={() => (
-                            <Quotes
-                                starred
-                                submitQuote={submitQuote}
-                                deleteQuote={deleteQuote}
-                                quotes={quotes}
-                            />
-                        )}
-                    />
-                    <Route
-                        exact
-                        path="/add/:quoteId?"
-                        component={(props) =>
-                            <NewPost
-                                {...props}
-                                quotes={quotes}
-                                authors={authors}
-                                submitQuote={submitQuote}
-                            />
-                        }
-                    />
-                    {/* {notifications.map(notification => (
-                        <Snackbar
-                            style={{ bottom: '57px' }}
-                            open={true}
-                            message={notification.text}
-                        />
-                    ))} */}
-                    <BottomNav />
+                    </div>
                 </div>
+                <BottomNav />
             </div>
         </BrowserRouter>
     );

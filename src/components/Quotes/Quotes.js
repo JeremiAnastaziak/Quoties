@@ -1,9 +1,9 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import Quote from '../Quote/Quote';
 import Chip from 'material-ui/Chip';
-import RaisedButton from 'material-ui/RaisedButton';
-import './index.css';
+import CircularProgress from 'material-ui/CircularProgress';
+import Quote from '../Quote/Quote';
+import Encouragement from '../Encouragement/Encouragement';
 
 const Quotes = ({ history, author, starred, quotes, submitQuote, deleteQuote }) => {
     return (
@@ -28,16 +28,10 @@ const Quotes = ({ history, author, starred, quotes, submitQuote, deleteQuote }) 
                             deleteQuote={deleteQuote}
                         />))
                 }
-                {!quotes &&
-                    <div style={{textAlign: 'center'}}>
-                        <p>You don't have any quotes yet.</p>
-                        <RaisedButton
-                            onClick={() => history.push('/add')}
-                            label='Add your first quote'
-                            primary
-                        />
-                    </div>
-                }
+                <div style={{textAlign: 'center'}}>
+                    {quotes && !Object.keys(quotes).length && <CircularProgress />}
+                    {quotes === null && <Encouragement page="quote" />}
+                </div>
             </div>
         </div>
     );

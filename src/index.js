@@ -4,9 +4,10 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import App from './components/App/App';
 import registerServiceWorker from './registerServiceWorker';
-import { initFirebase } from './lib/api';
+import { initFirebase } from './api/auth';
 
-import './styles/config.css';
+import './styles/variables.css';
+import './styles/reset.css';
 
 initFirebase();
 injectTapEventPlugin();

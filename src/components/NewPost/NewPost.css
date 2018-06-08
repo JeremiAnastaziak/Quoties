@@ -7,13 +7,6 @@
 	padding: 0 10px !important;
 }
 
-.button-submit {
-	width: calc(100% - 20px);
-	margin: 20px 10px;
-	box-sizing: border-box;
-	display: block;
-}
-
 .input-file {
 	display: none;
 }

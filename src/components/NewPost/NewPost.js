@@ -4,7 +4,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import './NewPost.css'
 import Capture from '../Capture/Capture';
-import { toggleBodyClass } from '../../lib/helpers';
 
 class NewPost extends Component {
 	constructor() {
@@ -14,10 +13,8 @@ class NewPost extends Component {
 			quoteAuthor: '',
 			quoteTitle: '',
 			quoteTags: '',
-			edition: false,
 			data: { responses: [{ textAnnotations: []}]},
 		}
-
 	}
 
 	componentDidMount() {
@@ -28,7 +25,6 @@ class NewPost extends Component {
 
 			this.setState({
 				...quote,
-				edition: true,
 				quoteTags: quote.quoteTags && (quote.quoteTags.join(' ') + ' ')
 			})
 		}
@@ -42,6 +38,7 @@ class NewPost extends Component {
 
 	submitQuote = (e) => {
 		e.preventDefault();
+
 		const { quoteId } = this.props.match.params;
 
 		this.props.submitQuote(quoteId, {
@@ -55,19 +52,18 @@ class NewPost extends Component {
 	render() {
 		return (
 			<div className="wrapper">
-				<form ref={(form) => this.quoteForm = form} onSubmit={(e) => this.submitQuote(e)}>
+				<form ref={(form) => this.quoteForm = form}>
 					<AutoComplete
 						className="field"
 						name="quoteAuthor"
 						ref={(input) => this.qAuthor = input}
 						onUpdateInput={value => this.setState({ quoteAuthor: value })}
-						onFocus={e => this.setState({ edition: true })}
-						onBlur={e => this.setState({ edition: false })}
 						floatingLabelText="Author"
 						fullWidth
 						required
 						searchText={this.state.quoteAuthor}
 						filter={AutoComplete.caseInsensitiveFilter}
+						autoComplete="off"
 						dataSource={this.props.authors}
 						floatingLabelFixed
 					/>
@@ -76,13 +72,12 @@ class NewPost extends Component {
 						name="quoteText"
 						ref={(input) => this.qText = input}
 						onChange={this.updateInput}
-						onFocus={e => this.setState({ edition: true })}
-						onBlur={e => this.setState({ edition: false })}
 						floatingLabelText="Text"
 						multiLine
 						rows={3}
 						fullWidth
 						required
+						autoComplete="off"
 						value={this.state.quoteText}
 						floatingLabelFixed
 					/>
@@ -90,9 +85,8 @@ class NewPost extends Component {
 						className="field"
 						name="quoteTitle"
 						onChange={this.updateInput}
-						onFocus={e => this.setState({ edition: true })}
-						onBlur={e => this.setState({ edition: false })}
 						floatingLabelText="Source"
+						autoComplete="off"
 						fullWidth
 						value={this.state.quoteTitle}
 						floatingLabelFixed
@@ -101,20 +95,22 @@ class NewPost extends Component {
 						className="field"
 						name="quoteTags"
 						onChange={this.updateInput}
-						onFocus={e => this.setState({ edition: true })}
-						onBlur={e => this.setState({ edition: false })}
 						floatingLabelText="Tags"
+						autoComplete="off"
 						fullWidth
 						value={this.state.quoteTags}
 						floatingLabelFixed
 					/>
-					<RaisedButton
-						className="button-submit"
-						type="submit"
-						label={this.props.edition ? 'Update' : 'Save'}
-						primary
-					/>
-					{this.state.edition ? toggleBodyClass('edition-mode') : ''}
+					<div style={{padding: '5px'}}>
+						<RaisedButton
+							className="button"
+							type="input"
+							fullWidth
+							onClick={this.submitQuote}
+							label={this.props.match.params.quoteId ? 'Update quote' : 'Submit quote'}
+							primary
+						/>
+					</div>
 				</form>
 				<Capture fillQuoteText={(quoteText) => this.setState({ quoteText })}/>
 			</div>
