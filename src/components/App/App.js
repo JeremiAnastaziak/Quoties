@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import Snackbar from 'material-ui/Snackbar';
+import uuid from 'uuid/v1';
 import Router from '../Router/Router';
 import Login from '../Login/Login';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
-import uuid from 'uuid/v1';
+import hideBottomNav from '../../lib/hideBottomNav';
 import './App.css';
 
 const extractAuthors = (quotes) =>
@@ -30,6 +31,7 @@ class App extends Component {
 
     componentDidMount() {
         this.getQuotesFromLocalStorage();
+        window.addEventListener('resize', hideBottomNav);
 
         new firebase.auth()
             .onAuthStateChanged(user => {
