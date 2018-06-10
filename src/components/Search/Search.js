@@ -5,48 +5,46 @@ import './Search.css';
 import Quotes from '../Quotes/Quotes';
 
 class Search extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            searchText: ''
-        };
-    }
+  constructor() {
+    super();
+    this.state = {
+      searchText: '',
+    };
+  }
 
     filterQuotes = (quotes, phrase) => {
-        if (!phrase) return quotes;
-        let quotesRef = [];
-        Object.keys(quotes).filter(
-            index =>
-                Object.values(quotes[index])
-                    .join(' ')
-                    .toUpperCase()
-                    .includes(phrase.toUpperCase()) && quotesRef.push(quotes[index])
-        );
-        return quotesRef;
+      if (!phrase) return quotes;
+      const quotesRef = [];
+      Object.keys(quotes).filter(index =>
+        Object.values(quotes[index])
+          .join(' ')
+          .toUpperCase()
+          .includes(phrase.toUpperCase()) && quotesRef.push(quotes[index]));
+      return quotesRef;
     };
 
     render() {
-        const { quotes } = this.props;
+      const { quotes } = this.props;
 
-        return (
-            <div>
-                <Card className="panel">
-                    <TextField
-                        ref={input => (this.input = input)}
-                        onChange={e => this.setState({ searchText: e.target.value })}
-                        name="search"
-                        placeholder="What do you search for?"
-                        fullWidth
-                    />
-                </Card>
+      return (
+        <div>
+          <Card className="panel">
+            <TextField
+              ref={input => (this.input = input)}
+              onChange={e => this.setState({ searchText: e.target.value })}
+              name="search"
+              placeholder="What do you search for?"
+              fullWidth
+            />
+          </Card>
 
-                <Quotes
-                    {...this.props}
-                    quotes={this.filterQuotes({ ...quotes }, this.state.searchText)}
-                />
+          <Quotes
+            {...this.props}
+            quotes={this.filterQuotes({ ...quotes }, this.state.searchText)}
+          />
 
-            </div>
-        );
+        </div>
+      );
     }
 }
 

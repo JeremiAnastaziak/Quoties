@@ -12,10 +12,12 @@ import './styles/reset.css';
 initFirebase();
 injectTapEventPlugin();
 
-ReactDOM.render((
+ReactDOM.render(
+  (
     <MuiThemeProvider>
-        <App />
+      <App />
     </MuiThemeProvider>
-), document.getElementById('root'));
+  ), document.getElementById('root'),
+);
 
 registerServiceWorker();

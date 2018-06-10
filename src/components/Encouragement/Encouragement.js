@@ -3,13 +3,13 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { withRouter } from 'react-router-dom';
 
 const Encouragement = ({ page, history }) =>
-  <div style={{textAlign: 'center'}}>
+  (<div style={{ textAlign: 'center' }}>
     <p>You don't have any {page} yet.</p>
     <RaisedButton
-        onClick={() => history.push('/add')}
-        label={`Add your first quote`}
-        primary
+      onClick={() => history.push('/add')}
+      label="Add your first quote"
+      primary
     />
-  </div>
+  </div>);
 
-export default withRouter(Encouragement)
+export default withRouter(Encouragement);
