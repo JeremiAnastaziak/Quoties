@@ -8,7 +8,7 @@ import Search from '../Search/Search';
 
 const Routes = (props) => {
   const {
-    quotes, authors, submitQuote, deleteQuote,
+    quotes = {}, authors, submitQuote, deleteQuote,
   } = props;
   return (
     <div>
@@ -72,7 +72,7 @@ const Routes = (props) => {
         path="/add/:quoteId?"
         component={rProps =>
             (<NewPost
-              quote={quotes[get(rProps, ['match', 'params', 'quoteId'])]}
+              quote={quotes ? quotes[get(rProps, ['match', 'params', 'quoteId'])] : undefined}
               quoteId={get(rProps, ['match', 'params', 'quoteId'])}
               authors={authors}
               submitQuote={submitQuote}

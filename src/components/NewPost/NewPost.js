@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import get from 'lodash.get';
+import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import Capture from '../Capture/Capture';
@@ -18,15 +20,25 @@ class NewPost extends Component {
       ...this.state,
       quoteTags: this.state.quoteTags ?
         this.state.quoteTags.trim().split(' ') :
-        this.props.quoteTags || [],
+        get(this.props.quote, 'quoteTags') || [],
     };
 
     this.props.submitQuote(this.props.quoteId, quote);
   }
 
+  clearForm = () => {
+    this.props.history.push('/add');
+  }
+
   render() {
     return (
       <section>
+        <FlatButton
+          style={{ position: 'absolute', right: 0 }}
+          onClick={this.clearForm}
+          label="Clear"
+          primary
+        />
         <form>
           <AutoComplete
             name="quoteAuthor"
@@ -75,4 +87,4 @@ class NewPost extends Component {
   }
 }
 
-export default NewPost;
+export default withRouter(NewPost);
