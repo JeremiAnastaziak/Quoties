@@ -8,14 +8,15 @@ import './Authors.css';
 const Authors = ({ authors, history }) => {
     return (
         <List className="cards" style={{ padding: 0 }}>
-            {authors.map((author, index) => (
-                <Paper
-                    key={index}
-                    className="author-wrapper"
-                    zDepth={1}
-                    onClick={() => history.push(`/quotes/${author.replace(' ','-')}`)}>
-                    <ListItem primaryText={author} />
-                </Paper>
+            {authors
+                .map((author, index) => (
+                    <Paper
+                        key={index}
+                        className="author-wrapper"
+                        zDepth={1}
+                        onClick={() => history.push(`/quotes/${author.replace(' ','-')}`)}>
+                        <ListItem primaryText={author} />
+                    </Paper>
             ))}
             {!authors.length && <Encouragement page="author"/>}
         </List>

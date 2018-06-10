@@ -37,7 +37,7 @@ const QuoteOptions = ({ deleteQuote, submitQuote, quoteId, quote, history }) => 
             </MenuItem>
             <MenuItem>
                 <FacebookShareButton
-                    url={'https://jeremianastaziak.github.io/'}
+                    url={'https://quoties.github.io/'}
                     quote={quote.quoteText}
                     hashtag={'#' + quote.quoteAuthor.replace(' ', '')}
                 >

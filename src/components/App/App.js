@@ -11,7 +11,8 @@ import './App.css';
 const extractAuthors = (quotes) =>
     Object.values(quotes || {})
         .reduce((curr, next) =>
-            curr.includes(next.quoteAuthor) ? curr : curr.concat(next.quoteAuthor), []);
+            curr.includes(next.quoteAuthor) ? curr : curr.concat(next.quoteAuthor), [])
+        .sort((a,b) => a[0] > b[0]);
 
 class App extends Component {
     constructor(props) {
