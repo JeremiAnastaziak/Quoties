@@ -5,8 +5,8 @@ import MenuItem from 'material-ui/MenuItem';
 import { grey400 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import './Quote.css';
 import { ShareButtons } from 'react-share';
+import './Quote.css';
 
 const { FacebookShareButton } = ShareButtons;
 
@@ -31,10 +31,10 @@ const QuoteOptions = ({
     style={{ position: 'absolute', top: '5px', right: '0' }}
   >
     <MenuItem onTouchTap={() => deleteQuote(quoteId)}>
-                Delete
+      Delete
     </MenuItem>
     <MenuItem onClick={() => history.push(`/add/${quoteId}`, { quoteId })}>
-                Edit
+      Edit
     </MenuItem>
     <MenuItem onTouchTap={() => submitQuote(quoteId, { ...quote, starred: !quote.starred })}>
       {quote.starred ? 'Remove from favourite' : 'Add to favourite'}
@@ -45,7 +45,7 @@ const QuoteOptions = ({
         quote={quote.quoteText}
         hashtag={`#${quote.quoteAuthor.replace(' ', '')}`}
       >
-                    Share on Facebook
+        Share on Facebook
       </FacebookShareButton>
     </MenuItem>
   </IconMenu>

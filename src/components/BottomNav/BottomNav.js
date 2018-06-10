@@ -10,21 +10,29 @@ import StarredIcon from 'material-ui/svg-icons/toggle/star';
 import classNames from 'classnames';
 import { routes } from 'config.js';
 
-import './BottomNav.css';
+const paperStyles = {
+  height: 'var(--bottom-nav-height)',
+  width: '100vw',
+  overflow: 'hidden',
+  borderBottom: '1px solid var(--color-grey)',
+  position: 'fixed',
+  zIndex: '1',
+  bottom: '0',
+};
 
-function BottomNav({ history }) {
+const iconsMap = {
+  Home: <HomeIcon />,
+  Authors: <AuthorsIcon />,
+  Search: <SearchIcon />,
+  Starred: <StarredIcon />,
+  Quote: <AddIcon />,
+};
+
+const BottomNav = ({ history }) => {
   const matchPathname = route => window.location.pathname.includes(route.slice(1));
 
-  const iconsMap = {
-    Home: <HomeIcon />,
-    Authors: <AuthorsIcon />,
-    Search: <SearchIcon />,
-    Starred: <StarredIcon />,
-    Quote: <AddIcon />,
-  };
-
   return (
-    <Paper zDepth={1} className="navigation">
+    <Paper zDepth={1} style={paperStyles}>
       <BottomNavigation>
         {routes.map(route => (
           <BottomNavigationItem
@@ -38,6 +46,6 @@ function BottomNav({ history }) {
       </BottomNavigation>
     </Paper>
   );
-}
+};
 
 export default withRouter(BottomNav);

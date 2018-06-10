@@ -1,4 +1,0 @@
-.capture-image {
-    width: calc(100vw - 20px);
-    max-width: var(--app-max-width);
-}

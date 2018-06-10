@@ -1,6 +1,6 @@
 import React from 'react';
+import uuid from 'uuid/v1';
 import { ListItem } from 'material-ui/List';
-import QuoteOptions from './QuoteOptions';
 import {
   pinkA200,
   yellow500,
@@ -8,6 +8,7 @@ import {
 import Chip from 'material-ui/Chip';
 import Card from 'material-ui/Card';
 import Favs from 'material-ui/svg-icons/toggle/star';
+import QuoteOptions from './QuoteOptions';
 
 const starStyles = {
   position: 'absolute',
@@ -20,7 +21,6 @@ const Quote = ({
   deleteQuote,
   submitQuote,
   quote,
-  divider,
   index,
 }) => {
   const { quoteText, quoteAuthor, quoteTags = [] } = quote;
@@ -34,16 +34,14 @@ const Quote = ({
               {quoteAuthor}
             </p>
             <p className="tags">
-              {
-                            quoteTags.map((tag, position) =>
-                              (<Chip
-                                className="tag"
-                                backgroundColor={pinkA200}
-                                key={`${index}-${position}`}
-                              >
-                                {tag}
-                              </Chip>))
-                        }
+              { quoteTags.map(tag =>
+                (<Chip
+                  className="tag"
+                  backgroundColor={pinkA200}
+                  key={uuid()}
+                >
+                  {tag}
+                </Chip>))}
             </p>
           </div>
                 }
@@ -56,11 +54,11 @@ const Quote = ({
               deleteQuote={deleteQuote}
             />
             {quote.starred &&
-            <Favs
-              color={yellow500}
-              style={starStyles}
-            />
-                        }
+              <Favs
+                color={yellow500}
+                style={starStyles}
+              />
+            }
           </div>
                 }
       />

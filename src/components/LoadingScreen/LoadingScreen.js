@@ -1,6 +1,5 @@
 import React from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
-import './LoadingScreen.css';
 
 const screenStyles = {
   position: 'absolute',
@@ -16,6 +15,6 @@ const screenStyles = {
 const LoadingScreen = () =>
   (<div style={screenStyles}>
     <CircularProgress size={80} thickness={5} />
-  </div>);
+   </div>);
 
 export default LoadingScreen;

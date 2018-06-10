@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+import get from 'lodash.get';
 import NewPost from '../NewPost/NewPost';
 import Quotes from '../Quotes/Quotes';
 import Authors from '../Authors/Authors';
@@ -69,10 +70,10 @@ const Routes = (props) => {
       <Route
         exact
         path="/add/:quoteId?"
-        component={props =>
+        component={rProps =>
             (<NewPost
-              {...props}
-              quotes={quotes}
+              quote={quotes[get(rProps, ['match', 'params', 'quoteId'])]}
+              quoteId={get(rProps, ['match', 'params', 'quoteId'])}
               authors={authors}
               submitQuote={submitQuote}
             />)

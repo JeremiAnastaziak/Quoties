@@ -5,4 +5,5 @@
     --app-header-height: 64px;
     --app-max-width: 1100px;
     --app-wrapper-height: calc(100vh - var(--app-header-height) - var(--bottom-nav-height));
+    --app-padding: 5px;
 }

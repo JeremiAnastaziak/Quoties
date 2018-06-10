@@ -8,6 +8,7 @@ import { initFirebase } from './api/auth';
 
 import './styles/variables.css';
 import './styles/reset.css';
+import './styles/app.css';
 
 initFirebase();
 injectTapEventPlugin();

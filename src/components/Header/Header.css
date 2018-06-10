@@ -1,7 +1,0 @@
-.more-icon {
-    color: #fff !important;
-}
-
-#root > div > div > div:nth-child(1) > div > button {
-    display: none !important;
-}

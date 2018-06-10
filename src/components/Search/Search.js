@@ -1,17 +1,15 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import Card from 'material-ui/Card';
-import './Search.css';
 import Quotes from '../Quotes/Quotes';
 
-class Search extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      searchText: '',
-    };
-  }
+const searchStyles = {
+  padding: '0 15px',
+  width: '100%',
+  position: 'relative',
 
+};
+class Search extends React.Component {
     filterQuotes = (quotes, phrase) => {
       if (!phrase) return quotes;
       const quotesRef = [];
@@ -28,9 +26,9 @@ class Search extends React.Component {
 
       return (
         <div>
-          <Card className="panel">
+          <Card style={searchStyles}>
             <TextField
-              ref={input => (this.input = input)}
+              ref={(input) => { (this.input = input); }}
               onChange={e => this.setState({ searchText: e.target.value })}
               name="search"
               placeholder="What do you search for?"
@@ -40,7 +38,7 @@ class Search extends React.Component {
 
           <Quotes
             {...this.props}
-            quotes={this.filterQuotes({ ...quotes }, this.state.searchText)}
+            quotes={this.filterQuotes({ ...quotes }, this.state.searchText || '')}
           />
 
         </div>

@@ -1,4 +1,0 @@
-/* specific style for quote wrapper displaying inside author component */
-.authors > div > div > span > div > div {
-  padding: 20px 56px 16px 56px !important;
-}

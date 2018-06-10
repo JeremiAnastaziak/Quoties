@@ -7,9 +7,30 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
-import './Header.css';
+const appBarStyles = {
+  maxWidth: 'var(--app-max-width)',
+  margin: '0 auto',
+  boxShadow: 'none',
+};
+function Header(props) {
+  const { history } = props;
+  const goToQuotes = () => history.push('/quotes');
 
-const Logged = (props) => {
+  return (
+    <div style={{ backgroundColor: 'var(--color-accent)' }}>
+      <AppBar
+        style={appBarStyles}
+        title="Quoties"
+        titleStyle={{ fontWeight: 300, cursor: 'pointer' }}
+        showMenuIconButton={false}
+        onTitleTouchTap={goToQuotes}
+        iconElementRight={<Logged />}
+      />
+    </div>
+  );
+}
+
+const Logged = () => {
   const logOut = () =>
     firebase
       .auth()
@@ -19,7 +40,7 @@ const Logged = (props) => {
   return (
     <IconMenu
       iconButtonElement={
-        <IconButton>
+        <IconButton iconStyle={{ color: '#fff' }}>
           <MoreVertIcon className="more-icon" />
         </IconButton>
             }
@@ -33,22 +54,5 @@ const Logged = (props) => {
     </IconMenu>
   );
 };
-
-function Header(props) {
-  const { history } = props;
-  const goToQuotes = () => history.push('/quotes');
-
-  return (
-    <div style={{ backgroundColor: 'var(--color-accent)' }}>
-      <AppBar
-        style={{ maxWidth: 'var(--app-max-width)', margin: '0 auto', boxShadow: 'none' }}
-        title="Quoties"
-        titleStyle={{ fontWeight: 300, cursor: 'pointer' }}
-        onTitleTouchTap={goToQuotes}
-        iconElementRight={<Logged />}
-      />
-    </div>
-  );
-}
 
 export default withRouter(Header);

@@ -4,6 +4,13 @@ import BottomNav from '../BottomNav/BottomNav';
 import Header from '../Header/Header';
 import Routes from '../Routes/Routes';
 
+const appContentStyles = {
+  maxWidth: 'var(--app-max-width)',
+  margin: '0 auto var(--bottom-nav-height)',
+  overflow: 'scroll-y',
+  padding: 'var(--app-padding)',
+};
+
 const Router = (props) => {
   const {
     quotes, authors, submitQuote, deleteQuote,
@@ -13,12 +20,7 @@ const Router = (props) => {
     <BrowserRouter>
       <div>
         <Header />
-        <div style={{
-                    maxWidth: 'var(--app-max-width)',
-                    margin: '0 auto var(--bottom-nav-height)',
-                    overflow: 'scroll-y',
-                }}
-        >
+        <div style={appContentStyles}>
           <Routes
             quotes={quotes}
             authors={authors}

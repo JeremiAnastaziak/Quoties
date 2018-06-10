@@ -1,23 +1,26 @@
 import React from 'react';
-import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import CircularProgress from 'material-ui/CircularProgress';
 import CaptureIcon from 'material-ui/svg-icons/image/add-a-photo';
 import { getBase64, getImageDimension } from 'lib/base64';
+import { drawRectangle } from 'lib/canvas';
 import recognizeText, { mapResponse } from 'api/vision';
-// eslint-disable-next-line
-import baseMock from './base64';
-// eslint-disable-next-line
-import dataMock from './mock';
-import { drawRectangle } from './canvas';
-import './index.css';
+
+const imgStyles = {
+  position: 'absolute',
+  zIndex: '-1',
+  width: 'calc(100vw - 2 * var(--app-padding))',
+  maxWidth: 'var(--app-max-width)',
+};
+
+const imgSectionStyles = {
+  position: 'relative',
+  maxWidth: 'var(--app-max-width)',
+};
 
 export default class Capture extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      data: {},
+    state = {
       base64: null,
       fetching: false,
       scale: 1,
@@ -28,7 +31,6 @@ export default class Capture extends React.Component {
         text: '',
       },
     };
-  }
 
     handleImageChange = async ({ target: { files } }) => {
       const base64 = await getBase64(files[0]);
@@ -128,48 +130,24 @@ export default class Capture extends React.Component {
 
     render() {
       return (
-        <div>
-          <div style={{
- display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '5px',
-}}
+        <div style={{ marginTop: '10px' }}>
+          <RaisedButton
+            onClick={() => this.file.click()}
+            labelPosition="before"
+            label="Scan text from photo"
+            secondary
+            fullWidth
+            icon={!this.state.fetching ? <CaptureIcon /> : <CircularProgress size={30} />}
           >
-            {/* <label htmlFor="inputFile">Scan text from photo</label> */}
-            <RaisedButton
-              onClick={() => this.file.click()}
-              labelPosition="before"
-              label="Scan text from photo"
-              secondary
-              fullWidth
-              icon={!this.state.fetching ? <CaptureIcon /> : <CircularProgress size={30} />}
-            >
-              <input
-                type="file"
-                id="inputFile"
-                className="input-file"
-                ref={dom => this.file = dom}
-                accept="image/*"
-                onChange={this.handleImageChange}
-              />
-            </RaisedButton>
-          </div>
-          <div style={{ position: 'relative', padding: '0 10px 10px', maxWidth: 'var(--app-max-width)' }}>
-            {this.state.width ?
-              <p>To extract text, tap at the image on starting and ending word.</p> : ''}
-            <img
-              ref={image => this.image = image}
-              src={this.state.base64}
-              className="capture-image"
-              style={{ position: 'absolute', zIndex: '-1' }}
+            <input
+              type="file"
+              id="inputFile"
+              style={{ display: 'none' }}
+              ref={(dom) => { this.file = dom; }}
+              accept="image/*"
+              onChange={this.handleImageChange}
             />
-            {this.state.width &&
-            <canvas
-              onClick={this.handleCanvasClick}
-              ref={canvas => this.canvas = canvas}
-              width={this.image.offsetWidth}
-              height={this.image.offsetHeight}
-            />
-                        }
-          </div>
+          </RaisedButton>
           <Snackbar
             open={this.state.notification.open}
             message={this.state.notification.text}
@@ -180,6 +158,24 @@ export default class Capture extends React.Component {
                         notification: { text: '', open: false },
                     })}
           />
+          <section style={imgSectionStyles}>
+            {this.state.width ?
+              <p>To extract text, tap at the image on starting and ending word.</p> : ''}
+            <img
+              alt=""
+              ref={(image) => { this.image = image; }}
+              src={this.state.base64}
+              style={imgStyles}
+            />
+            {this.state.width &&
+              <canvas
+                onClick={this.handleCanvasClick}
+                ref={(canvas) => { this.canvas = canvas; }}
+                width={this.image.offsetWidth}
+                height={this.image.offsetHeight}
+              />
+            }
+          </section>
         </div>
       );
     }

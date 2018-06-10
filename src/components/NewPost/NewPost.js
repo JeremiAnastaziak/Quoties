@@ -1,118 +1,76 @@
 import React, { Component } from 'react';
-import TextField from 'material-ui/TextField';
+import get from 'lodash.get';
 import RaisedButton from 'material-ui/RaisedButton';
 import AutoComplete from 'material-ui/AutoComplete';
-import './NewPost.css';
 import Capture from '../Capture/Capture';
+import Field from '../Field/Field';
 
 class NewPost extends Component {
-  constructor() {
-    super();
-    this.state = {
-      quoteText: '',
-      quoteAuthor: '',
-      quoteTitle: '',
-      quoteTags: '',
-    };
-  }
-
-  componentDidMount() {
-    const { quoteId } = this.props.match.params;
-
-    if (this.props.quotes && quoteId) {
-      const quote = this.props.quotes[quoteId];
-
-      this.setState({
-        ...quote,
-        quoteTags: quote.quoteTags && (`${quote.quoteTags.join(' ')} `),
-      });
-    }
-  }
-
   updateInput = ({ target: { name, value } }) => {
     this.setState({
       [name]: value,
     });
   }
 
-  submitQuote = (e) => {
-    e.preventDefault();
+  submitQuote = () => {
+    const quote = {
+      ...this.props.quote,
+      ...this.state,
+      quoteTags: this.state.quoteTags ?
+        this.state.quoteTags.trim().split(' ') :
+        this.props.quoteTags || [],
+    };
 
-    const { quoteId } = this.props.match.params;
-
-    this.props.submitQuote(quoteId, {
-      quoteAuthor: this.state.quoteAuthor,
-      quoteText: this.state.quoteText,
-      quoteTitle: this.state.quoteTitle,
-      quoteTags: this.state.quoteTags ? this.state.quoteTags.trim().split(' ') : [],
-    });
+    this.props.submitQuote(this.props.quoteId, quote);
   }
 
   render() {
     return (
-      <div className="wrapper">
-        <form ref={form => this.quoteForm = form}>
+      <section>
+        <form>
           <AutoComplete
-            className="field"
             name="quoteAuthor"
-            ref={input => this.qAuthor = input}
             onUpdateInput={value => this.setState({ quoteAuthor: value })}
             floatingLabelText="Author"
             fullWidth
             required
-            searchText={this.state.quoteAuthor}
+            searchText={get(this.props.quote, 'quoteAuthor')}
             filter={AutoComplete.caseInsensitiveFilter}
             autoComplete="off"
             dataSource={this.props.authors}
             floatingLabelFixed
           />
-          <TextField
-            className="field"
+          <Field
             name="quoteText"
-            ref={input => this.qText = input}
             onChange={this.updateInput}
             floatingLabelText="Text"
             multiLine
             rows={3}
-            fullWidth
-            required
-            autoComplete="off"
-            value={this.state.quoteText}
-            floatingLabelFixed
+            defaultValue={get(this.props.quote, 'quoteText')}
           />
-          <TextField
-            className="field"
+          <Field
             name="quoteTitle"
             onChange={this.updateInput}
             floatingLabelText="Source"
-            autoComplete="off"
-            fullWidth
-            value={this.state.quoteTitle}
-            floatingLabelFixed
+            defaultValue={get(this.props.quote, 'quoteTitle')}
+
           />
-          <TextField
-            className="field"
+          <Field
             name="quoteTags"
             onChange={this.updateInput}
             floatingLabelText="Tags"
-            autoComplete="off"
-            fullWidth
-            value={this.state.quoteTags}
-            floatingLabelFixed
+            defaultValue={get(this.props.quote, 'quoteTags', []).join(' ')}
           />
-          <div style={{ padding: '5px' }}>
-            <RaisedButton
-              className="button"
-              type="input"
-              fullWidth
-              onClick={this.submitQuote}
-              label={this.props.match.params.quoteId ? 'Update quote' : 'Submit quote'}
-              primary
-            />
-          </div>
+          <RaisedButton
+            type="input"
+            onClick={this.submitQuote}
+            label={this.props.quoteText ? 'Update quote' : 'Submit quote'}
+            fullWidth
+            primary
+          />
         </form>
         <Capture fillQuoteText={quoteText => this.setState({ quoteText })} />
-      </div>
+      </section>
     );
   }
 }

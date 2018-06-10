@@ -4,7 +4,6 @@ import uuid from 'uuid/v1';
 import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import Encouragement from '../Encouragement/Encouragement';
-import './Authors.css';
 
 const Authors = ({ authors, history }) => (
   <List className="cards" style={{ padding: 0 }}>

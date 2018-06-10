@@ -1,0 +1,16 @@
+.cards > div {
+  margin: var(--app-padding) 0;
+}
+
+/* specific style for quote wrapper displaying inside author component */
+.authors > div > div > span > div > div {
+  padding: 20px 56px 16px 56px !important;
+}
+
+button.active svg {
+  fill: var(--color-accent) !important;
+}
+
+button.active div {
+  color: var(--color-accent) !important;
+}

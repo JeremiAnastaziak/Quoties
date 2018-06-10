@@ -6,7 +6,6 @@ import Router from '../Router/Router';
 import Login from '../Login/Login';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import hideBottomNav from '../../lib/hideBottomNav';
-import './App.css';
 
 const extractAuthors = quotes =>
   Object.values(quotes || {})
@@ -15,10 +14,7 @@ const extractAuthors = quotes =>
     .sort((a, b) => a[0] > b[0]);
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
+    state = {
       quotes: {},
       authors: [],
       activePage: 0,
@@ -28,54 +24,53 @@ class App extends Component {
         open: false,
       },
     };
-  }
 
-  componentDidMount() {
-    this.getQuotesFromLocalStorage();
-    window.addEventListener('resize', hideBottomNav);
+    componentDidMount() {
+      this.getQuotesFromLocalStorage();
+      window.addEventListener('resize', hideBottomNav);
 
-    new firebase.auth()
-      .onAuthStateChanged((user) => {
-        this.setState({
-          checkingActiveSession: false,
-          user,
-          ref: `users/${(user && user.uid) || null}/quotes/`,
-        });
+      new firebase.auth()
+        .onAuthStateChanged((user) => {
+          this.setState({
+            checkingActiveSession: false,
+            user,
+            ref: `users/${(user && user.uid) || null}/quotes/`,
+          });
 
-        if (user) {
-          firebase
-            .database()
-            .ref(this.state.ref)
-            .on('value', (snapshot) => {
-              const quotes = snapshot.val();
-              this.setState({
-                authors: extractAuthors(quotes),
-                quotes,
+          if (user) {
+            firebase
+              .database()
+              .ref(this.state.ref)
+              .on('value', (snapshot) => {
+                const quotes = snapshot.val();
+                this.setState({
+                  authors: extractAuthors(quotes),
+                  quotes,
+                });
               });
-            });
-        }
-      });
-  }
-
-  componentDidUpdate() {
-    window.localStorage.setItem('quoties', JSON.stringify(this.state));
-  }
-
-  getQuotesFromLocalStorage() {
-    const storageDate = window.localStorage.getItem('quoties');
-    if (storageDate && !this.state.user) {
-      const { quotes, user } = JSON.parse(storageDate);
-      if (this.state.user && this.state.user.uid === user && user.uid) {
-        this.setState({
-          quotes,
+          }
         });
+    }
+
+    componentDidUpdate() {
+      window.localStorage.setItem('quoties', JSON.stringify(this.state));
+    }
+
+    getQuotesFromLocalStorage() {
+      const storageDate = window.localStorage.getItem('quoties');
+      if (storageDate && !this.state.user) {
+        const { quotes, user } = JSON.parse(storageDate);
+        if (this.state.user && this.state.user.uid === user && user.uid) {
+          this.setState({
+            quotes,
+          });
+        }
       }
     }
-  }
 
-    notify = (text) => {
+    notify = (text, open = true) => {
       this.setState({
-        notification: { text, open: true },
+        notification: { text, open },
       });
     }
 
@@ -115,9 +110,7 @@ class App extends Component {
             open={this.state.notification.open}
             message={this.state.notification.text}
             autoHideDuration={3000}
-            onRequestClose={() => this.setState({
-                        notification: { text: '', open: false },
-                    })}
+            onRequestClose={() => this.notify('', false)}
           />
         </div>
       );
