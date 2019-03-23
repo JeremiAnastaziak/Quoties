@@ -1,5 +1,3 @@
-import { visionApiKey } from 'private/config';
-
 export const mapResponse = ({ responses }, scale) => responses[0].textAnnotations
   .slice(1)
   .map(word => ({
@@ -14,7 +12,7 @@ export const mapResponse = ({ responses }, scale) => responses[0].textAnnotation
   }));
 
 export default function (base64string) {
-  return fetch(`https://vision.googleapis.com/v1/images:annotate?key=${visionApiKey}`, {
+  return fetch(`https://vision.googleapis.com/v1/images:annotate?key=${process.env.REACT_APP_VISION_API_KEY}`, {
     method: 'POST',
     body: JSON.stringify({
       requests: [
