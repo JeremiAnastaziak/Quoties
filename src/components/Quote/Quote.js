@@ -60,7 +60,7 @@ const Quote = ({
               />
             }
           </div>
-                }
+        }
       />
     </Card>
   );

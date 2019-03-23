@@ -1,14 +1,13 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import get from 'lodash.get';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import { grey400 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import { ShareButtons } from 'react-share';
+import { FacebookShareButton } from 'react-share';
 import './Quote.css';
-
-const { FacebookShareButton } = ShareButtons;
 
 const iconButtonElement = (
   <IconButton
@@ -30,20 +29,20 @@ const QuoteOptions = ({
     iconButtonElement={iconButtonElement}
     style={{ position: 'absolute', top: '5px', right: '0' }}
   >
-    <MenuItem onTouchTap={() => deleteQuote(quoteId)}>
+    <MenuItem onClick={() => deleteQuote(quoteId)}>
       Delete
     </MenuItem>
     <MenuItem onClick={() => history.push(`/add/${quoteId}`, { quoteId })}>
       Edit
     </MenuItem>
-    <MenuItem onTouchTap={() => submitQuote(quoteId, { ...quote, starred: !quote.starred })}>
+    <MenuItem onClick={() => submitQuote(quoteId, { ...quote, starred: !quote.starred })}>
       {quote.starred ? 'Remove from favourite' : 'Add to favourite'}
     </MenuItem>
     <MenuItem>
       <FacebookShareButton
         url="https://quoties.github.io/"
         quote={quote.quoteText}
-        hashtag={`#${quote.quoteAuthor.replace(' ', '')}`}
+        hashtag={`#${get(quote, 'quoteAuthor', '').replace(' ', '')}`}
       >
         Share on Facebook
       </FacebookShareButton>

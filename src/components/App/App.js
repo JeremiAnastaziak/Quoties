@@ -58,13 +58,11 @@ class App extends Component {
 
     getQuotesFromLocalStorage() {
       const storageDate = window.localStorage.getItem('quoties');
-      if (storageDate && !this.state.user) {
-        const { quotes, user } = JSON.parse(storageDate);
-        if (this.state.user && this.state.user.uid === user && user.uid) {
-          this.setState({
-            quotes,
-          });
-        }
+      if (storageDate) {
+        const { quotes } = JSON.parse(storageDate);
+        this.setState({
+          quotes,
+        });
       }
     }
 

@@ -8,10 +8,14 @@ import { drawRectangle } from 'lib/canvas';
 import recognizeText, { mapResponse } from 'api/vision';
 
 const imgStyles = {
-  position: 'absolute',
-  zIndex: '-1',
   width: 'calc(100vw - 2 * var(--app-padding))',
   maxWidth: 'var(--app-max-width)',
+};
+
+const canvasStyles = {
+  position: 'absolute',
+  zIndex: '1',
+  left: 0,
 };
 
 const imgSectionStyles = {
@@ -46,6 +50,10 @@ export default class Capture extends React.Component {
       this.toggleFetching();
 
       recognizeText(base64)
+        .then((data) => {
+          console.log(data);
+          return data;
+        })
         .then(data => mapResponse(data, this.state.scale))
         .then((words) => {
           // words.forEach(({ boundingPoly: { vertices } }) =>
@@ -80,10 +88,15 @@ export default class Capture extends React.Component {
 
           const concatWords = () =>
             words.map(({ description }) => description)
-              .reduce((acc, next) =>
-                (acc.slice(-1) === '-' ?
-                  acc.slice(0, -1).concat(next) :
-                  acc.length ? [acc, next].join(' ') : next), '');
+              .reduce((acc, next) => {
+                if (acc.slice(-1) === '-') {
+                  return acc.slice(0, -1).concat(next);
+                }
+                if (acc.length) {
+                  return [acc, next].join(' ');
+                }
+                return next;
+              }, '');
 
 
           // draw second rect
@@ -101,7 +114,7 @@ export default class Capture extends React.Component {
           this.setState({
             notification: {
               open: true,
-              text: text.length ? 'Text copied to form' : 'Could not extract text',
+              text: text.length ? 'Text copied' : 'Text not found',
             },
           });
 
@@ -153,7 +166,7 @@ export default class Capture extends React.Component {
             message={this.state.notification.text}
             autoHideDuration={3000}
             action="show"
-            onActionTouchTap={() => window.scrollTo(0, 0)}
+            onActionClick={() => window.scrollTo(0, 0)}
             onRequestClose={() => this.setState({
                         notification: { text: '', open: false },
                     })}
@@ -169,6 +182,7 @@ export default class Capture extends React.Component {
             />
             {this.state.width &&
               <canvas
+                style={canvasStyles}
                 onClick={this.handleCanvasClick}
                 ref={(canvas) => { this.canvas = canvas; }}
                 width={this.image.offsetWidth}

@@ -23,7 +23,7 @@ function Header(props) {
         title="Quoties"
         titleStyle={{ fontWeight: 300, cursor: 'pointer' }}
         showMenuIconButton={false}
-        onTitleTouchTap={goToQuotes}
+        onTitleClick={goToQuotes}
         iconElementRight={<Logged />}
       />
     </div>

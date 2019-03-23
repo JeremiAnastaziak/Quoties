@@ -14,7 +14,9 @@ class NewPost extends Component {
     });
   }
 
-  submitQuote = () => {
+  submitQuote = (e) => {
+    e.preventDefault();
+
     const quote = {
       ...this.props.quote,
       ...this.state,
@@ -22,6 +24,10 @@ class NewPost extends Component {
         this.state.quoteTags.trim().split(' ') :
         get(this.props.quote, 'quoteTags') || [],
     };
+
+    if (!quote.quoteText) {
+      return false;
+    }
 
     this.props.submitQuote(this.props.quoteId, quote);
   }
@@ -39,7 +45,7 @@ class NewPost extends Component {
           label="Clear"
           primary
         />
-        <form>
+        <form onSubmit={this.submitQuote}>
           <AutoComplete
             name="quoteAuthor"
             onUpdateInput={value => this.setState({ quoteAuthor: value })}
@@ -52,20 +58,32 @@ class NewPost extends Component {
             dataSource={this.props.authors}
             floatingLabelFixed
           />
-          <Field
-            name="quoteText"
-            onChange={this.updateInput}
-            floatingLabelText="Text"
-            multiLine
-            rows={3}
-            defaultValue={get(this.props.quote, 'quoteText')}
-          />
+          {get(this.state, 'quoteText') ?
+            (<Field
+              name="quoteText"
+              onChange={this.updateInput}
+              floatingLabelText="Text"
+              multiLine
+              required
+              rows={3}
+              value={get(this.state, 'quoteText')}
+            />)
+            :
+            (<Field
+              name="quoteText"
+              onChange={this.updateInput}
+              floatingLabelText="Text"
+              multiLine
+              required
+              rows={3}
+              defaultValue={get(this.props.quote, 'quoteText')}
+            />)
+          }
           <Field
             name="quoteTitle"
             onChange={this.updateInput}
             floatingLabelText="Source"
             defaultValue={get(this.props.quote, 'quoteTitle')}
-
           />
           <Field
             name="quoteTags"
@@ -74,8 +92,7 @@ class NewPost extends Component {
             defaultValue={get(this.props.quote, 'quoteTags', []).join(' ')}
           />
           <RaisedButton
-            type="input"
-            onClick={this.submitQuote}
+            type="submit"
             label={this.props.quoteText ? 'Update quote' : 'Submit quote'}
             fullWidth
             primary

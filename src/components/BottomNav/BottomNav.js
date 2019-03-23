@@ -39,7 +39,7 @@ const BottomNav = ({ history }) => {
             key={route.path}
             label={route.label}
             icon={iconsMap[route.label]}
-            onTouchTap={() => history.push(route.path)}
+            onClick={() => history.push(route.path)}
             className={classNames({ active: matchPathname(route.path) })}
           />
         ))}
